@@ -15,6 +15,11 @@ import EditModeOverlay from './EditModeOverlay'
 import { select, useEditState } from './editStore'
 import { useSceneControlsState } from './sceneControlsStore'
 
+// Set to true to bring back the "Edit Layout" button/panel on the live site.
+// Kept as a single switch (rather than deleting anything) so the whole
+// drag/rotate/scale editor is one edit away when it's needed again.
+const SHOW_EDIT_OVERLAY = false
+
 // Background: matches the henryheffernan.com reference - a seamless studio
 // cyclorama, not a visible floor plane meeting a separate backdrop color.
 // The previous attempt (a radial-gradient-textured disc mesh) created a
@@ -60,9 +65,12 @@ export default function Experience() {
 
   return (
     <>
-      {/* Layout editor overlay - hidden unless "Edit Layout" is clicked.
-          Kept from v1 so the desk+PC placement can still be nudged live. */}
-      <EditModeOverlay />
+      {/* Layout editor overlay - disabled for the shipped site (Ronit's
+          request). Flip SHOW_EDIT_OVERLAY back to true to bring the "Edit
+          Layout" button back for future tweaking; nothing else needs to
+          change, the whole editor (editStore.js, Editable.jsx,
+          EditModeOverlay.jsx) is still intact. */}
+      {SHOW_EDIT_OVERLAY && <EditModeOverlay />
 
       <IntroHUD active={heroStarted} />
 
