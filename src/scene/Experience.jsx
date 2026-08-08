@@ -70,7 +70,7 @@ export default function Experience() {
           Layout" button back for future tweaking; nothing else needs to
           change, the whole editor (editStore.js, Editable.jsx,
           EditModeOverlay.jsx) is still intact. */}
-      {SHOW_EDIT_OVERLAY && <EditModeOverlay />
+      {SHOW_EDIT_OVERLAY && <EditModeOverlay />}
 
       <IntroHUD active={heroStarted} />
 
