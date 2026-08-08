@@ -1,0 +1,399 @@
+/* -----------------------------------------------------------------------------
+   OS "CHROME" - Windows XP theme (Luna-ish blue/green). Everything that isn't
+   per-window CONTENT (that's os.css): the desktop root, desktop icons,
+   taskbar/Start button/tabs/tray, Start menu, and window frame/title bar.
+   Kept separate from os.css so a future theme swap only touches this file.
+
+   Class names are unchanged from the old Win98 build (`.win98-screen`,
+   `.rnd-window`, etc.) - renaming them everywhere wasn't worth it, they're
+   just selectors now, not a claim about which Windows version they render.
+   ----------------------------------------------------------------------------- */
+
+/* ------------------------------ desktop root ------------------------------ */
+.win98-screen {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+  background: #008080 url('/media/wallpaper.png') center center / cover no-repeat;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-size: 11px;
+  color: #000;
+  /* Applies to every page uniformly (not just Home) - smoother glyph edges
+     going into the EMBED_SCALE upscale + <Html transform> downsample
+     pipeline, so small body text on About/Experience/Projects anti-aliases
+     the same way the large Home heading always did. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.win98-screen * {
+  box-sizing: border-box;
+}
+
+/* ------------------------------ desktop icons ------------------------------ */
+.desktop-icons {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 74px;
+  padding: 4px 2px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  cursor: default;
+  user-select: none;
+}
+
+.desktop-icon.selected {
+  background: rgba(49, 106, 197, 0.35);
+  border: 1px dotted rgba(255, 255, 255, 0.8);
+}
+
+.desktop-icon .glyph {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.6));
+}
+
+.desktop-icon .label {
+  margin-top: 3px;
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.25;
+  text-shadow:
+    1px 1px 1px #000,
+    -1px -1px 1px rgba(0, 0, 0, 0.6);
+}
+
+.desktop-icon.selected .label {
+  background: #316ac5;
+  text-shadow: none;
+}
+
+/* ------------------------------ taskbar ------------------------------ */
+.taskbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 3px;
+  background: linear-gradient(to bottom, #2a8ae0 0%, #1941a5 6%, #1941a5 94%, #123f9e 100%);
+  border-top: 1px solid #4d9df2;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.15) inset;
+  z-index: 4000;
+}
+
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 12px 0 6px;
+  border: none;
+  border-radius: 4px 10px 10px 4px;
+  background: linear-gradient(to bottom, #7fdb7f 0%, #52c15d 12%, #2fa334 45%, #1a7a2d 85%, #12621f 100%);
+  color: #fff;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 13px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  box-shadow: 0 0 0 1px #0e4d17, inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.start-button.active,
+.start-button:active {
+  background: linear-gradient(to bottom, #2fa334 0%, #1a7a2d 60%, #12621f 100%);
+}
+
+.start-button .flag-icon {
+  font-size: 15px;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+}
+
+.taskbar .tabs {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+  overflow: hidden;
+  height: 24px;
+}
+
+.taskbar .tab {
+  height: 24px;
+  min-width: 130px;
+  max-width: 160px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border: none;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #3d8fef 0%, #2a6fd6 100%);
+  color: #fff;
+  font-size: 11px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.taskbar .tab.active {
+  background: linear-gradient(to bottom, #1c4faf 0%, #123f9e 100%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+}
+
+.tray {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  background: linear-gradient(to bottom, #123f9e 0%, #1941a5 100%);
+  border-left: 1px solid #0c2c73;
+  color: #fff;
+  font-size: 11px;
+}
+
+.tray .clock {
+  white-space: nowrap;
+}
+
+/* ------------------------------ start menu ------------------------------ */
+.start-menu {
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  display: flex;
+  width: 260px;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+  box-shadow: 2px -2px 10px rgba(0, 0, 0, 0.4);
+  z-index: 4500;
+}
+
+.start-menu .rail {
+  width: 26px;
+  background: linear-gradient(180deg, #1941a5, #0d2a78);
+  color: #fff;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+}
+
+.start-menu .items {
+  flex: 1;
+  background: #fff;
+  padding: 4px 0;
+}
+
+.start-menu .item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.start-menu .item:hover {
+  background: linear-gradient(to bottom, #2a8ae0, #1941a5);
+  color: #fff;
+}
+
+.start-menu .divider {
+  height: 1px;
+  margin: 4px 6px;
+  background: #d0d0d0;
+}
+
+/* ------------------------------ windows ------------------------------ */
+.rnd-window {
+  z-index: 10;
+}
+
+.win98-screen .window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid #0054e3;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 4px 0 8px;
+  background: linear-gradient(to bottom, #2a8ae0 0%, #0f5fdc 10%, #0d4fd6 50%, #0c3fc8 88%, #0a58e0 100%);
+  border-radius: 6px 6px 0 0;
+}
+
+.title-bar-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  overflow: hidden;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.title-bar-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.title-bar-controls button {
+  width: 20px;
+  height: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #6fb8f7, #2a7fe0);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  position: relative;
+}
+
+.title-bar-controls button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.title-bar-controls button[aria-label='Minimize']::before {
+  content: '\2013'; /* en dash */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 1px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.title-bar-controls button[aria-label='Maximize']::before {
+  content: '\25A1'; /* white square */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 9px;
+}
+
+.title-bar-controls button[aria-label='Close'] {
+  background: linear-gradient(to bottom, #f77c6a, #d5372a);
+}
+
+.title-bar-controls button[aria-label='Close']::before {
+  content: '\00D7'; /* multiplication sign, reads as X */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.title-bar-controls button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.win98-screen .window-body {
+  flex: 1;
+  /* No native overflow scrolling here anymore - see ScrollArea.jsx for why
+     (native overflow:auto/scroll creates its own compositing layer that
+     rasterizes at flat screen resolution, decoupled from and BEFORE the
+     EMBED_SCALE + <Html transform> upscale, which was the actual source of
+     the About/Experience/Projects pages looking blurrier than Home). The
+     .scroll-area/.scroll-area-inner/.scroll-area-track/.scroll-area-thumb
+     rules below replace it with a transform-based scroller in the SAME
+     paint layer as everything else. */
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+
+.scroll-area {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scroll-area-inner {
+  /* Deliberately NO will-change: transform. That hint promotes the element
+     to its own GPU compositing layer up front - which turns out to cause
+     the exact same problem native overflow:auto did (a separate layer
+     rasterized at flat screen resolution, decoupled from the EMBED_SCALE +
+     <Html transform> upscale that everything else benefits from). Without
+     it, this only becomes its own layer transiently while the transform is
+     actively changing (an infrequent wheel-driven state update, not a
+     per-frame animation), and sits in the normal paint flow - same as the
+     Home page - the rest of the time. */
+}
+
+.scroll-area-track {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  background: #e8e8e8;
+  border-left: 1px solid #c8c8c8;
+}
+
+.scroll-area-thumb {
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #7fb1f7, #2a6fd6);
+  border: 1px solid #1d4f9e;
+}
+
+.status-bar {
+  display: flex;
+  border-top: 1px solid #c8c8c8;
+  background: #ece9d8;
+}
+
+.status-bar-field {
+  margin: 0;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: #333;
+}

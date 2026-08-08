@@ -1,0 +1,192 @@
+.mobile {
+  --m-accent: #4da6ff;
+  --m-bg: #0b0e14;
+  --m-card: #151a24;
+  --m-border: #232b39;
+  --m-text: #e8ecf3;
+  --m-muted: #9aa6b8;
+
+  background: var(--m-bg);
+  color: var(--m-text);
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.55;
+  padding: 0 20px 56px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.mobile a {
+  color: var(--m-accent);
+}
+
+.mobile .hero {
+  padding: 44px 0 28px;
+  border-bottom: 1px solid var(--m-border);
+}
+.mobile .hero h1 {
+  font-size: 34px;
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+.mobile .hero .role {
+  color: var(--m-accent);
+  font-size: 14px;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+.mobile .hero .pitch {
+  font-size: 16px;
+  color: var(--m-text);
+  margin: 0 0 20px;
+}
+.mobile .hero .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.mobile .btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--m-border);
+  background: var(--m-card);
+  color: var(--m-text);
+}
+.mobile .btn.primary {
+  background: var(--m-accent);
+  color: #05070c;
+  border-color: var(--m-accent);
+}
+
+.mobile section {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--m-border);
+}
+.mobile section h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--m-muted);
+  margin: 0 0 14px;
+}
+.mobile section p {
+  margin: 0 0 12px;
+}
+
+.mobile .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.mobile .chip-group {
+  margin-bottom: 16px;
+}
+.mobile .chip-group h3 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--m-text);
+}
+.mobile .chip {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--m-card);
+  border: 1px solid var(--m-border);
+  color: var(--m-muted);
+}
+
+.mobile .project {
+  background: var(--m-card);
+  border: 1px solid var(--m-border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.mobile .project h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+.mobile .project .flag {
+  font-size: 10px;
+  background: var(--m-accent);
+  color: #05070c;
+  padding: 2px 7px;
+  border-radius: 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+  font-weight: 700;
+}
+.mobile .project p {
+  color: var(--m-muted);
+  font-size: 14px;
+}
+.mobile .project .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+.mobile .project .tags span {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #0f131b;
+  border: 1px solid var(--m-border);
+  color: var(--m-muted);
+}
+
+.mobile .entry {
+  margin-bottom: 16px;
+}
+.mobile .entry .top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.mobile .entry .title {
+  font-weight: 600;
+}
+.mobile .entry .when {
+  color: var(--m-muted);
+  font-size: 13px;
+}
+.mobile .entry .sub {
+  color: var(--m-accent);
+  font-size: 14px;
+}
+.mobile .entry .detail {
+  color: var(--m-muted);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.mobile ul.plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mobile ul.plain li {
+  padding: 6px 0;
+  color: var(--m-muted);
+  border-bottom: 1px solid var(--m-border);
+}
+
+.mobile .note {
+  margin-top: 22px;
+  font-size: 13px;
+  color: var(--m-muted);
+  text-align: center;
+}
+
+.mobile footer {
+  padding-top: 26px;
+  text-align: center;
+  color: var(--m-muted);
+  font-size: 13px;
+  border: none;
+}

@@ -1,0 +1,132 @@
+:root {
+  --bg: #0a0a12;
+  --accent: #4da6ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: #e8e8ef;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* The mobile scroll page needs the document to scroll; the desktop 3D scene
+   locks it. .allow-scroll is toggled on <body> by App based on viewport. */
+body.allow-scroll,
+body.allow-scroll #root {
+  overflow-y: auto;
+  height: auto;
+  min-height: 100%;
+}
+
+canvas {
+  display: block;
+  touch-action: none;
+}
+
+/* Respect reduced motion globally. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------ asset loader ------------------------------ */
+/* Looping boot.gif shown while the office pack's .glb (and anything else
+   Three.js's DefaultLoadingManager is tracking) is still downloading - see
+   scene/AssetLoader.jsx. Background matches the scene's own BG/fog color
+   (#d4d4d4, Experience.jsx) rather than --bg, so there's no color flash
+   between this overlay and the 3D scene fading in underneath it. */
+.asset-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: #000;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.25s ease;
+}
+
+/* Hidden once the scene has actually painted - opacity/visibility rather
+   than display:none (which pauses GIF playback in some browsers) or
+   unmounting (which restarts the GIF from frame 1). The <img> stays mounted
+   and animating underneath at all times, this class just hides it. */
+.asset-loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Full-bleed - covers the entire viewport edge to edge (object-fit: cover
+   crops rather than letterboxes, so no background color ever shows through
+   around it), matching Henry's full-screen terminal loading page instead of
+   a small centered box. */
+.asset-loader img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+/* ------------------------------ intro corner HUD ------------------------------ */
+/* Typewriter-revealed name/title/clock, top-left - modeled on
+   henryheffernan.com's stacked black monospace boxes. */
+.intro-hud {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: none;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+.intro-hud-line {
+  background: rgba(10, 6, 3, 0.82);
+  color: #f2ece2;
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 4px 10px;
+  white-space: pre;
+  border-radius: 2px;
+}
+.intro-hud-clock {
+  color: #d8c9b0;
+  font-size: 12px;
+}
+.intro-hud-cursor {
+  animation: intro-hud-blink 1s steps(1) infinite;
+}
+@keyframes intro-hud-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-hud-cursor {
+    animation: none;
+  }
+}

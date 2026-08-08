@@ -1,0 +1,971 @@
+/* -----------------------------------------------------------------------------
+   Per-window CONTENT styling (About/Skills/Projects/SOC_Lab/Firewall/Contact/
+   Showcase) - app-specific presentation, not OS theme. The OS "chrome" itself
+   (title bar, window frame, taskbar, start menu, desktop icons, .win98-screen
+   base) lives in xp.css - kept separate so a future theme change only
+   touches one file, not this one.
+   ----------------------------------------------------------------------------- */
+
+/* ------------------------------ boot screen ------------------------------ */
+.bios {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  color: #c0c0c0;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.35;
+  padding: 18px 22px;
+  white-space: pre-wrap;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 5000;
+}
+
+.bios .cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: #c0c0c0;
+  vertical-align: text-bottom;
+  animation: blink 1s steps(1) infinite;
+}
+
+.bios .skip-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 22px;
+  color: #7a7a7a;
+  font-size: 11px;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Showcase window - TASK 6 (corrected): the Home/landing page is a centered
+   splash with no sidebar (below). About/Experience/Projects/Contact each
+   swap in as their OWN page (ShowcaseWindow.jsx holds page state) inside a
+   persistent two-column layout - see .showcase-layout below - modeled on
+   the henryheffernan.com reference screenshots on file. Not a single
+   scrolling document; only one page's content is mounted at a time. */
+.showcase {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.showcase h1 {
+  /* Bold Comic Sans MS per Ronit's request, replacing the earlier Holtwood
+     One SC/Playfair Display heading treatment everywhere (this file). */
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  /* Sized/spaced against the henryheffernan.com reference's landing title -
+     bumped up from 42px. */
+  font-size: 54px;
+  margin: 0 0 6px;
+  color: #000;
+}
+
+.showcase .subtitle {
+  margin: 0 0 26px;
+  font-size: 19px;
+  /* Henry's subtitle reads upright, not slanted - matches that. */
+  font-style: normal;
+  color: #333;
+}
+
+.showcase .nav-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* Wider gap between nav items, matching the reference's more generous
+     landing-page nav spacing (was 20px). */
+  gap: 34px;
+}
+
+.showcase .nav-row a {
+  /* Was 13px - Henry's landing nav links read noticeably larger. Color/no-
+     underline are unchanged (explicit earlier request, not part of this
+     sizing/spacing pass). */
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  color: #0000ee;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.showcase .nav-row a:hover {
+  color: #000080;
+}
+
+/* Two-column layout for every page except Home - sidebar (name, tagline,
+   Home/About/Experience/Projects/Contact nav) + a single content pane that
+   shows only the current page. */
+.showcase-layout {
+  display: flex;
+  height: 100%;
+}
+
+.showcase-sidebar {
+  /* Widened from 150px so the larger name/nav text below (matching Henry's
+     sizing) has room to sit comfortably, same ~19% proportion of the
+     window width as before. */
+  width: 172px;
+  flex-shrink: 0;
+  padding: 20px 16px;
+  background: #fafafa;
+  /* Flex column so the nav list below can be vertically centered in the
+     leftover space under the name/tagline, via margin-top/bottom: auto on
+     .sidebar-nav, instead of sitting right under the tagline. */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* A plain sibling of the ScrollArea below (see ShowcaseWindow.jsx) - not
+     wrapped in it, so it never scrolls/translates and stays pinned in view
+     on its own, no overflow or position:sticky needed. Nothing here ever
+     creates its own native-overflow compositing layer, which is what was
+     making About/Experience/Projects render blurrier than Home - see
+     ScrollArea.jsx for the full explanation. */
+}
+
+.showcase-sidebar h2 {
+  margin: 0 0 2px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  /* Matches Henry's larger two-line-wrapping sidebar name (was 19px). */
+  font-size: 25px;
+  color: #000;
+  line-height: 1.15;
+}
+
+.sidebar-tagline {
+  margin: 0 0 18px;
+  font-size: 14px;
+  /* Henry's tagline reads upright, not slanted. */
+  font-style: normal;
+  color: #555;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  /* Wider vertical gap between nav items, matching the reference's more
+     generous sidebar spacing (was 10px). */
+  gap: 16px;
+  /* Sits in the leftover space below the name/tagline block, biased
+     slightly above dead-center (fixed top gap, auto-filled bottom) per
+     Ronit's "move a bit up" feedback on the pure center version. */
+  margin-top: 40px;
+  margin-bottom: auto;
+}
+
+.sidebar-nav a {
+  /* Was 12px. */
+  font-size: 14px;
+  color: #0000ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sidebar-nav a:hover {
+  color: #000080;
+}
+
+.sidebar-nav a.active {
+  font-weight: bold;
+  color: #000080;
+  text-decoration: none;
+}
+
+.sidebar-nav a.active::before {
+  content: '\25CB'; /* small circle, matches the reference's active-item marker */
+  margin-right: 5px;
+  font-size: 8px;
+  vertical-align: middle;
+}
+
+/* Indented sub-links under "Projects" (Security Ops / Dev Projects), shown
+   only while somewhere in the Projects section - matches Henry's indented
+   SOFTWARE/MUSIC/ART sub-nav under his own PROJECTS link. */
+.sidebar-subnav {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin: 11px 0 0 14px;
+}
+
+.sidebar-subnav a {
+  font-size: 13px;
+  color: #0000ee;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sidebar-subnav a:hover {
+  color: #000080;
+}
+
+.sidebar-subnav a.active {
+  font-weight: bold;
+  color: #000080;
+  text-decoration: none;
+}
+
+/* Wraps the ScrollArea itself (see ShowcaseWindow.jsx) - takes the flex
+   space next to the fixed-width sidebar and gives ScrollArea a real height
+   to measure "how much is scrollable" against. */
+.showcase-content-scroll {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.showcase-content {
+  /* More generous margins overall, matching the reference's roomier
+     content pane (was 18px/30px/18px/22px). Extra right padding still
+     clears ScrollArea's 10px thumb track. */
+  padding: 24px 36px 24px 28px;
+}
+
+.showcase-content h2 {
+  margin: 0 0 14px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Was 19px. */
+  font-size: 24px;
+  color: #000;
+}
+
+/* About page's opening line only - "Welcome" in big bold Comic Sans MS, same
+   family/weight as the other content headings above, just a lot larger
+   (matches the henryheffernan.com reference's big "Welcome" h1). */
+.welcome-heading {
+  margin: 0 0 14px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Was 36px - closer to Henry's proportionally huge page titles. */
+  font-size: 44px;
+  color: #000;
+}
+
+.showcase-content p {
+  margin: 0 0 12px;
+  /* Was 12px/1.5, then 13px - bumped again for readability. */
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Experience section - one job entry, matching experience.txt's own
+   heading levels: company (h1) / role (h2) / when+location (h2), then the
+   bullet list. Education/Certifications/Skills no longer live here (see
+   ShowcaseWindow.jsx header comment) - Education has its own page now,
+   Certifications/Skills are unused for the moment. */
+.exp-item {
+  margin-bottom: 16px;
+}
+
+.exp-item .exp-company {
+  margin: 0 0 4px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Was 24px. */
+  font-size: 28px;
+  color: #000;
+}
+
+.exp-item .exp-role {
+  margin: 0 0 2px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: 16px;
+  color: #000;
+}
+
+.exp-item .exp-when {
+  margin: 0 0 12px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: normal;
+  letter-spacing: normal;
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Old .exp-org/h3 rules from the previous "role - org" single-line layout
+   are gone (no longer referenced) - kept out entirely rather than left as
+   dead CSS, since exp-item's internal structure changed completely. */
+
+/* Education page - same degree+institute (h1) / CGPA (h2) / paragraph
+   pattern as .exp-item's company/role/when, just renamed for this page. */
+.edu-item {
+  margin-bottom: 24px;
+}
+
+.edu-item .edu-degree {
+  margin: 0 0 4px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Was 20px. */
+  font-size: 24px;
+  color: #000;
+}
+
+.edu-item .edu-cgpa {
+  margin: 0 0 10px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: normal;
+  font-size: 14px;
+  color: #444;
+}
+
+.about-subhead {
+  margin: 20px 0 10px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #000;
+  border-top: 1px solid #e8e8e8;
+  padding-top: 14px;
+}
+
+.about-subhead:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Henry-style inline photo: plain rectangle, no border/shadow/rotation, full
+   width of the text column, bold "Figure N:" caption directly underneath. */
+.about-figure {
+  margin: 16px 0;
+}
+
+.about-figure img {
+  display: block;
+  width: 75%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.about-figure figcaption {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #333;
+  text-align: center;
+}
+
+.about-figure figcaption strong {
+  font-weight: 700;
+  color: #000;
+}
+
+/* Left-floated variant (closingFigure) - the following paragraph's text
+   wraps around it on the right instead of the photo sitting full-width on
+   its own line. */
+.about-figure-float-left {
+  float: left;
+  width: 42%;
+  margin: 4px 16px 10px 0;
+}
+
+.about-figure-float-left img {
+  width: 100%;
+  margin: 0;
+}
+
+/* Right-floated variant (inline section figures, e.g. About's Figure 1) -
+   half the text column's width, following paragraphs wrap around it on the
+   left. */
+.about-figure-float-right {
+  float: right;
+  width: 37.5%;
+  margin: 4px 0 10px 16px;
+}
+
+.about-figure-float-right img {
+  width: 100%;
+  margin: 0;
+}
+
+/* Project detail page screenshots (Home Lab's dashboard/lab photos) - same
+   plain-rectangle-plus-caption treatment as the About page's figures, full
+   width of the text column, stacked one after another. */
+.project-figure {
+  margin: 16px 0;
+}
+
+.project-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-figure figcaption {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #333;
+  text-align: center;
+}
+
+/* Agentic SOC's agent list - each agent as a bold name + 1-2 line
+   description, same subhead treatment as .exp-subhead elsewhere. */
+.agent-list {
+  margin-top: 6px;
+}
+
+.agent-item {
+  margin-bottom: 14px;
+}
+
+.agent-item p {
+  margin: 0;
+}
+
+.agent-name {
+  margin: 0 0 3px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #000;
+}
+
+.exp-subhead {
+  margin: 18px 0 10px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: 16px;
+  color: #000;
+  border-top: 1px solid #e8e8e8;
+  padding-top: 14px;
+}
+
+.cert-list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.exp-bullets {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.exp-bullets li {
+  margin-bottom: 8px;
+}
+
+/* About notepad look */
+.notepad {
+  background: #fff;
+  border: 2px inset #dfdfdf;
+  padding: 10px 12px;
+  height: 100%;
+  overflow: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.notepad p {
+  margin: 0 0 12px;
+}
+
+/* Skills groups */
+.skills-group {
+  margin-bottom: 12px;
+}
+.skills-group h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.skills-chips .chip {
+  padding: 2px 7px;
+  background: #c0c0c0;
+  border: 1px solid #fff;
+  border-right-color: #808080;
+  border-bottom-color: #808080;
+  font-size: 11px;
+}
+
+/* Projects landing - two big XP-style clickable category cards (Security
+   Ops / Dev Projects), henryheffernan.com-style, instead of one flat list.
+   The individual project cards further down (.project) are unchanged -
+   still used inside each category's list, just reached via a click now. */
+.projects-subhead {
+  margin: -6px 0 14px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #333;
+}
+
+.project-category-grid {
+  display: flex;
+  flex-direction: column;
+  /* Wider gap between the two cards (was 16px), matching the reference's
+     more generous spacing. */
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.project-category-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  /* More internal padding (was 16px/20px), taller cards like Henry's. */
+  padding: 22px 26px;
+  border: 2px outset #d8d8d8;
+  background: linear-gradient(to bottom, #fbfbfa, #ececeb);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+}
+
+.project-category-card:hover {
+  border-color: #a8a8a8;
+  background: linear-gradient(to bottom, #ffffff, #f2f2f0);
+}
+
+.project-category-card:active {
+  border-style: inset;
+}
+
+/* When rendered as a <span> (no icon set yet), stays the dashed-border
+   placeholder. When rendered as an <img> (real artwork), same footprint but
+   no border/background - just the icon itself, object-fit so a
+   non-square source still fills the 64x64 slot without distortion. */
+.project-category-icon {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border: 1px dashed #c8c8c8;
+}
+
+img.project-category-icon {
+  border: none;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.project-category-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.project-category-title {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  /* Was 22px. */
+  font-size: 27px;
+  color: #000;
+}
+
+.project-category-sub {
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #555;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+/* Projects - no card border/box (explicitly removed), each project just
+   stacked with spacing between entries. .tags/.tags span above are now
+   unused (tech stack renders as plain text via .project-tech-plain below,
+   not chip/button-styled badges) - left in place, not deleted, same
+   convention as the rest of this project. */
+.project {
+  margin-bottom: 28px;
+}
+
+.project-title {
+  margin: 0 0 5px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Was 22px. */
+  font-size: 26px;
+  color: #000;
+}
+
+.project .flag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 5px;
+  font-size: 10px;
+  background: #000080;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.project p {
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Plain text line, not a chip/badge/button - just the tech stack listed
+   under the description, comma-separated. */
+.project-tech-plain {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+
+.more-btn {
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+/* SOC terminal */
+.terminal {
+  background: #000;
+  color: #33ff66;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 11.5px;
+  line-height: 1.45;
+  padding: 8px 10px;
+  height: 100%;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.terminal .t-time {
+  color: #6f6f6f;
+}
+.terminal .t-src {
+  font-weight: bold;
+}
+.terminal .src-suricata {
+  color: #ff9d3c;
+}
+.terminal .src-splunk {
+  color: #66d9ff;
+}
+.terminal .src-ml-layer {
+  color: #d78bff;
+}
+.terminal .src-firewall {
+  color: #ff5b5b;
+}
+.terminal .t-header {
+  color: #9a9a9a;
+}
+.terminal .t-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 12px;
+  background: #33ff66;
+  animation: blink 1s steps(1) infinite;
+  vertical-align: middle;
+}
+
+/* firewall easter egg */
+.firewall {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 6px;
+}
+.firewall .shield {
+  font-size: 40px;
+}
+.firewall .msg {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* contact */
+.contact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 6px;
+}
+.contact-row .field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.contact-row .field .lbl {
+  width: 70px;
+  font-weight: bold;
+}
+
+/* Contact page v2 - matches the henryheffernan.com reference layout: big
+   heading + GitHub/LinkedIn icon row top-right, then a real form. Replaces
+   .contact-row above (left in place, unreferenced, same convention as the
+   rest of this project). */
+.contact-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.contact-heading {
+  margin: 0;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Was 36px, matches .welcome-heading's bump to 44px. */
+  font-size: 44px;
+  color: #000;
+}
+
+.contact-social-icons {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Was 28px - closer to the reference's icon badge size. */
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.social-icon-github {
+  background: #24292e;
+}
+
+.social-icon-linkedin {
+  background: #0a66c2;
+}
+
+.social-icon:hover {
+  opacity: 0.85;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  /* Was 12px/10px/420px - more breathing room between fields and a wider
+     column, matching the reference's roomier form. */
+  gap: 16px;
+  margin-top: 14px;
+  max-width: 460px;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #222;
+}
+
+.contact-form .required {
+  color: #c00000;
+  margin-right: 2px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: normal;
+  padding: 8px 10px;
+  border: 1px solid #b0b0b0;
+  background: #fff;
+  color: #000;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 1px solid #000080;
+}
+
+.contact-form-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.contact-form-note {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.required-note {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.contact-sent-note {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #1a7f37;
+  font-weight: bold;
+}
+
+.contact-error-note {
+  font-size: 12px;
+  color: #c00000;
+}
+
+/* ------------------------------ shutdown screen ------------------------------ */
+.shutdown-screen {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  color: #ffb000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  text-align: center;
+  font-family: 'Consolas', 'Courier New', monospace;
+  z-index: 6000;
+  cursor: default;
+}
+.shutdown-screen .big {
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 520px;
+}
+.shutdown-screen button {
+  font-family: Arial, sans-serif;
+}
+
+/* ------------------------------ CRT glass effect ------------------------------ */
+/* Modeled on the henryheffernan.com reference: a visible glassy ring right at
+   the inner edge of the tube (before the physical bezel takes over), plus
+   real grain/static on the phosphor - not just a flat vignette. */
+.crt-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  /* Flat, even darkening across the whole tube (slight brightness reduction)
+     - separate from the vignette below, which only darkens the edges/
+     corners. Driven by --crt-darkness, a CSS custom property set inline
+     from ScreenBridge.jsx (sourced from sceneControlsStore's crtDarkness) -
+     adjustable live via the "Screen" slider in edit mode
+     (EditModeOverlay.jsx). Falls back to the original static value (0.08)
+     if the var is ever unset. */
+  background: rgba(0, 0, 0, var(--crt-darkness, 0.08));
+  /* vignette + corner curvature darkening, and a glassy inner-edge ring
+     (a lighter teal-tinted band just inside the tube's rim) - the two
+     darkening shadows scale proportionally with --crt-darkness (same 4.5x/
+     3x ratio as the original static 0.36/0.24 vs 0.08 values), so the one
+     "brightness" slider moves the whole vignette system together, not just
+     the flat layer. */
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, calc(var(--crt-darkness, 0.08) * 4.5)),
+    inset 0 0 30px rgba(0, 0, 0, calc(var(--crt-darkness, 0.08) * 3)),
+    inset 0 0 0 14px rgba(120, 200, 190, 0.05);
+  /* soft phosphor tint + curvature highlight */
+  mix-blend-mode: multiply;
+  /* Smooths out slider drags in edit mode (--crt-darkness changing every
+     frame while dragging) into an actual fade instead of a flicker. */
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.crt-overlay::after {
+  /* faint glassy highlight sweep across the top-left, plus fine static grain
+     (SVG feTurbulence noise, tiled) so the glass reads as textured, not
+     flat. This layer's overall opacity is driven by --crt-grain-opacity
+     (same inline-CSS-var pattern as --crt-darkness above, source:
+     sceneControlsStore's crtGrain, adjustable via the "Screen" slider in
+     edit mode) - it scales the highlight sweep along with the grain since
+     both live in this one layer, but grain is what visually dominates it. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      120% 80% at 20% 0%,
+      rgba(255, 255, 255, 0.07),
+      rgba(255, 255, 255, 0) 45%
+    ),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.85'/></svg>");
+  background-blend-mode: screen, overlay;
+  opacity: var(--crt-grain-opacity, 0.75);
+  mix-blend-mode: screen;
+  transition: opacity 0.15s ease;
+}
+
+.crt-overlay::before {
+  /* very subtle flicker */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(120, 180, 255, 0.03);
+  animation: crt-flicker 6s steps(60) infinite;
+}
+
+@keyframes crt-flicker {
+  0%, 96%, 100% {
+    opacity: 0;
+  }
+  97% {
+    opacity: 0.5;
+  }
+  98% {
+    opacity: 0.1;
+  }
+  99% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-overlay::before {
+    animation: none;
+  }
+}
+
+/* Utility for external-link buttons that look like plain text links */
+.linklike {
+  background: none;
+  border: none;
+  color: #000080;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
