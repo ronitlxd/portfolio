@@ -112,6 +112,28 @@ export default function CameraRig({ onStart }) {
   // position, which changes the hover result, which moves the camera again.
   const refCameraRef = useRef(null)
 
+  // Same "is this point near the screen" test the hover loop uses below,
+  // pulled out so a touch TAP (no hover concept on phones) can trigger the
+  // table->screen zoom directly - see onDown's 'table' branch. Radius is
+  // widened a bit versus the hover-entry radius since a fingertip is far
+  // less precise than a mouse cursor.
+  const TAP_RADIUS_X = HOVER_RADIUS_X * 1.4
+  const TAP_RADIUS_Y = HOVER_RADIUS_Y * 1.4
+  const isNearScreen = (nx, ny) => {
+    if (!refCameraRef.current) {
+      refCameraRef.current = new THREE.PerspectiveCamera(TABLE.fov, 1, 0.1, 100)
+    }
+    const rc = refCameraRef.current
+    rc.fov = TABLE.fov
+    rc.aspect = size.width / size.height
+    rc.position.set(...TABLE.position)
+    rc.lookAt(tableLookVec)
+    rc.updateProjectionMatrix()
+    rc.updateMatrixWorld(true)
+    screenNDC.copy(screenWorldPos).project(rc)
+    return Math.abs(nx - screenNDC.x) < TAP_RADIUS_X && Math.abs(ny - screenNDC.y) < TAP_RADIUS_Y
+  }
+
   const tweenRef = useRef({
     active: false,
     startTime: 0,
@@ -153,14 +175,22 @@ export default function CameraRig({ onStart }) {
       }
 
       if (stageRef.current === 'table') {
-        // Only an edge click does anything here now - zooming INTO the
-        // screen is hover-driven (see useFrame below), not click-driven.
+        // On a mouse, zooming INTO the screen is hover-driven (see useFrame
+        // below) - a click here only handles the edge-click zoom-OUT. On
+        // touch there's no hover at all, so a TAP directly on the screen's
+        // on-screen position needs to zoom in by itself, same destination
+        // (SCREEN_SHOT) the hover path would have eased into.
         const rect = el.getBoundingClientRect()
         const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1
+        const ny = -((e.clientY - rect.top) / rect.height) * 2 + 1
         if (Math.abs(nx) > EDGE_CLICK_THRESHOLD) {
           stageRef.current = 'idle'
           sweepStartTimeRef.current = performance.now() / 1000 // resume sweep from center, phase 0
           beginTween(WIDE)
+        } else if (e.pointerType === 'touch' && isNearScreen(nx, ny)) {
+          stageRef.current = 'screen'
+          setZoomedToScreen(true)
+          beginTween(SCREEN_SHOT)
         }
         return
       }

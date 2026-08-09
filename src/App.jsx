@@ -1,21 +1,13 @@
-import { useEffect } from 'react'
-import useMediaQuery from './hooks/useMediaQuery'
 import Experience from './scene/Experience'
-import MobilePage from './mobile/MobilePage'
 
-/**
- * Desktop / wide screens: the full 3D room + Windows 98 OS on the CRT.
- * Phones / narrow screens (<= 820px): a clean single-column scroll page with
- * the same content. The 3D scene is not mounted at all on mobile.
- */
+// Phones used to get a separate flat scroll page (MobilePage.jsx) instead of
+// the 3D scene - Ronit asked for the real 3D desk on mobile too, with touch
+// controls instead of mouse ones (see CameraRig.jsx's onDown/tap-to-zoom
+// logic and index.css's touch-action:none on the canvas). MobilePage.jsx is
+// left in place, just unused, in case a lightweight fallback is wanted again
+// later (e.g. for very old devices) - nothing needs to change here to bring
+// it back, just re-add the media-query branch that used to live in this
+// file.
 export default function App() {
-  const isMobile = useMediaQuery('(max-width: 820px)')
-
-  useEffect(() => {
-    // The mobile page needs the document to scroll; the 3D scene locks it.
-    document.body.classList.toggle('allow-scroll', isMobile)
-    return () => document.body.classList.remove('allow-scroll')
-  }, [isMobile])
-
-  return isMobile ? <MobilePage /> : <Experience />
+  return <Experience />
 }
