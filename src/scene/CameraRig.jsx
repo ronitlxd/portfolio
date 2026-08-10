@@ -46,11 +46,30 @@ const CAMERA_TARGET = [5.304, 1.009, 4.109]
 // wider vertical fov (zooms back out) instead of inheriting the desktop
 // number unchanged.
 const REFERENCE_ASPECT = 16 / 9
-function fovForAspect(baseFovDeg, aspect) {
+// hZoom < 1 narrows the horizontal fov beyond the desktop-matched baseline -
+// used only for the SCREEN_SHOT on touch devices below. Even with the
+// aspect fix, matching desktop's horizontal framing on the zoomed-in screen
+// shot still leaves the physical monitor bezel/casing visible on both sides
+// on a phone (small screen, held close), which is exactly the "text is too
+// small to read, can't I get it bigger" complaint - phones need the CRT
+// GLASS to fill the width, cropping the plastic casing out of frame
+// entirely, not just an aspect-correct version of the desktop framing.
+function fovForAspect(baseFovDeg, aspect, hZoom = 1) {
   const baseRad = (baseFovDeg * Math.PI) / 180
-  const hFov = 2 * Math.atan(Math.tan(baseRad / 2) * REFERENCE_ASPECT)
+  const hFov = 2 * Math.atan(Math.tan(baseRad / 2) * REFERENCE_ASPECT * hZoom)
   const vFov = 2 * Math.atan(Math.tan(hFov / 2) / aspect)
   return (vFov * 180) / Math.PI
+}
+
+const isTouchDevice =
+  typeof window !== 'undefined' && (('ontouchstart' in window) || navigator.maxTouchPoints > 0)
+// Tuned to crop in past the CRT's plastic bezel to the glass itself on
+// phones - lower = more zoomed in. Only applied to SCREEN_SHOT; WIDE/TABLE
+// are unaffected so the intro sweep and desk shot still show the whole
+// cubicle.
+const MOBILE_SCREEN_ZOOM = 0.6
+function hZoomFor(shot) {
+  return isTouchDevice && shot === SCREEN_SHOT ? MOBILE_SCREEN_ZOOM : 1
 }
 
 const WIDE = { position: [8.604, 3.014, 7.291], look: CAMERA_TARGET, fov: 50 }
@@ -175,7 +194,7 @@ export default function CameraRig({ onStart }) {
     tw.targetPos.set(...shot.position)
     tw.targetLook.set(...shot.look)
     tw.targetUp.copy(shot === SCREEN_SHOT ? SCREEN_UP : WORLD_UP)
-    tw.targetFov = fovForAspect(shot.fov, size.width / size.height)
+    tw.targetFov = fovForAspect(shot.fov, size.width / size.height, hZoomFor(shot))
     tw.startTime = performance.now() / 1000
     tw.active = true
   }
@@ -346,7 +365,7 @@ export default function CameraRig({ onStart }) {
     camera.up.lerp(shot === SCREEN_SHOT ? SCREEN_UP : WORLD_UP, t).normalize()
     camera.lookAt(lookRef.current)
 
-    const targetFov = fovForAspect(shot.fov, size.width / size.height)
+    const targetFov = fovForAspect(shot.fov, size.width / size.height, hZoomFor(shot))
     if (camera.isPerspectiveCamera && Math.abs(camera.fov - targetFov) > 0.001) {
       camera.fov += (targetFov - camera.fov) * t
       camera.updateProjectionMatrix()

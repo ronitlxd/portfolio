@@ -26,6 +26,12 @@ export default function ScrollArea({ children, className = '' }) {
   const innerRef = useRef(null)
   const [offset, setOffset] = useState(0)
   const [maxOffset, setMaxOffset] = useState(0)
+  // Touch-drag scrolling - onWheel below only ever fires for a real mouse
+  // wheel, phones have no wheel events at all, so without this there was no
+  // way to scroll these windows by touch whatsoever. Tracked as a ref (not
+  // state) since it's read/written on every pointermove and shouldn't
+  // trigger re-renders itself - only the resulting offset state does.
+  const dragRef = useRef({ active: false, startY: 0, startOffset: 0 })
 
   const recompute = useCallback(() => {
     const outer = outerRef.current
@@ -50,6 +56,24 @@ export default function ScrollArea({ children, className = '' }) {
     setOffset((o) => Math.min(maxOffset, Math.max(0, o + e.deltaY)))
   }
 
+  // Touch-drag scrolling - pointer events cover both touch and mouse, but
+  // this is only meant to kick in for touch (mouse already has onWheel);
+  // gating on pointerType keeps a stray mouse drag on this area from also
+  // scrolling it, which nobody expects on desktop.
+  const onPointerDown = (e) => {
+    if (e.pointerType !== 'touch' || maxOffset <= 0) return
+    dragRef.current = { active: true, startY: e.clientY, startOffset: offset }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  const onPointerMove = (e) => {
+    if (!dragRef.current.active) return
+    const delta = dragRef.current.startY - e.clientY
+    setOffset(Math.min(maxOffset, Math.max(0, dragRef.current.startOffset + delta)))
+  }
+  const endDrag = () => {
+    dragRef.current.active = false
+  }
+
   const outerHeight = outerRef.current?.clientHeight ?? 0
   const thumbHeightPct =
     maxOffset > 0 && outerHeight > 0
@@ -58,7 +82,16 @@ export default function ScrollArea({ children, className = '' }) {
   const thumbTopPct = maxOffset > 0 ? (offset / maxOffset) * (100 - thumbHeightPct) : 0
 
   return (
-    <div ref={outerRef} className={`scroll-area ${className}`} onWheel={onWheel}>
+    <div
+      ref={outerRef}
+      className={`scroll-area ${className}`}
+      onWheel={onWheel}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      style={{ touchAction: 'none' }}
+    >
       <div
         ref={innerRef}
         className="scroll-area-inner"
