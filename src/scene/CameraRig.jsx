@@ -35,6 +35,24 @@ import { setZoomedToScreen, useSceneControlsState } from './sceneControlsStore'
 // the .glb's own node transforms, not eyeballed).
 const CAMERA_TARGET = [5.304, 1.009, 4.109]
 
+// These fov values were tuned by eye on a landscape desktop window (~16:9).
+// Three.js's PerspectiveCamera.fov is the VERTICAL fov, so on a narrow
+// portrait phone (aspect well under 1) the same vertical fov gives a much
+// narrower horizontal fov - everything reads as way too zoomed in and
+// visitors can't see the whole CRT screen at once. fovForAspect() below
+// re-derives, for whatever the live viewport's aspect actually is, the
+// vertical fov that keeps the same HORIZONTAL framing these numbers were
+// tuned for at REFERENCE_ASPECT - so mobile portrait automatically gets a
+// wider vertical fov (zooms back out) instead of inheriting the desktop
+// number unchanged.
+const REFERENCE_ASPECT = 16 / 9
+function fovForAspect(baseFovDeg, aspect) {
+  const baseRad = (baseFovDeg * Math.PI) / 180
+  const hFov = 2 * Math.atan(Math.tan(baseRad / 2) * REFERENCE_ASPECT)
+  const vFov = 2 * Math.atan(Math.tan(hFov / 2) / aspect)
+  return (vFov * 180) / Math.PI
+}
+
 const WIDE = { position: [8.604, 3.014, 7.291], look: CAMERA_TARGET, fov: 50 }
 const TABLE = { position: [7.104, 1.362, 4.099], look: CAMERA_TARGET, fov: 45 }
 const SCREEN_SHOT = { position: [5.909, 1.122, 4.103], look: SCREEN_POSITION, fov: 35 }
@@ -124,8 +142,9 @@ export default function CameraRig({ onStart }) {
       refCameraRef.current = new THREE.PerspectiveCamera(TABLE.fov, 1, 0.1, 100)
     }
     const rc = refCameraRef.current
-    rc.fov = TABLE.fov
-    rc.aspect = size.width / size.height
+    const aspect = size.width / size.height
+    rc.fov = fovForAspect(TABLE.fov, aspect)
+    rc.aspect = aspect
     rc.position.set(...TABLE.position)
     rc.lookAt(tableLookVec)
     rc.updateProjectionMatrix()
@@ -156,7 +175,7 @@ export default function CameraRig({ onStart }) {
     tw.targetPos.set(...shot.position)
     tw.targetLook.set(...shot.look)
     tw.targetUp.copy(shot === SCREEN_SHOT ? SCREEN_UP : WORLD_UP)
-    tw.targetFov = shot.fov
+    tw.targetFov = fovForAspect(shot.fov, size.width / size.height)
     tw.startTime = performance.now() / 1000
     tw.active = true
   }
@@ -246,8 +265,9 @@ export default function CameraRig({ onStart }) {
       lookRef.current.set(...CAMERA_TARGET)
       camera.up.copy(WORLD_UP)
       camera.lookAt(lookRef.current)
-      if (camera.isPerspectiveCamera && camera.fov !== WIDE.fov) {
-        camera.fov = WIDE.fov
+      const idleFov = fovForAspect(WIDE.fov, size.width / size.height)
+      if (camera.isPerspectiveCamera && Math.abs(camera.fov - idleFov) > 0.001) {
+        camera.fov = idleFov
         camera.updateProjectionMatrix()
       }
       return
@@ -259,8 +279,9 @@ export default function CameraRig({ onStart }) {
         refCameraRef.current = new THREE.PerspectiveCamera(TABLE.fov, 1, 0.1, 100)
       }
       const rc = refCameraRef.current
-      rc.fov = TABLE.fov
-      rc.aspect = size.width / size.height
+      const hoverAspect = size.width / size.height
+      rc.fov = fovForAspect(TABLE.fov, hoverAspect)
+      rc.aspect = hoverAspect
       rc.position.set(...TABLE.position)
       rc.lookAt(tableLookVec)
       rc.updateProjectionMatrix()
@@ -325,8 +346,9 @@ export default function CameraRig({ onStart }) {
     camera.up.lerp(shot === SCREEN_SHOT ? SCREEN_UP : WORLD_UP, t).normalize()
     camera.lookAt(lookRef.current)
 
-    if (camera.isPerspectiveCamera && Math.abs(camera.fov - shot.fov) > 0.001) {
-      camera.fov += (shot.fov - camera.fov) * t
+    const targetFov = fovForAspect(shot.fov, size.width / size.height)
+    if (camera.isPerspectiveCamera && Math.abs(camera.fov - targetFov) > 0.001) {
+      camera.fov += (targetFov - camera.fov) * t
       camera.updateProjectionMatrix()
     }
   })
@@ -339,12 +361,12 @@ export default function CameraRig({ onStart }) {
 // (no per-frame loop, no listeners) instead of leaving it wherever
 // OrbitControls last left it.
 export function FrozenCamera() {
-  const { camera } = useThree()
+  const { camera, size } = useThree()
   useEffect(() => {
     camera.position.set(...WIDE.position)
     camera.lookAt(...WIDE.look)
     if (camera.isPerspectiveCamera) {
-      camera.fov = WIDE.fov
+      camera.fov = fovForAspect(WIDE.fov, size.width / size.height)
       camera.updateProjectionMatrix()
     }
   }, [camera])

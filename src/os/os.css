@@ -63,7 +63,7 @@
 .showcase h1 {
   /* Bold Comic Sans MS per Ronit's request, replacing the earlier Holtwood
      One SC/Playfair Display heading treatment everywhere (this file). */
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.5px;
   /* Sized/spaced against the henryheffernan.com reference's landing title -
@@ -137,7 +137,7 @@
 
 .showcase-sidebar h2 {
   margin: 0 0 2px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.2px;
   /* Matches Henry's larger two-line-wrapping sidebar name (was 19px). */
@@ -237,7 +237,7 @@
 
 .showcase-content h2 {
   margin: 0 0 14px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 19px. */
@@ -250,7 +250,7 @@
    (matches the henryheffernan.com reference's big "Welcome" h1). */
 .welcome-heading {
   margin: 0 0 14px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 36px - closer to Henry's proportionally huge page titles. */
@@ -276,7 +276,7 @@
 
 .exp-item .exp-company {
   margin: 0 0 4px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 24px. */
@@ -286,7 +286,7 @@
 
 .exp-item .exp-role {
   margin: 0 0 2px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   font-size: 16px;
@@ -315,7 +315,7 @@
 
 .edu-item .edu-degree {
   margin: 0 0 4px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 20px. */
@@ -334,7 +334,7 @@
 
 .about-subhead {
   margin: 20px 0 10px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   font-size: 16px;
   color: #000;
@@ -436,7 +436,7 @@
 
 .agent-name {
   margin: 0 0 3px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   font-size: 15px;
   color: #000;
@@ -444,7 +444,7 @@
 
 .exp-subhead {
   margin: 18px 0 10px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   font-size: 16px;
@@ -516,7 +516,7 @@
    still used inside each category's list, just reached via a click now. */
 .projects-subhead {
   margin: -6px 0 14px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   font-size: 18px;
   color: #333;
@@ -579,7 +579,7 @@ img.project-category-icon {
 }
 
 .project-category-title {
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   /* Was 22px. */
   font-size: 27px;
@@ -610,7 +610,7 @@ img.project-category-icon {
 
 .project-title {
   margin: 0 0 5px;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 22px. */
@@ -736,7 +736,7 @@ img.project-category-icon {
 
 .contact-heading {
   margin: 0;
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 36px, matches .welcome-heading's bump to 44px. */

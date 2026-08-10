@@ -47,6 +47,17 @@ const FLOOR_CENTER = [5.3, 0, 4.1]
 // freeze on WIDE again (via FrozenCamera below) with no other changes.
 const CAMERA_RIG_ENABLED = true
 
+// Touch devices (now rendering the same 3D scene as desktop - see App.jsx)
+// hit AdaptiveDpr's dynamic resolution stepping much harder: weaker mobile
+// GPUs drop frames as soon as the camera starts moving (CameraRig's tweens),
+// AdaptiveDpr responds by stepping the render resolution down, then back up
+// once motion settles - each step is a visible pop/flicker in the CRT screen
+// content. Rather than fight that, touch devices get ONE fixed, modest dpr
+// (no adaptive stepping at all) so there's nothing to visibly snap between.
+const isTouchDevice =
+  typeof window !== 'undefined' && (('ontouchstart' in window) || navigator.maxTouchPoints > 0)
+const CANVAS_DPR = isTouchDevice ? Math.min(window.devicePixelRatio || 1, 1.5) : [1, 2]
+
 export default function Experience() {
   const edit = useEditState()
   const controls = useSceneControlsState()
@@ -87,7 +98,7 @@ export default function Experience() {
       <div style={{ position: 'fixed', inset: 0, background: BG }}>
         <Canvas
           shadows
-          dpr={[1, 2]}
+          dpr={CANVAS_DPR}
           gl={{
             antialias: true,
             powerPreference: 'high-performance',
@@ -230,7 +241,11 @@ export default function Experience() {
           <FrozenCamera />
         )}
 
-        <EffectComposer multisampling={4} disableNormalPass>
+        {/* Multisampling dropped to 0 on touch devices - mobile GPUs (Mali/
+            Adreno in particular) are known to flicker/band when MSAA is
+            combined with postprocessing passes like Bloom below; desktop
+            keeps the full 4x for smoother edges. */}
+        <EffectComposer multisampling={isTouchDevice ? 0 : 4} disableNormalPass>
           <Bloom
             intensity={0.7}
             luminanceThreshold={0.25}
@@ -246,7 +261,11 @@ export default function Experience() {
           <Vignette eskil={false} offset={0.15} darkness={0.35} />
         </EffectComposer>
 
-          <AdaptiveDpr pixelated />
+          {/* Touch devices already render at a fixed, modest dpr (see
+              CANVAS_DPR above) - nothing left for AdaptiveDpr to step
+              between, and skipping it avoids the resolution-snap flicker
+              that was showing up mid camera-move on phones. */}
+          {!isTouchDevice && <AdaptiveDpr pixelated />}
         </Canvas>
       </div>
     </>

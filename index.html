@@ -6,16 +6,23 @@
     <meta name="description" content="Ronit Lad, cybersecurity Master's student. Building and defending systems. Seeking a paid co-op in Canada." />
     <meta name="theme-color" content="#0a0a12" />
     <title>Ronit Lad - Portfolio Showcase</title>
-    <!-- Headings use bold Comic Sans MS (a Windows system font, no link
-         needed). Body text is back to Montserrat (previous style, reverted
-         from a brief Times New Roman experiment) - see os.css/xp.css
-         font-family rules. -->
+    <!-- Headings use bold Comic Sans MS on desktop (a Windows system font),
+         with the Comic Neue webfont below as the mobile fallback since
+         phones don't have Comic Sans MS installed. Body text is Montserrat -
+         see os.css/xp.css font-family rules. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Comic+Neue:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Comic Neue: the standard open-source Comic-Sans-alike. Desktop OSes
+         (Windows especially) ship the real 'Comic Sans MS' font, so it's
+         always tried first below and this webfont never actually shows
+         there - but phones/tablets don't have it installed, and without a
+         real fallback the CSS 'cursive' generic family resolves to whatever
+         wildly different script font the device happens to have, which is
+         why headings looked broken on mobile. This closes that gap. -->
   </head>
   <body>
     <noscript>
