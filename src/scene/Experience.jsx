@@ -18,7 +18,7 @@ import { useSceneControlsState } from './sceneControlsStore'
 // Set to true to bring back the "Edit Layout" button/panel on the live site.
 // Kept as a single switch (rather than deleting anything) so the whole
 // drag/rotate/scale editor is one edit away when it's needed again.
-const SHOW_EDIT_OVERLAY = true
+const SHOW_EDIT_OVERLAY = false
 
 // Background: matches the henryheffernan.com reference - a seamless studio
 // cyclorama, not a visible floor plane meeting a separate backdrop color.
