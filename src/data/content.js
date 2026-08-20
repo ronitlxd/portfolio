@@ -235,7 +235,7 @@ export const securityProjects = [
     description:
       "A local AI agent that runs on my home server and lets me manage it in plain English, ask it about failed logins or tell it to restart a service, and it actually goes and checks. It never changes anything without asking me first, since letting a language model run raw shell commands is exactly how you wreck a server or hand an attacker a way in.",
     tech: ['Python', 'Ollama', 'Local LLM', 'Textual', 'systemd'],
-    code: 'https://github.com/ronitlxd',
+    code: 'https://github.com/ronitlxd/server-ops-agent',
     // Same convention as Home Lab/Packet Sniffer above: short paragraphs
     // instead of bullets.
     detailParagraphs: [
@@ -254,7 +254,7 @@ export const securityProjects = [
     description:
       "An offensive counterpart to my SOC work, an agent that attacks an authorized target on its own but only counts a bug as real once it builds a working proof for it, so it doesn't flood you with the false positives most scanners do. Still early, the reasoning and sandboxing skeleton is built, the actual attack engine and adapters are next.",
     tech: ['Python', 'Docker', 'Local LLM', 'Multi-Agent'],
-    code: 'https://github.com/ronitlxd',
+    code: 'https://github.com/ronitlxd/Multi-Agent-Pentesting-AI',
     // Explicitly a work in progress (Phase 0 per Ronit) - written in present
     // tense throughout, no fabricated results. The benchmark figure this
     // design is based on is attributed to the source paper, not claimed as
