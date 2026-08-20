@@ -231,7 +231,7 @@ export const securityProjects = [
     ],
   },
   {
-    title: 'Argus - Server Ops Agent',
+    title: 'Argus - Server Ops',
     description:
       "A local AI agent that runs on my home server and lets me manage it in plain English, ask it about failed logins or tell it to restart a service, and it actually goes and checks. It never changes anything without asking me first, since letting a language model run raw shell commands is exactly how you wreck a server or hand an attacker a way in.",
     tech: ['Python', 'Ollama', 'Local LLM', 'Textual', 'systemd'],
@@ -250,7 +250,7 @@ export const securityProjects = [
     ],
   },
   {
-    title: 'Trident - Autonomous Pentesting Agent',
+    title: 'Trident - Autonomous Pentesting',
     description:
       "An offensive counterpart to my SOC work, an agent that attacks an authorized target on its own but only counts a bug as real once it builds a working proof for it, so it doesn't flood you with the false positives most scanners do. Still early, the reasoning and sandboxing skeleton is built, the actual attack engine and adapters are next.",
     tech: ['Python', 'Docker', 'Local LLM', 'Multi-Agent'],
