@@ -250,6 +250,25 @@ export const securityProjects = [
     ],
   },
   {
+    title: 'Trident - Autonomous Pentesting Agent',
+    description:
+      "An offensive counterpart to my SOC work, an agent that attacks an authorized target on its own but only counts a bug as real once it builds a working proof for it, so it doesn't flood you with the false positives most scanners do. Still early, the reasoning and sandboxing skeleton is built, the actual attack engine and adapters are next.",
+    tech: ['Python', 'Docker', 'Local LLM', 'Multi-Agent'],
+    code: 'https://github.com/ronitlxd',
+    // Explicitly a work in progress (Phase 0 per Ronit) - written in present
+    // tense throughout, no fabricated results. The benchmark figure this
+    // design is based on is attributed to the source paper, not claimed as
+    // this build's own performance, per Ronit's own instruction and the
+    // "no fabrication" principle used across all his materials.
+    detailParagraphs: [
+      "I wanted an offensive counterpart to my defensive SOC work, something that plays the attacker's side and actually proves what it finds instead of shipping a hundred maybe-bugs and making a human sort the real ones from the noise. A finding I can't reproduce doesn't get reported, that rule shapes the entire design.",
+      "The work splits across three roles. A Planner reasons about the target and breaks it into a tree of tasks, recon then enumeration then specific vulnerability hypotheses, tracking what's been tried and what's still open. An Executor runs the actual tools inside a fresh Docker sandbox per job, so nothing it does touches my own machines. An Analyst takes whatever the Executor thinks it found and tries to build a real working proof from scratch. If it can't, the finding dies there, that validation gate is the thing I care about most.",
+      "The engine itself doesn't know or care why it's running, thin adapters plug it into different jobs on top of the same core: a bug bounty hunter, a gate inside a build pipeline that blocks a release, a sweep across an org's own IP ranges for forgotten boxes, a recheck that a patched bug stays dead, or the red half of a pair with my defensive SOC pipeline, where it fires an exploit and the blue side has to prove it caught it. Each adapter is maybe a hundred lines, the engine is the hard part and I only write it once.",
+      "The whole thing runs on the same authorization rule I use everywhere else in my lab, it won't touch a target without a scope definition handed to it, hard fails outside that scope, and stops for a human before anything live or destructive. An offensive agent that can attack whatever it wants is a liability, boxing it in is the actual engineering problem.",
+      "Right now this is Phase 0. The reasoning and sandboxing skeleton is built, reused from my defensive agent's own framework, local models handle the cheap inner loop and a frontier model routes the harder planning. The engine and adapters that turn it into a real pentest tool are next. The strong benchmark result that inspired this design belongs to the research paper it's based on, not to my build yet, once the engine and adapters actually run I'll have my own numbers to put here instead.",
+    ],
+  },
+  {
     title: 'Packet Sniffer',
     description:
       "My own Wireshark, built from raw sockets in Python to capture and analyze live traffic across Ethernet, IPv4, TCP, UDP, and ICMP. Parses headers to pull IPs, ports, and TCP flags for real-time monitoring, mostly so I'd actually understand what a packet capture tool is doing instead of just clicking around one.",
