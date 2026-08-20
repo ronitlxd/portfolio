@@ -231,6 +231,25 @@ export const securityProjects = [
     ],
   },
   {
+    title: 'Argus - Server Ops Agent',
+    description:
+      "A local AI agent that runs on my home server and lets me manage it in plain English, ask it about failed logins or tell it to restart a service, and it actually goes and checks. It never changes anything without asking me first, since letting a language model run raw shell commands is exactly how you wreck a server or hand an attacker a way in.",
+    tech: ['Python', 'Ollama', 'Local LLM', 'Textual', 'systemd'],
+    code: 'https://github.com/ronitlxd',
+    // Same convention as Home Lab/Packet Sniffer above: short paragraphs
+    // instead of bullets.
+    detailParagraphs: [
+      "I wanted an AI that could actually operate my server, not just tell me how to. The obvious way to build that is to let the model spit out shell commands and run them, that's also how you wreck a server or hand an attacker a way in, so the whole project became an exercise in giving an AI real power without letting it hold the keys.",
+      "A local language model, running entirely on my own hardware through Ollama, reads what I type and picks from a fixed menu of tools instead of running raw shell. Read-only tools, checking service status, tailing logs, counting failed logins, run automatically since they can't break anything. Anything that changes the system stops, shows me exactly what it wants to do, and waits for my approval. Every action, approved or not, lands in an append-only audit log.",
+      "The part I think is actually interesting is that I stopped trusting the model to read. Small models running on modest hardware confabulate, mine looked at three real failed logins in the data and confidently told me there were none, another time it invented a whole table of fake stats for tools it never even ran. The fix was to stop asking the model to parse or count anything. If a fact can be computed in code, it gets computed in Python, and the model only gets handed the finished number to phrase into a sentence.",
+      "The model turned out to be the weak link, not the architecture. No amount of prompt tweaking made it reliably pick the right tool, so the fragile questions get routed in code before the model even sees them, and it runs no matter what the model would have picked on its own. Correctness lives in the code, not the model, which means I can swap in a bigger model later and it gets nicer to talk to, but it doesn't get safer, because the safety was never the model's job.",
+      "It runs as a terminal dashboard, live server vitals down one side, a plain English prompt at the bottom, and an approval popup any time it wants to touch the system. Fifteen tools total, thirteen read-only and two that require my sign-off, running entirely on 4GB of VRAM with nothing leaving the machine.",
+    ],
+    detailImages: [
+      { src: `${import.meta.env.BASE_URL}media/argus.png`, caption: 'Live vitals on the left, a plain English question and answer on the right.' },
+    ],
+  },
+  {
     title: 'Packet Sniffer',
     description:
       "My own Wireshark, built from raw sockets in Python to capture and analyze live traffic across Ethernet, IPv4, TCP, UDP, and ICMP. Parses headers to pull IPs, ports, and TCP flags for real-time monitoring, mostly so I'd actually understand what a packet capture tool is doing instead of just clicking around one.",
