@@ -33,6 +33,7 @@ export default function StartMenu({ onOpen, onExternal, onShutDown, onClose }) {
         {item('My Showcase', '\u{1F5A5}\u{FE0F}', () => onOpen('showcase'))}
         {item('SOC_Lab', '\u{1F5B3}\u{FE0F}', () => onOpen('soclab'))}
         {item('firewall.sys', '\u{1F6E1}\u{FE0F}', () => onOpen('firewall'))}
+        {item('Paint', '\u{1F3A8}', () => onOpen('paint'))}
         <div className="divider" />
         {item('GitHub', '\u{1F419}', () => onExternal(links.github))}
         {item('LinkedIn', '\u{1F4BC}', () => onExternal(links.linkedin))}

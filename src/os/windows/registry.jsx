@@ -1,6 +1,7 @@
 import ShowcaseWindow from './ShowcaseWindow'
 import SocLabWindow from './SocLabWindow'
 import FirewallWindow from './FirewallWindow'
+import PaintWindow from './PaintWindow'
 import { links } from '../../data/content'
 
 // TASK 6: About/Skills/Projects/Contact used to be their own windows here -
@@ -30,6 +31,7 @@ function centered({ width, height }) {
 // margin on all sides, above the 30px taskbar) - `centered()` below
 // recomputes position from this size, so it stays centered automatically.
 const SHOWCASE_SIZE = { width: 760, height: 540 }
+const PAINT_SIZE = { width: 600, height: 440 }
 
 // Each window: id -> { title, icon (emoji glyph), Component, size, pos }
 export const WINDOWS = {
@@ -65,6 +67,13 @@ export const WINDOWS = {
     size: { width: 360, height: 190 },
     pos: { x: 240, y: 150 },
   },
+  paint: {
+    title: 'untitled - Paint',
+    icon: '\u{1F3A8}', // artist palette
+    Component: PaintWindow,
+    size: PAINT_SIZE,
+    pos: centered(PAINT_SIZE),
+  },
 }
 
 // Desktop icons, in display order. `external` opens a URL instead of a window.
@@ -72,6 +81,7 @@ export const DESKTOP_ICONS = [
   { id: 'showcase', label: 'My Showcase', glyph: '\u{1F5A5}\u{FE0F}' },
   { id: 'soclab', label: 'SOC_Lab', glyph: '\u{1F5B3}\u{FE0F}' },
   { id: 'firewall', label: 'firewall.sys', glyph: '\u{1F6E1}\u{FE0F}' },
+  { id: 'paint', label: 'Paint', glyph: '\u{1F3A8}' },
   { id: 'github', label: 'GitHub', glyph: '\u{1F419}', external: links.github },
   {
     id: 'linkedin',

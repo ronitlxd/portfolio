@@ -969,3 +969,139 @@ img.project-category-icon {
   padding: 0;
   font: inherit;
 }
+
+/* ------------------------------ Paint ------------------------------ */
+/* PaintWindow.jsx. Fills the window body exactly - no scrolling anywhere,
+   the canvas resizes with the window instead. */
+.paint {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ece9d8;
+  font-size: 11px;
+}
+
+.paint-menu {
+  display: flex;
+  gap: 4px;
+  padding: 3px 4px;
+  border-bottom: 1px solid #aca899;
+}
+
+.paint-menu button {
+  font-size: 11px;
+  padding: 1px 8px;
+}
+
+.paint-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: 4px;
+  padding: 4px;
+}
+
+.paint-tools {
+  display: grid;
+  grid-template-columns: repeat(2, 24px);
+  grid-auto-rows: 24px;
+  gap: 2px;
+  align-content: start;
+}
+
+.paint-tool {
+  min-width: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paint-tool.active {
+  background: #fff;
+  box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff;
+  border-color: #808080;
+}
+
+.paint-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid #808080;
+  background: #808080;
+  overflow: hidden;
+}
+
+.paint-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #fff;
+  image-rendering: pixelated;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.paint-palette {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-top: 1px solid #aca899;
+}
+
+.paint-current {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #808080;
+  box-shadow: inset 1px 1px 0 #fff;
+}
+
+.paint-swatches {
+  display: grid;
+  grid-template-columns: repeat(8, 14px);
+  grid-auto-rows: 14px;
+  gap: 1px;
+}
+
+.paint-swatch {
+  min-width: 0;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 1px solid #808080;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.paint-swatch.active {
+  outline: 1px solid #000;
+  outline-offset: 1px;
+}
+
+/* Zero-size corner markers for os/localPoint.js: their projected positions
+   give the exact screen -> local mapping under the 3D transform. Order
+   matters: top-left, top-right, bottom-right, bottom-left. */
+.corner-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.corner-markers span {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.corner-markers span:nth-child(1) { left: 0; top: 0; }
+.corner-markers span:nth-child(2) { right: 0; top: 0; }
+.corner-markers span:nth-child(3) { right: 0; bottom: 0; }
+.corner-markers span:nth-child(4) { left: 0; bottom: 0; }
