@@ -117,9 +117,9 @@
   /* Widened from 150px so the larger name/nav text below (matching Henry's
      sizing) has room to sit comfortably, same ~19% proportion of the
      window width as before. */
-  width: 150px;
+  width: 115px;
   flex-shrink: 0;
-  padding: 17px 14px;
+  padding: 14px 10px;
   background: #fafafa;
   /* Flex column so the nav list below can be vertically centered in the
      leftover space under the name/tagline, via margin-top/bottom: auto on
@@ -141,7 +141,7 @@
   font-weight: 700;
   letter-spacing: 0.2px;
   /* Matches Henry's larger two-line-wrapping sidebar name (was 19px). */
-  font-size: 21px;
+  font-size: 17px;
   color: #000;
   line-height: 1.15;
 }
@@ -199,7 +199,7 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
-  margin: 9px 0 0 12px;
+  margin: 9px 0 0 8px;
 }
 
 .sidebar-subnav a {

@@ -50,26 +50,29 @@ CGPA 3.48 / 4.0
 - Picked up Python here and went deep enough into compiler-level programming to understand what's actually happening beneath the code I write, not just trust that it works.
 - Spent time on UI/UX across Android, iOS, and web, which taught me that a secure system nobody can use isn't really secure, someone still has to want to use it right.
 
-## Work experience
-### Built in collaboration with Jaguar Land Rover North America at PrivaRoute, University of Windsor industry project, Sep to Nov 2026, Windsor, ON
+## Work experience (jobs)
+### Assistant Web Engineer at CAD Consultant, Feb to Jun 2024, India
+- Contributed to full-stack development across 3+ client projects, applying secure coding practices (input validation, sanitized queries, least-privilege API access) to reduce common web vulnerabilities.
+- Translated business requirements into technical specs and documentation, flagging authentication, data-handling, and access-control needs early in the design phase.
+- Maintained repository hygiene in Git/GitHub within an Agile team - enforced branch protections, reviewed commits for exposed secrets/credentials, and kept dependencies patched.
+- Worked cross-functionally to catch and fix configuration risks (default credentials, overly permissive CORS, verbose error output) before client handoff.
+
+## Client projects (a university industry project and a client project, not jobs)
+### PrivaRoute, University of Windsor industry project, Sep to Nov 2026, Windsor, ON
+Built in collaboration with Jaguar Land Rover North America
 - Built a prototype in-car AI assistant end to end, routing each request between an on-device 4B model and a larger 8B model, with the routing classifier checked by deterministic Python rules.
 - Masked names, places and contacts before any larger-model call and restored them on the vehicle, sending 0 private values in live tests.
 - Encrypted each driver's profile with AES-256-GCM using an Argon2id-derived key, with lockout after repeated failed attempts and full context isolation between drivers.
 - Required driver approval for every action through an allowlisted capability contract tied to a plan hash, and logged a content-free privacy receipt for each request.
 - Deployed it on my own Ubuntu server with systemd and Tailscale, covered by 381 automated tests.
 
-### Full-Stack Developer, Athlete Injury Dashboard at University of Windsor Human Kinetics, client project, Jun to Sep 2026, Windsor, ON
+### University of Windsor Human Kinetics, client project, Jun to Sep 2026, Windsor, ON
+Full-Stack Developer, Athlete Injury Dashboard
 - Built a Django injury-tracking system for a real client, with role-based access for admins, coaches, doctors and players.
 - Built the analytics dashboard with injury type, body part and severity breakdowns, monthly and year-over-year trends, and academic-year filters.
 - Added appointment requests, follow-ups, notifications, and CSV, PDF and Excel exports for staff reporting.
 - Protected logins with lockout after repeated failures and kept every record, including recovered injuries, for accurate end-of-year analysis.
 - Handed the system off cleanly to the next development team.
-
-### Assistant Web Engineer at CAD Consultant, Feb to Jun 2024, India
-- Contributed to full-stack development across 3+ client projects, applying secure coding practices (input validation, sanitized queries, least-privilege API access) to reduce common web vulnerabilities.
-- Translated business requirements into technical specs and documentation, flagging authentication, data-handling, and access-control needs early in the design phase.
-- Maintained repository hygiene in Git/GitHub within an Agile team - enforced branch protections, reviewed commits for exposed secrets/credentials, and kept dependencies patched.
-- Worked cross-functionally to catch and fix configuration risks (default credentials, overly permissive CORS, verbose error output) before client handoff.
 
 ## Skills
 Security: Splunk SIEM, Splunk SOAR, Suricata IDS, Nmap, Wireshark, Log Analysis, Access Control, NIST CSF, VPN Config, TryHackMe SOC L1

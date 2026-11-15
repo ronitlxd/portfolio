@@ -44,9 +44,14 @@ for (const [i, ed] of c.educationPage.entries()) {
   add(`### ${ed.degree}${dates ? ` (${dates})` : ''}`, ed.cgpa, ...ed.bullets.map((b) => `- ${b}`), '')
 }
 
-add('## Work experience')
+add('## Work experience (jobs)')
 for (const e of c.experience) {
   add(`### ${e.role} at ${e.company}, ${e.when}`, ...e.bullets.map((b) => `- ${b}`), '')
+}
+
+add('## Client projects (a university industry project and a client project, not jobs)')
+for (const e of c.clientProjects) {
+  add(`### ${e.company}, ${e.when}`, e.role, ...e.bullets.map((b) => `- ${b}`), '')
 }
 
 add('## Skills')

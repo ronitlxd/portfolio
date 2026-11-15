@@ -422,13 +422,15 @@ export const educationPage = [
 // file - kept as separate fields so ExperiencePage can render the same
 // heading-level structure the file specified, instead of the old single
 // "role - org" line.
-// The first two entries are a university industry project and a client
-// project, not jobs, and say so in `company`. PrivaRoute facts come from
-// RESUME_PROJECT_PrivaRoute.md (JLR was the course's industry affiliate, so
-// "in collaboration with", never an employer; it's a prototype). Ronit built
-// both systems end to end.
-export const experience = [
+// Client Projects page (its own nav entry, separate from Experience): a
+// university industry project and a client project, not jobs. PrivaRoute
+// facts come from RESUME_PROJECT_PrivaRoute.md (JLR was the course's
+// industry affiliate, so "in collaboration with", never an employer; it's a
+// prototype). Ronit built both systems end to end. `replica` is the id in
+// projectReplicas below, for the page's "View replica" button.
+export const clientProjects = [
   {
+    replica: 'privaroute',
     company: 'PrivaRoute, University of Windsor industry project',
     role: 'Built in collaboration with Jaguar Land Rover North America',
     when: 'Sep to Nov 2026, Windsor, ON',
@@ -441,6 +443,7 @@ export const experience = [
     ],
   },
   {
+    replica: 'athlete',
     company: 'University of Windsor Human Kinetics, client project',
     role: 'Full-Stack Developer, Athlete Injury Dashboard',
     when: 'Jun to Sep 2026, Windsor, ON',
@@ -452,6 +455,10 @@ export const experience = [
       'Handed the system off cleanly to the next development team.',
     ],
   },
+]
+
+// Work experience (jobs only).
+export const experience = [
   {
     company: 'CAD Consultant',
     role: 'Assistant Web Engineer',

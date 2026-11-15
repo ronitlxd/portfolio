@@ -5,6 +5,7 @@ import {
   aboutPage,
   educationPage,
   experience,
+  clientProjects,
   projectCategories,
   securityProjects,
   devProjects,
@@ -42,6 +43,7 @@ const NAV = [
   { id: 'about', label: 'About' },
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' },
+  { id: 'clients', label: 'Client Projects' },
   { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -320,24 +322,53 @@ function EducationPage() {
   )
 }
 
-// Matches experience.txt exactly: company as an (h1), role and when/location
-// as two (h2) lines, then the 4 bullets - see the `experience` entry in
-// data/content.js for the source fields.
+// One entry on the Experience or Client Projects page: company as an (h1),
+// role and when/location as two (h2) lines, then the bullets. Client
+// projects also get a "View replica" button (see `replica` in content.js).
+function ExperienceEntry({ entry, openWindow }) {
+  return (
+    <div className="exp-item">
+      <h1 className="exp-company">{entry.company}</h1>
+      <h2 className="exp-role">{entry.role}</h2>
+      <h2 className="exp-when">{entry.when}</h2>
+      <ul className="exp-bullets">
+        {entry.bullets.map((b, i) => (
+          <li key={i}>{b}</li>
+        ))}
+      </ul>
+      {entry.replica && (
+        <button
+          type="button"
+          onClick={() => {
+            showReplica(entry.replica)
+            openWindow?.('browser')
+          }}
+        >
+          View replica
+        </button>
+      )}
+    </div>
+  )
+}
+
 function ExperiencePage() {
   return (
     <>
       <h2>Experience</h2>
       {experience.map((e) => (
-        <div className="exp-item" key={e.company}>
-          <h1 className="exp-company">{e.company}</h1>
-          <h2 className="exp-role">{e.role}</h2>
-          <h2 className="exp-when">{e.when}</h2>
-          <ul className="exp-bullets">
-            {e.bullets.map((b, i) => (
-              <li key={i}>{b}</li>
-            ))}
-          </ul>
-        </div>
+        <ExperienceEntry key={e.company} entry={e} />
+      ))}
+    </>
+  )
+}
+
+// University industry and client projects, kept apart from paid work.
+function ClientProjectsPage({ openWindow }) {
+  return (
+    <>
+      <h2>Client Projects</h2>
+      {clientProjects.map((e) => (
+        <ExperienceEntry key={e.company} entry={e} openWindow={openWindow} />
       ))}
     </>
   )
@@ -515,6 +546,7 @@ const PAGES = {
   about: AboutPage,
   education: EducationPage,
   experience: ExperiencePage,
+  clients: ClientProjectsPage,
   projects: ProjectsLanding,
   'projects-security': SecurityProjectsPage,
   'projects-dev': DevProjectsPage,
