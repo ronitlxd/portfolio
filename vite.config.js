@@ -14,6 +14,11 @@ const base = process.env.VITE_BASE || '/portfolio/'
 export default defineConfig({
   base,
   plugins: [react()],
+  server: {
+    // Build output folders. Watching them crashed the dev server (EBUSY on
+    // Windows) when server/deploy.sh rewrote dist-server while it was running.
+    watch: { ignored: ['**/dist/**', '**/dist-server/**'] },
+  },
   build: {
     outDir: 'dist',
     // Keep chunks readable; three/drei are large so we let Vite split them.
