@@ -496,7 +496,7 @@ export const projectReplicas = [
   { id: 'privaroute', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: 'demos/privaroute/index.html' },
   { id: 'agentic-soc', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: 'demos/agentic-soc/index.html' },
   { id: 'argus', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: 'demos/argus/index.html' },
-  { id: 'athlete', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: null },
+  { id: 'athlete', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: 'demos/athlete/index.html' },
   { id: 'educompare', title: 'Educompare', subtitle: 'Course comparison (team)', glyph: '\u{1F393}', address: 'http://educompare.local/', path: null },
 ]
 

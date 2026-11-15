@@ -10,6 +10,7 @@ data only and never talks to a real system.
 | voltlab | Live VoltLAB dashboard HTML (home lab, port 5000) | `demo-data.js` answers its `/api/*` calls; internal IP replaced |
 | privaroute | PrivaRoute driver screen (`jlr-driver-ui/server/static`) | `demo-data.js` scripts the `/api/v2/*` requests; start location moved to the University of Windsor; YouTube, microphone and the engineer view are off |
 | argus | Rebuilt from the Argus terminal UI screenshot (it has no web UI) | Scripted answers; restart/stop/run show the real approval gate and change nothing |
+| athlete | Pages rendered by the real Django app (LancersPulse, team repo) after its own `seed_demo` and `seed_bulk` commands: admin dashboard, analytics, injury list, coach dashboard | Static saves; `demo.js` turns other links, forms and save requests into a notice |
 | agentic-soc | Pages rendered by the real `agentic-soc/v2/soc_web.py` from four sample tickets (documentation-range IPs and ASNs) | `demo.js` answers the `/respond` button POST |
 
 To re-render agentic-soc after soc_web.py changes: run its Flask app's test

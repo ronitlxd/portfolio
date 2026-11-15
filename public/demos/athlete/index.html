@@ -1,0 +1,1675 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>Admin Dashboard - LancersPulse</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="static/css/athletesystems.css">
+    <link rel="stylesheet" href="static/css/site.css">
+    <style>
+      :root {
+        /* Windsor Lancers brand-inspired palette */
+        --primary-color: #0b76ef; /* action blue like Sign In button */
+        --secondary-color: #22324a; /* muted navy for text accents */
+        --success-color: #10b981;
+        --warning-color: #ffc72c; /* Lancers gold */
+        --danger-color: #ef4444;
+        --info-color: #4aa8ff;
+        --light-bg: #f7f9fc;
+        --navy-900: #0b1f3b; /* deep navy background */
+        --navy-800: #122a4f; /* slightly lighter navy */
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --border-radius: 0.75rem;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      .brand-logo { height: 24px; width: auto; margin-right: .5rem; vertical-align: -4px; }
+      
+      .main-container {
+        background: var(--light-bg);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .navbar {
+        background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 70%);
+        box-shadow: var(--card-shadow);
+        padding: 1rem 0;
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: white !important;
+        text-decoration: none;
+      }
+      
+      .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        margin: 0 0.5rem;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar-nav .nav-link:hover {
+        color: white !important;
+        transform: translateY(-1px);
+      }
+      
+      .card {
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+      }
+      
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      
+      .card-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-bottom: 1px solid #e2e8f0;
+        border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      
+      .btn {
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+      }
+      
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1164da 100%);
+        box-shadow: 0 4px 14px 0 rgba(17, 100, 218, 0.39);
+      }
+      
+      .btn-success {
+        background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+      }
+      
+      .btn-warning {
+        background: linear-gradient(135deg, var(--warning-color) 0%, #e0a800 100%);
+        color: #1b1b1b;
+      }
+      
+      .btn-danger {
+        background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+      }
+      
+      .form-control {
+        border-radius: 0.5rem;
+        border: 1px solid #d1d5db;
+        transition: all 0.3s ease;
+      }
+      
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      
+      .status-active {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+      
+      .status-recovering {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+      
+      .status-recovered {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+      
+      .status-chronic {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+      
+      .alert {
+        border-radius: var(--border-radius);
+        border: none;
+      }
+      
+      .alert-success {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+      }
+      
+      .alert-danger {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+      }
+      
+      .alert-warning {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+      }
+      
+      .alert-info {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1e40af;
+      }
+      
+      .table {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+      }
+      
+      .table thead th {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border: none;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      
+      .table tbody tr {
+        transition: all 0.3s ease;
+      }
+      
+      .table tbody tr:hover {
+        background-color: #f8fafc;
+      }
+      
+      .widget {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+      }
+      
+      .widget:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      
+      .widget-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .widget-icon.primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+        color: white;
+      }
+      
+      .widget-icon.success {
+        background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+        color: white;
+      }
+      
+      .widget-icon.warning {
+        background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+        color: white;
+      }
+      
+      .widget-icon.danger {
+        background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+        color: white;
+      }
+      
+      .doodle {
+        position: absolute;
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .doodle-1 {
+        top: 10%;
+        right: 10%;
+        font-size: 8rem;
+        transform: rotate(15deg);
+      }
+      
+      .doodle-2 {
+        bottom: 20%;
+        left: 5%;
+        font-size: 6rem;
+        transform: rotate(-10deg);
+      }
+      
+      .doodle-3 {
+        top: 50%;
+        right: 5%;
+        font-size: 4rem;
+        transform: rotate(45deg);
+      }
+      
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.25rem;
+        }
+        
+        .card {
+          margin-bottom: 1rem;
+        }
+        
+        .widget {
+          padding: 1rem;
+        }
+        
+        /* Constrain container-fluid on mobile to prevent overstretching */
+        .container-fluid {
+          padding-left: 1rem;
+          padding-right: 1rem;
+          max-width: 100%;
+        }
+        
+        /* Reduce widget icon size on mobile */
+        .widget-icon {
+          width: 2.5rem;
+          height: 2.5rem;
+          font-size: 1.25rem;
+          margin-bottom: 0.75rem;
+        }
+        
+        /* Reduce card title size on mobile */
+        .card-title {
+          font-size: 1.5rem;
+        }
+        
+        /* Better spacing for dashboard headers */
+        .card-body .d-flex {
+          flex-wrap: wrap;
+        }
+        
+        .card-body .d-flex .widget-icon {
+          margin-bottom: 0;
+          margin-right: 0.75rem;
+        }
+      }
+      
+      /* Small mobile screens */
+      @media (max-width: 576px) {
+        .container-fluid {
+          padding-left: 0.75rem;
+          padding-right: 0.75rem;
+        }
+        
+        .widget {
+          padding: 0.875rem;
+        }
+        
+        .card-body {
+          padding: 1rem;
+        }
+        
+        .card-header {
+          padding: 0.75rem 1rem;
+        }
+        
+        .widget-icon {
+          width: 2.25rem;
+          height: 2.25rem;
+          font-size: 1.125rem;
+        }
+        
+        .card-title {
+          font-size: 1.35rem;
+        }
+        
+        /* Better text sizing for stats */
+        .widget h3 {
+          font-size: 1.5rem;
+        }
+        
+        .widget p {
+          font-size: 0.875rem;
+        }
+      }
+      
+      /* Very small screens */
+      @media (max-width: 375px) {
+        .container-fluid {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+
+        .widget {
+          padding: 0.75rem;
+        }
+
+        .card-body {
+          padding: 0.875rem;
+        }
+
+        .card-title {
+          font-size: 1.25rem;
+        }
+
+        .widget h3 {
+          font-size: 1.35rem;
+        }
+      }
+
+      /* ── Mobile-specific fixes ── */
+
+      /* Notification dropdown: cap to viewport on small screens */
+      @media (max-width: 576px) {
+        #notifDropdown {
+          width: calc(100vw - 2rem) !important;
+          max-width: 320px;
+          right: 0 !important;
+          left: auto !important;
+        }
+
+        /* Collapse long nav labels on tiny screens */
+        .navbar-nav .nav-link {
+          font-size: 0.9rem;
+        }
+
+        /* Tables: ensure horizontal scroll doesn't break layout */
+        .table-responsive {
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* Button groups wrap neatly */
+        .btn-group-mobile-wrap .btn {
+          margin-bottom: 0.25rem;
+        }
+
+        /* Fix d-flex rows that shouldn't wrap on mobile */
+        .flex-nowrap-sm {
+          flex-wrap: nowrap !important;
+        }
+      }
+
+      /* Ensure long words in table cells don't break layout */
+      .table td, .table th {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      /* Forms: inputs full-width on mobile (col-md-6 stacks automatically) */
+      @media (max-width: 767px) {
+        .form-actions {
+          display: flex;
+          flex-direction: column;
+          gap: .5rem;
+        }
+        .form-actions .btn {
+          width: 100%;
+        }
+
+        /* Cards side-by-side stat blocks become single column */
+        .stat-row > [class*="col-"] {
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+
+        /* Remove horizontal padding on form cards on mobile */
+        .form-card .card-body {
+          padding: 1rem 0.75rem;
+        }
+      }
+
+    </style>
+    <!-- Replica of the Athlete Injury Dashboard (LancersPulse): pages rendered by the real Django app from its own demo seed data. -->
+  <script src="demo.js"></script>
+</head>
+  <body>
+    <div class="main-container">
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+          <a class="navbar-brand p-0" href="index.html">
+            <img src="static/img/dbyr-Windsor.png" alt="LancersPulse" style="height:48px;width:auto;">
+          </a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              
+                <li class="nav-item">
+                  
+                    <a class="nav-link" href="index.html">
+                      <i class="bi bi-house-door me-1"></i>Dashboard
+                    </a>
+                  
+                </li>
+                
+                  <li class="nav-item">
+                    <a class="nav-link" href="analytics.html">
+                      <i class="bi bi-graph-up me-1"></i>Analytics
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-replica-off="/team-requests/">
+                      <i class="bi bi-inboxes me-1"></i>Team Requests
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-replica-off="/tracking/appointments/inbox/">
+                      <i class="bi bi-calendar-check me-1"></i>Appointments
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-replica-off="/tracking/events/">
+                      <i class="bi bi-calendar-event me-1"></i>Events
+                    </a>
+                  </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="injuries.html">
+                    <i class="bi bi-clipboard-data me-1"></i>Injuries
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-replica-off="/profile/">
+                    <i class="bi bi-person-circle me-1"></i>Profile
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-replica-off="/logout/">
+                    <i class="bi bi-box-arrow-right me-1"></i>Logout
+                  </a>
+                </li>
+                <!-- Notification Bell — far right -->
+                <li class="nav-item dropdown ms-1">
+                  <a class="nav-link position-relative px-2" href="#" id="notifBell"
+                     data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle
+                                 rounded-pill d-none" id="notifBadge" style="font-size:.6rem;min-width:1.2em;">0</span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0"
+                       aria-labelledby="notifBell"
+                       style="width:340px;max-height:440px;overflow-y:auto;border-radius:.75rem;">
+                    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom sticky-top bg-white">
+                      <span class="fw-semibold small">Notifications</span>
+                      <button class="btn btn-link btn-sm text-muted p-0 text-decoration-none small"
+                              onclick="markAllRead(event)">Mark all read</button>
+                    </div>
+                    <div id="notifList">
+                      <div class="text-center text-muted py-4 small">
+                        <i class="bi bi-arrow-repeat me-1"></i>Loading…
+                      </div>
+                    </div>
+                    <div class="border-top text-center py-2 sticky-bottom bg-white">
+                      <a href="#" data-replica-off="/notifications/all/" class="small text-primary text-decoration-none">
+                        View all notifications →
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="container-fluid py-4">
+        <!-- Messages -->
+        
+
+        <!-- Playful Doodles -->
+        <div class="doodle doodle-1">🏅</div>
+        <div class="doodle doodle-2">⚕️</div>
+        <div class="doodle doodle-3">📊</div>
+
+        <!-- Page Content -->
+        
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="widget-icon primary me-3">
+              <i class="bi bi-gear-fill"></i>
+            </div>
+            <div>
+              <h1 class="card-title mb-1">Admin Dashboard</h1>
+              <p class="text-muted mb-0">Comprehensive overview of the injury tracking system</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Injuries Summary -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="widget">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon primary me-3">
+            <i class="bi bi-people-fill"></i>
+          </div>
+          <div>
+            <h3 class="mb-1">42</h3>
+            <p class="text-muted mb-0">Total Players</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="widget">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon danger me-3">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+          </div>
+          <div>
+            <h3 class="mb-1">26</h3>
+            <p class="text-muted mb-0">Total Injuries</p>
+            <small class="text-muted">All statuses included</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="widget">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon warning me-3">
+            <i class="bi bi-clock-fill"></i>
+          </div>
+          <div>
+            <h3 class="mb-1">9</h3>
+            <p class="text-muted mb-0">Active Injuries</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="widget">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon success me-3">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <div>
+            <h3 class="mb-1">8</h3>
+            <p class="text-muted mb-0">Recovered</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Critical Alerts -->
+  
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card border-danger">
+        <div class="card-header bg-danger text-white d-flex align-items-center">
+          <i class="bi bi-exclamation-octagon-fill me-2 fs-5"></i>
+          <h5 class="card-title mb-0 text-white">Critical Alerts</h5>
+          <span class="badge bg-white text-danger ms-2">5</span>
+        </div>
+        <div class="card-body p-0">
+          
+          <div class="px-3 pt-3 pb-1">
+            <h6 class="text-danger fw-bold"><i class="bi bi-fire me-1"></i>Severe Injuries — Last 7 Days</h6>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3">Player</th>
+                  <th>Injury</th>
+                  <th>Body Part</th>
+                  <th>Date</th>
+                  <th class="pe-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <tr>
+                  <td class="ps-3">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-danger text-white rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center">
+                        AF
+                      </div>
+                      <div>
+                        <div class="fw-bold">Aaron Flynn</div>
+                        <small class="text-muted">Lancers Basketball</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Fracture</td>
+                  <td>Wrist</td>
+                  <td>Nov 08, 2026</td>
+                  <td class="pe-3">
+                    <a href="#" data-replica-off="/tracking/injuries/9/" class="btn btn-outline-danger btn-sm">
+                      <i class="bi bi-eye me-1"></i>Review
+                    </a>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-danger text-white rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center">
+                        CN
+                      </div>
+                      <div>
+                        <div class="fw-bold">Chloe Nelson</div>
+                        <small class="text-muted">Lancers Hockey</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Fracture</td>
+                  <td>Wrist</td>
+                  <td>Nov 08, 2026</td>
+                  <td class="pe-3">
+                    <a href="#" data-replica-off="/tracking/injuries/17/" class="btn btn-outline-danger btn-sm">
+                      <i class="bi bi-eye me-1"></i>Review
+                    </a>
+                  </td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+          
+
+          
+          <div class="px-3 pt-3 pb-1 border-top">
+            <h6 class="text-warning fw-bold"><i class="bi bi-hourglass-split me-1"></i>Long-Term Absences — 30+ Days Out</h6>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3">Player</th>
+                  <th>Injury</th>
+                  <th>Status</th>
+                  <th>Days Out</th>
+                  <th class="pe-3">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <tr>
+                  <td class="ps-3">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-warning text-dark rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center">
+                        PP
+                      </div>
+                      <div>
+                        <div class="fw-bold">Pat Player</div>
+                        <small class="text-muted">Lancers FC Demo</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Sprain — Ankle</td>
+                  <td>
+                    <span class="status-badge status-active">Active</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-warning text-dark">45 days</span>
+                  </td>
+                  <td class="pe-3">
+                    <a href="#" data-replica-off="/tracking/injuries/1/" class="btn btn-outline-warning btn-sm">
+                      <i class="bi bi-eye me-1"></i>Review
+                    </a>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-warning text-dark rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center">
+                        ZR
+                      </div>
+                      <div>
+                        <div class="fw-bold">Zoe Rivera</div>
+                        <small class="text-muted">Lancers Track</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Fracture — Ankle</td>
+                  <td>
+                    <span class="status-badge status-recovering">Recovering</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-warning text-dark">45 days</span>
+                  </td>
+                  <td class="pe-3">
+                    <a href="#" data-replica-off="/tracking/injuries/21/" class="btn btn-outline-warning btn-sm">
+                      <i class="bi bi-eye me-1"></i>Review
+                    </a>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-warning text-dark rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center">
+                        BM
+                      </div>
+                      <div>
+                        <div class="fw-bold">Bryce Morgan</div>
+                        <small class="text-muted">Lancers Football</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Strain — Hamstring</td>
+                  <td>
+                    <span class="status-badge status-recovering">Recovering</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-warning text-dark">30 days</span>
+                  </td>
+                  <td class="pe-3">
+                    <a href="#" data-replica-off="/tracking/injuries/19/" class="btn btn-outline-warning btn-sm">
+                      <i class="bi bi-eye me-1"></i>Review
+                    </a>
+                  </td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Roster Availability Grid -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-person-check-fill me-2"></i>Roster Availability — This Week
+          </h5>
+          <small class="text-muted">
+            <span class="badge bg-success me-1">●</span>≥80%
+            <span class="badge bg-warning text-dark ms-2 me-1">●</span>60–79%
+            <span class="badge bg-danger ms-2 me-1">●</span>&lt;60%
+          </small>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card border-danger h-100">
+                <div class="card-body pb-2">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="fw-bold mb-0">Lancers FC Demo</h6>
+                      <small class="text-muted"> Team</small>
+                    </div>
+                    <span class="badge bg-danger fs-6 px-3 py-2">
+                      0%
+                    </span>
+                  </div>
+                  <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar bg-danger"
+                         role="progressbar"
+                         style="width: 0%"
+                         aria-valuenow="0"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="bi bi-person-check text-success me-1"></i>0 available</span>
+                    <span><i class="bi bi-person-x text-danger me-1"></i>2 out</span>
+                    <span><i class="bi bi-people me-1"></i>2 total</span>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-top pt-1 pb-2">
+                  <small class="text-muted">
+                    <span class="text-danger fw-semibold">2</span> active &nbsp;·&nbsp;
+                    <span class="text-warning fw-semibold">0</span> recovering &nbsp;·&nbsp;
+                    <span>5</span> total
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card border-success h-100">
+                <div class="card-body pb-2">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="fw-bold mb-0">Lancers Basketball</h6>
+                      <small class="text-muted">Men Team</small>
+                    </div>
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                      88%
+                    </span>
+                  </div>
+                  <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: 88%"
+                         aria-valuenow="88"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="bi bi-person-check text-success me-1"></i>7 available</span>
+                    <span><i class="bi bi-person-x text-danger me-1"></i>1 out</span>
+                    <span><i class="bi bi-people me-1"></i>8 total</span>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-top pt-1 pb-2">
+                  <small class="text-muted">
+                    <span class="text-danger fw-semibold">1</span> active &nbsp;·&nbsp;
+                    <span class="text-warning fw-semibold">0</span> recovering &nbsp;·&nbsp;
+                    <span>4</span> total
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card border-danger h-100">
+                <div class="card-body pb-2">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="fw-bold mb-0">Lancers Soccer</h6>
+                      <small class="text-muted">Men Team</small>
+                    </div>
+                    <span class="badge bg-danger fs-6 px-3 py-2">
+                      50%
+                    </span>
+                  </div>
+                  <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar bg-danger"
+                         role="progressbar"
+                         style="width: 50%"
+                         aria-valuenow="50"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="bi bi-person-check text-success me-1"></i>4 available</span>
+                    <span><i class="bi bi-person-x text-danger me-1"></i>4 out</span>
+                    <span><i class="bi bi-people me-1"></i>8 total</span>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-top pt-1 pb-2">
+                  <small class="text-muted">
+                    <span class="text-danger fw-semibold">3</span> active &nbsp;·&nbsp;
+                    <span class="text-warning fw-semibold">1</span> recovering &nbsp;·&nbsp;
+                    <span>5</span> total
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card border-warning h-100">
+                <div class="card-body pb-2">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="fw-bold mb-0">Lancers Hockey</h6>
+                      <small class="text-muted">Women Team</small>
+                    </div>
+                    <span class="badge bg-warning fs-6 px-3 py-2">
+                      75%
+                    </span>
+                  </div>
+                  <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar bg-warning"
+                         role="progressbar"
+                         style="width: 75%"
+                         aria-valuenow="75"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="bi bi-person-check text-success me-1"></i>6 available</span>
+                    <span><i class="bi bi-person-x text-danger me-1"></i>2 out</span>
+                    <span><i class="bi bi-people me-1"></i>8 total</span>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-top pt-1 pb-2">
+                  <small class="text-muted">
+                    <span class="text-danger fw-semibold">2</span> active &nbsp;·&nbsp;
+                    <span class="text-warning fw-semibold">0</span> recovering &nbsp;·&nbsp;
+                    <span>4</span> total
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card border-success h-100">
+                <div class="card-body pb-2">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="fw-bold mb-0">Lancers Football</h6>
+                      <small class="text-muted">Men Team</small>
+                    </div>
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                      88%
+                    </span>
+                  </div>
+                  <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: 88%"
+                         aria-valuenow="88"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="bi bi-person-check text-success me-1"></i>7 available</span>
+                    <span><i class="bi bi-person-x text-danger me-1"></i>1 out</span>
+                    <span><i class="bi bi-people me-1"></i>8 total</span>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-top pt-1 pb-2">
+                  <small class="text-muted">
+                    <span class="text-danger fw-semibold">0</span> active &nbsp;·&nbsp;
+                    <span class="text-warning fw-semibold">1</span> recovering &nbsp;·&nbsp;
+                    <span>2</span> total
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6">
+              <div class="card border-warning h-100">
+                <div class="card-body pb-2">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h6 class="fw-bold mb-0">Lancers Track</h6>
+                      <small class="text-muted">Women Team</small>
+                    </div>
+                    <span class="badge bg-warning fs-6 px-3 py-2">
+                      75%
+                    </span>
+                  </div>
+                  <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar bg-warning"
+                         role="progressbar"
+                         style="width: 75%"
+                         aria-valuenow="75"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between small text-muted">
+                    <span><i class="bi bi-person-check text-success me-1"></i>6 available</span>
+                    <span><i class="bi bi-person-x text-danger me-1"></i>2 out</span>
+                    <span><i class="bi bi-people me-1"></i>8 total</span>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-top pt-1 pb-2">
+                  <small class="text-muted">
+                    <span class="text-danger fw-semibold">1</span> active &nbsp;·&nbsp;
+                    <span class="text-warning fw-semibold">1</span> recovering &nbsp;·&nbsp;
+                    <span>6</span> total
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Injuries (5 most recent) -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-clock-history me-2"></i>Recent Injury Reports
+            <small class="text-muted ms-2">(5 most recent)</small>
+          </h5>
+          <a href="injuries.html" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-arrow-right me-1"></i>View All
+          </a>
+        </div>
+        <div class="card-body">
+          
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Player</th>
+                    <th>Injury Type</th>
+                    <th>Body Part</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                          VC
+                        </div>
+                        <div>
+                          <div class="fw-bold">Violet Cook</div>
+                          <small class="text-muted">Lancers Track</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Sprain</td>
+                    <td>Ankle</td>
+                    <td>
+                      <span class="badge" style="background-color: #ffc107; color: white;">
+                        Moderate
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-badge status-active">
+                        Active
+                      </span>
+                    </td>
+                    <td>Nov 01, 2026</td>
+                    <td>
+                      <a href="#" data-replica-off="/tracking/injuries/26/" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye me-1"></i>View
+                      </a>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                          LR
+                        </div>
+                        <div>
+                          <div class="fw-bold">Luna Rogers</div>
+                          <small class="text-muted">Lancers Track</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Sprain</td>
+                    <td>Wrist</td>
+                    <td>
+                      <span class="badge" style="background-color: #28a745; color: white;">
+                        Mild
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-badge status-recovered">
+                        Recovered
+                      </span>
+                    </td>
+                    <td>Sep 01, 2026</td>
+                    <td>
+                      <a href="#" data-replica-off="/tracking/injuries/25/" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye me-1"></i>View
+                      </a>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                          MS
+                        </div>
+                        <div>
+                          <div class="fw-bold">Maya Sanchez</div>
+                          <small class="text-muted">Lancers Track</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Strain</td>
+                    <td>Back</td>
+                    <td>
+                      <span class="badge" style="background-color: #ffc107; color: white;">
+                        Moderate
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-badge status-under_review">
+                        UNDER_REVIEW
+                      </span>
+                    </td>
+                    <td>Nov 12, 2026</td>
+                    <td>
+                      <a href="#" data-replica-off="/tracking/injuries/24/" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye me-1"></i>View
+                      </a>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                          ES
+                        </div>
+                        <div>
+                          <div class="fw-bold">Ella Stewart</div>
+                          <small class="text-muted">Lancers Track</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Sprain</td>
+                    <td>Wrist</td>
+                    <td>
+                      <span class="badge" style="background-color: #28a745; color: white;">
+                        Mild
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-badge status-recovered">
+                        Recovered
+                      </span>
+                    </td>
+                    <td>Sep 01, 2026</td>
+                    <td>
+                      <a href="#" data-replica-off="/tracking/injuries/23/" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye me-1"></i>View
+                      </a>
+                    </td>
+                  </tr>
+                  
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar-sm bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center">
+                          NC
+                        </div>
+                        <div>
+                          <div class="fw-bold">Nora Collins</div>
+                          <small class="text-muted">Lancers Track</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Sprain</td>
+                    <td>Wrist</td>
+                    <td>
+                      <span class="badge" style="background-color: #28a745; color: white;">
+                        Mild
+                      </span>
+                    </td>
+                    <td>
+                      <span class="status-badge status-recovered">
+                        Recovered
+                      </span>
+                    </td>
+                    <td>Sep 01, 2026</td>
+                    <td>
+                      <a href="#" data-replica-off="/tracking/injuries/22/" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-eye me-1"></i>View
+                      </a>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Injury Trend Row -->
+  <div class="row mb-4">
+    <!-- Monthly Injury Trend Chart -->
+    <div class="col-12">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-graph-up me-2"></i>Injury Trend — Last 12 Months
+          </h5>
+        </div>
+        <div class="card-body">
+          
+            <canvas id="trendChart" height="80"></canvas>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0"><i class="bi bi-lightning-fill me-2"></i>Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-lg-2 col-md-4 col-6">
+              <a href="#" data-replica-off="/tracking/injuries/create/" class="btn btn-primary w-100">
+                <i class="bi bi-plus-circle me-2"></i>Report Injury
+              </a>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+              <a href="analytics.html" class="btn btn-warning w-100">
+                <i class="bi bi-graph-up me-2"></i>Analytics
+              </a>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+              <a href="injuries.html" class="btn btn-info w-100">
+                <i class="bi bi-clipboard-data me-2"></i>All Injuries
+              </a>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+              <a href="#" data-replica-off="/team-requests/" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-inboxes me-2"></i>Team Requests
+              </a>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+              <a href="#" data-replica-off="/tracking/appointments/inbox/" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-calendar-check me-2"></i>Appointments
+              </a>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6">
+              <a href="#" data-replica-off="/admin/" class="btn btn-outline-dark w-100">
+                <i class="bi bi-gear me-2"></i>Django Admin
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Injured + At Risk Row -->
+  <div class="row mb-4">
+    <!-- Top Injured Athletes -->
+    
+    <div class="col-12 mb-3 mb-lg-0">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-person-x me-2 text-danger"></i>Most Injured Athletes
+          </h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th class="ps-3">#</th>
+                  <th>Athlete</th>
+                  <th>Team</th>
+                  <th class="text-center pe-3">Injuries</th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                <tr>
+                  <td class="ps-3">
+                    <span class="text-muted">1</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                           style="width:32px;height:32px;font-size:12px;font-weight:600;">
+                        PP
+                      </div>
+                      <span class="fw-semibold">Pat Player</span>
+                    </div>
+                  </td>
+                  <td><small class="text-muted">Lancers FC Demo</small></td>
+                  <td class="text-center pe-3">
+                    <span class="badge bg-danger">3</span>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <span class="text-muted">2</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                           style="width:32px;height:32px;font-size:12px;font-weight:600;">
+                        SS
+                      </div>
+                      <span class="fw-semibold">Sam Striker</span>
+                    </div>
+                  </td>
+                  <td><small class="text-muted">Lancers FC Demo</small></td>
+                  <td class="text-center pe-3">
+                    <span class="badge bg-danger">2</span>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <span class="text-muted">3</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                           style="width:32px;height:32px;font-size:12px;font-weight:600;">
+                        MR
+                      </div>
+                      <span class="fw-semibold">Marcus Reed</span>
+                    </div>
+                  </td>
+                  <td><small class="text-muted">Lancers Basketball</small></td>
+                  <td class="text-center pe-3">
+                    <span class="badge bg-danger">1</span>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <span class="text-muted">4</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                           style="width:32px;height:32px;font-size:12px;font-weight:600;">
+                        DH
+                      </div>
+                      <span class="fw-semibold">Devon Hayes</span>
+                    </div>
+                  </td>
+                  <td><small class="text-muted">Lancers Basketball</small></td>
+                  <td class="text-center pe-3">
+                    <span class="badge bg-danger">1</span>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td class="ps-3">
+                    <span class="text-muted">5</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center flex-shrink-0"
+                           style="width:32px;height:32px;font-size:12px;font-weight:600;">
+                        MS
+                      </div>
+                      <span class="fw-semibold">Malik Stone</span>
+                    </div>
+                  </td>
+                  <td><small class="text-muted">Lancers Basketball</small></td>
+                  <td class="text-center pe-3">
+                    <span class="badge bg-danger">1</span>
+                  </td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+
+
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Initialize date pickers
+      function initDatePickers() {
+        const els = document.querySelectorAll('.date-field');
+        els.forEach(el => {
+          flatpickr(el, {
+            dateFormat: 'Y-m-d',
+            allowInput: true,
+            maxDate: 'today'
+          });
+        });
+      }
+
+      // Initialize tooltips
+      function initTooltips() {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+      }
+
+      // Initialize popovers
+      function initPopovers() {
+        const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        popoverTriggerList.map(function (popoverTriggerEl) {
+          return new bootstrap.Popover(popoverTriggerEl);
+        });
+      }
+
+      // Auto-hide alerts after 5 seconds
+      function autoHideAlerts() {
+        const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
+        alerts.forEach(alert => {
+          setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+          }, 5000);
+        });
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        initDatePickers();
+        initTooltips();
+        initPopovers();
+        autoHideAlerts();
+      });
+
+      // AJAX helper for status updates
+      function updateInjuryStatus(injuryId, newStatus) {
+        fetch(`/tracking/api/injury/${injuryId}/status/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          },
+          body: `status=${newStatus}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert('Error updating status');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error updating status');
+        });
+      }
+    </script>
+    
+    <script>
+      // ── Notification Bell ───────────────────────────────────────────────
+      const NOTIF_FETCH_URL = "/notifications/";
+      const MARK_ALL_URL    = "/notifications/read-all/";
+      const NOTIF_CSRF      = "ruyyeqAISyFwgUmK3OTm6BYxbMz4Bd1MZS0TsmUYLNKNpn8I8KixtUNuj6DPnnvG";
+
+      function _notifTypeIcon(t) {
+        return {INJURY:'bandaid',APPOINTMENT:'calendar-check',CLEARANCE:'check-circle',EVENT:'calendar-event'}[t] || 'bell';
+      }
+      function _notifTypeColor(t) {
+        return {INJURY:'danger',APPOINTMENT:'primary',CLEARANCE:'success',EVENT:'warning'}[t] || 'secondary';
+      }
+      function _timeAgo(iso) {
+        const d = Math.floor((Date.now() - new Date(iso)) / 1000);
+        if (d < 60)    return 'just now';
+        if (d < 3600)  return Math.floor(d/60) + 'm ago';
+        if (d < 86400) return Math.floor(d/3600) + 'h ago';
+        return Math.floor(d/86400) + 'd ago';
+      }
+
+      function loadNotifications() {
+        fetch(NOTIF_FETCH_URL)
+          .then(r => r.json())
+          .then(data => {
+            const badge = document.getElementById('notifBadge');
+            if (badge) {
+              if (data.unread_count > 0) {
+                badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
+                badge.classList.remove('d-none');
+              } else {
+                badge.classList.add('d-none');
+              }
+            }
+            const list = document.getElementById('notifList');
+            if (!list) return;
+            if (!data.notifications || !data.notifications.length) {
+              list.innerHTML = '<div class="text-center text-muted py-4 small"><i class="bi bi-bell-slash me-1"></i>No notifications yet</div>';
+              return;
+            }
+            list.innerHTML = data.notifications.map(n => `
+              <div class="px-3 py-2 border-bottom ${n.is_read ? '' : 'bg-light'}"
+                   style="cursor:pointer;"
+                   onclick="notifMarkRead(${n.id}, ${JSON.stringify(n.link || '')})">
+                <div class="d-flex align-items-start gap-2">
+                  <i class="bi bi-${_notifTypeIcon(n.type)} text-${_notifTypeColor(n.type)} mt-1 flex-shrink-0"></i>
+                  <div class="flex-grow-1 overflow-hidden">
+                    <div class="small lh-sm text-truncate" style="max-width:240px;">${n.message}</div>
+                    <div class="text-muted" style="font-size:11px;">${_timeAgo(n.created_at)}</div>
+                  </div>
+                  ${!n.is_read ? '<span class="badge bg-primary rounded-pill flex-shrink-0 align-self-center" style="font-size:8px;padding:3px 5px;">New</span>' : ''}
+                </div>
+              </div>
+            `).join('');
+          })
+          .catch(() => {});
+      }
+
+      function notifMarkRead(id, link) {
+        fetch(`/notifications/${id}/read/`, {
+          method: 'POST',
+          headers: {'X-CSRFToken': NOTIF_CSRF}
+        }).then(() => {
+          loadNotifications();
+          if (link) window.location.href = link;
+        });
+      }
+
+      function markAllRead(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        fetch(MARK_ALL_URL, {
+          method: 'POST',
+          headers: {'X-CSRFToken': NOTIF_CSRF}
+        }).then(() => loadNotifications());
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        loadNotifications();
+        setInterval(loadNotifications, 60000);
+        const bell = document.getElementById('notifBell');
+        if (bell) bell.addEventListener('show.bs.dropdown', loadNotifications);
+      });
+    </script>
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  
+  const trendCtx = document.getElementById('trendChart');
+  if (trendCtx) {
+    new Chart(trendCtx, {
+      type: 'bar',
+      data: {
+        labels: ["Apr 2026", "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026"],
+        datasets: [{
+          label: 'Injuries',
+          data: [1, 1, 1, 5, 4, 14],
+          backgroundColor: 'rgba(11, 118, 239, 0.7)',
+          borderColor: 'rgba(11, 118, 239, 1)',
+          borderWidth: 1,
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+  }
+  
+
+</script>
+
+
+    
+    {# Auto-logout on back-button: if the browser restores this page from bfcache
+       after the user has navigated away (e.g. logged out in another tab or pressed
+       back from the login page), force a redirect to logout. #}
+    <script>
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          // Page was restored from bfcache — force server check
+          fetch(window.location.href, { method: 'HEAD', credentials: 'same-origin' })
+            .then(function (res) {
+              // If we got redirected to the login page, that means the session
+              // is gone — redirect the visible page there too.
+              if (res.redirected && res.url.indexOf('/login') !== -1) {
+                window.location.replace(res.url);
+              }
+            })
+            .catch(function () {
+              window.location.replace('/login/');
+            });
+        }
+      });
+    </script>
+    
+  </body>
+</html>
+           

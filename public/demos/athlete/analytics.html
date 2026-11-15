@@ -1,0 +1,2291 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>Analytics Dashboard - LancersPulse</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="static/css/athletesystems.css">
+    <link rel="stylesheet" href="static/css/site.css">
+    <style>
+      :root {
+        /* Windsor Lancers brand-inspired palette */
+        --primary-color: #0b76ef; /* action blue like Sign In button */
+        --secondary-color: #22324a; /* muted navy for text accents */
+        --success-color: #10b981;
+        --warning-color: #ffc72c; /* Lancers gold */
+        --danger-color: #ef4444;
+        --info-color: #4aa8ff;
+        --light-bg: #f7f9fc;
+        --navy-900: #0b1f3b; /* deep navy background */
+        --navy-800: #122a4f; /* slightly lighter navy */
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --border-radius: 0.75rem;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      .brand-logo { height: 24px; width: auto; margin-right: .5rem; vertical-align: -4px; }
+      
+      .main-container {
+        background: var(--light-bg);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .navbar {
+        background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 70%);
+        box-shadow: var(--card-shadow);
+        padding: 1rem 0;
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: white !important;
+        text-decoration: none;
+      }
+      
+      .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        margin: 0 0.5rem;
+        transition: all 0.3s ease;
+      }
+      
+      .navbar-nav .nav-link:hover {
+        color: white !important;
+        transform: translateY(-1px);
+      }
+      
+      .card {
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+      }
+      
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      
+      .card-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-bottom: 1px solid #e2e8f0;
+        border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      
+      .btn {
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+      }
+      
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1164da 100%);
+        box-shadow: 0 4px 14px 0 rgba(17, 100, 218, 0.39);
+      }
+      
+      .btn-success {
+        background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+      }
+      
+      .btn-warning {
+        background: linear-gradient(135deg, var(--warning-color) 0%, #e0a800 100%);
+        color: #1b1b1b;
+      }
+      
+      .btn-danger {
+        background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+      }
+      
+      .form-control {
+        border-radius: 0.5rem;
+        border: 1px solid #d1d5db;
+        transition: all 0.3s ease;
+      }
+      
+      .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      
+      .status-active {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+      
+      .status-recovering {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+      
+      .status-recovered {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+      
+      .status-chronic {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+      
+      .alert {
+        border-radius: var(--border-radius);
+        border: none;
+      }
+      
+      .alert-success {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+      }
+      
+      .alert-danger {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #991b1b;
+      }
+      
+      .alert-warning {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #92400e;
+      }
+      
+      .alert-info {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1e40af;
+      }
+      
+      .table {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+      }
+      
+      .table thead th {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border: none;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      
+      .table tbody tr {
+        transition: all 0.3s ease;
+      }
+      
+      .table tbody tr:hover {
+        background-color: #f8fafc;
+      }
+      
+      .widget {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+      }
+      
+      .widget:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      
+      .widget-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .widget-icon.primary {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+        color: white;
+      }
+      
+      .widget-icon.success {
+        background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+        color: white;
+      }
+      
+      .widget-icon.warning {
+        background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+        color: white;
+      }
+      
+      .widget-icon.danger {
+        background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+        color: white;
+      }
+      
+      .doodle {
+        position: absolute;
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: 0;
+      }
+      
+      .doodle-1 {
+        top: 10%;
+        right: 10%;
+        font-size: 8rem;
+        transform: rotate(15deg);
+      }
+      
+      .doodle-2 {
+        bottom: 20%;
+        left: 5%;
+        font-size: 6rem;
+        transform: rotate(-10deg);
+      }
+      
+      .doodle-3 {
+        top: 50%;
+        right: 5%;
+        font-size: 4rem;
+        transform: rotate(45deg);
+      }
+      
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.25rem;
+        }
+        
+        .card {
+          margin-bottom: 1rem;
+        }
+        
+        .widget {
+          padding: 1rem;
+        }
+        
+        /* Constrain container-fluid on mobile to prevent overstretching */
+        .container-fluid {
+          padding-left: 1rem;
+          padding-right: 1rem;
+          max-width: 100%;
+        }
+        
+        /* Reduce widget icon size on mobile */
+        .widget-icon {
+          width: 2.5rem;
+          height: 2.5rem;
+          font-size: 1.25rem;
+          margin-bottom: 0.75rem;
+        }
+        
+        /* Reduce card title size on mobile */
+        .card-title {
+          font-size: 1.5rem;
+        }
+        
+        /* Better spacing for dashboard headers */
+        .card-body .d-flex {
+          flex-wrap: wrap;
+        }
+        
+        .card-body .d-flex .widget-icon {
+          margin-bottom: 0;
+          margin-right: 0.75rem;
+        }
+      }
+      
+      /* Small mobile screens */
+      @media (max-width: 576px) {
+        .container-fluid {
+          padding-left: 0.75rem;
+          padding-right: 0.75rem;
+        }
+        
+        .widget {
+          padding: 0.875rem;
+        }
+        
+        .card-body {
+          padding: 1rem;
+        }
+        
+        .card-header {
+          padding: 0.75rem 1rem;
+        }
+        
+        .widget-icon {
+          width: 2.25rem;
+          height: 2.25rem;
+          font-size: 1.125rem;
+        }
+        
+        .card-title {
+          font-size: 1.35rem;
+        }
+        
+        /* Better text sizing for stats */
+        .widget h3 {
+          font-size: 1.5rem;
+        }
+        
+        .widget p {
+          font-size: 0.875rem;
+        }
+      }
+      
+      /* Very small screens */
+      @media (max-width: 375px) {
+        .container-fluid {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+
+        .widget {
+          padding: 0.75rem;
+        }
+
+        .card-body {
+          padding: 0.875rem;
+        }
+
+        .card-title {
+          font-size: 1.25rem;
+        }
+
+        .widget h3 {
+          font-size: 1.35rem;
+        }
+      }
+
+      /* ── Mobile-specific fixes ── */
+
+      /* Notification dropdown: cap to viewport on small screens */
+      @media (max-width: 576px) {
+        #notifDropdown {
+          width: calc(100vw - 2rem) !important;
+          max-width: 320px;
+          right: 0 !important;
+          left: auto !important;
+        }
+
+        /* Collapse long nav labels on tiny screens */
+        .navbar-nav .nav-link {
+          font-size: 0.9rem;
+        }
+
+        /* Tables: ensure horizontal scroll doesn't break layout */
+        .table-responsive {
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* Button groups wrap neatly */
+        .btn-group-mobile-wrap .btn {
+          margin-bottom: 0.25rem;
+        }
+
+        /* Fix d-flex rows that shouldn't wrap on mobile */
+        .flex-nowrap-sm {
+          flex-wrap: nowrap !important;
+        }
+      }
+
+      /* Ensure long words in table cells don't break layout */
+      .table td, .table th {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      /* Forms: inputs full-width on mobile (col-md-6 stacks automatically) */
+      @media (max-width: 767px) {
+        .form-actions {
+          display: flex;
+          flex-direction: column;
+          gap: .5rem;
+        }
+        .form-actions .btn {
+          width: 100%;
+        }
+
+        /* Cards side-by-side stat blocks become single column */
+        .stat-row > [class*="col-"] {
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+
+        /* Remove horizontal padding on form cards on mobile */
+        .form-card .card-body {
+          padding: 1rem 0.75rem;
+        }
+      }
+
+    </style>
+    <!-- Replica of the Athlete Injury Dashboard (LancersPulse): pages rendered by the real Django app from its own demo seed data. -->
+  <script src="demo.js"></script>
+</head>
+  <body>
+    <div class="main-container">
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+          <a class="navbar-brand p-0" href="index.html">
+            <img src="static/img/dbyr-Windsor.png" alt="LancersPulse" style="height:48px;width:auto;">
+          </a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              
+                <li class="nav-item">
+                  
+                    <a class="nav-link" href="index.html">
+                      <i class="bi bi-house-door me-1"></i>Dashboard
+                    </a>
+                  
+                </li>
+                
+                  <li class="nav-item">
+                    <a class="nav-link" href="analytics.html">
+                      <i class="bi bi-graph-up me-1"></i>Analytics
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-replica-off="/team-requests/">
+                      <i class="bi bi-inboxes me-1"></i>Team Requests
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-replica-off="/tracking/appointments/inbox/">
+                      <i class="bi bi-calendar-check me-1"></i>Appointments
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" data-replica-off="/tracking/events/">
+                      <i class="bi bi-calendar-event me-1"></i>Events
+                    </a>
+                  </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="injuries.html">
+                    <i class="bi bi-clipboard-data me-1"></i>Injuries
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-replica-off="/profile/">
+                    <i class="bi bi-person-circle me-1"></i>Profile
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" data-replica-off="/logout/">
+                    <i class="bi bi-box-arrow-right me-1"></i>Logout
+                  </a>
+                </li>
+                <!-- Notification Bell — far right -->
+                <li class="nav-item dropdown ms-1">
+                  <a class="nav-link position-relative px-2" href="#" id="notifBell"
+                     data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle
+                                 rounded-pill d-none" id="notifBadge" style="font-size:.6rem;min-width:1.2em;">0</span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0"
+                       aria-labelledby="notifBell"
+                       style="width:340px;max-height:440px;overflow-y:auto;border-radius:.75rem;">
+                    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom sticky-top bg-white">
+                      <span class="fw-semibold small">Notifications</span>
+                      <button class="btn btn-link btn-sm text-muted p-0 text-decoration-none small"
+                              onclick="markAllRead(event)">Mark all read</button>
+                    </div>
+                    <div id="notifList">
+                      <div class="text-center text-muted py-4 small">
+                        <i class="bi bi-arrow-repeat me-1"></i>Loading…
+                      </div>
+                    </div>
+                    <div class="border-top text-center py-2 sticky-bottom bg-white">
+                      <a href="#" data-replica-off="/notifications/all/" class="small text-primary text-decoration-none">
+                        View all notifications →
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="container-fluid py-4">
+        <!-- Messages -->
+        
+
+        <!-- Playful Doodles -->
+        <div class="doodle doodle-1">🏅</div>
+        <div class="doodle doodle-2">⚕️</div>
+        <div class="doodle doodle-3">📊</div>
+
+        <!-- Page Content -->
+        
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="widget-icon primary me-3">
+                <i class="bi bi-graph-up"></i>
+              </div>
+              <div>
+                <h1 class="card-title mb-1">Analytics Dashboard</h1>
+                <p class="text-muted mb-0">Injury data analysis and insights</p>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <span class="badge bg-primary">2026</span>
+              
+              <a href="#" data-replica-off="/tracking/analytics/export/pdf/?"
+                 class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
+              </a>
+              <a href="#" data-replica-off="/tracking/analytics/export/excel/?"
+                 class="btn btn-outline-success btn-sm">
+                <i class="bi bi-file-earmark-spreadsheet me-1"></i>Export Excel
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters (single horizontal row) -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form method="get" class="d-flex flex-wrap align-items-end gap-2">
+            
+            <div style="min-width: 160px; flex: 1 1 160px;">
+              <label for="team" class="form-label mb-1 small">Team</label>
+              <select name="team" id="team" class="form-control form-control-sm">
+                <option value="">All Teams</option>
+                
+                  <option value="1" >
+                    Lancers FC Demo ()
+                  </option>
+                
+                  <option value="2" >
+                    Lancers Basketball (Men)
+                  </option>
+                
+                  <option value="3" >
+                    Lancers Soccer (Men)
+                  </option>
+                
+                  <option value="4" >
+                    Lancers Hockey (Women)
+                  </option>
+                
+                  <option value="5" >
+                    Lancers Football (Men)
+                  </option>
+                
+                  <option value="6" >
+                    Lancers Track (Women)
+                  </option>
+                
+              </select>
+            </div>
+            
+            <div style="min-width: 130px; flex: 1 1 130px;">
+              <label for="year" class="form-label mb-1 small">Year</label>
+              <select name="year" id="year" class="form-control form-control-sm">
+                
+                  <option value="2026" selected>2026</option>
+                
+              </select>
+            </div>
+            <div style="min-width: 150px; flex: 1 1 150px;">
+              <label for="date_from" class="form-label mb-1 small">Date From</label>
+              <input type="date" name="date_from" id="date_from" class="form-control form-control-sm" value="None">
+            </div>
+            <div style="min-width: 150px; flex: 1 1 150px;">
+              <label for="date_to" class="form-label mb-1 small">Date To</label>
+              <input type="date" name="date_to" id="date_to" class="form-control form-control-sm" value="None">
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-search me-1"></i>Apply
+              </button>
+              <a href="analytics.html" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Blocks (clickable) -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="widget kpi-block" role="button" data-bs-toggle="collapse" data-bs-target="#kpi-total" aria-expanded="false" aria-controls="kpi-total">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon primary me-3">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h3 class="mb-1">26</h3>
+            <p class="text-muted mb-0">Total Injuries</p>
+            <small class="text-muted">Click to view details</small>
+          </div>
+          <i class="bi bi-chevron-down toggle-chevron"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="widget kpi-block" role="button" data-bs-toggle="collapse" data-bs-target="#kpi-active" aria-expanded="false" aria-controls="kpi-active">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon warning me-3">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h3 class="mb-1">9</h3>
+            <p class="text-muted mb-0">Active</p>
+            <small class="text-muted">Click to view details</small>
+          </div>
+          <i class="bi bi-chevron-down toggle-chevron"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="widget kpi-block" role="button" data-bs-toggle="collapse" data-bs-target="#kpi-recovered" aria-expanded="false" aria-controls="kpi-recovered">
+        <div class="d-flex align-items-center">
+          <div class="widget-icon success me-3">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div class="flex-grow-1">
+            <h3 class="mb-1">8</h3>
+            <p class="text-muted mb-0">Recovered</p>
+            <small class="text-muted">Click to view details</small>
+          </div>
+          <i class="bi bi-chevron-down toggle-chevron"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsible KPI tables -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="collapse" id="kpi-total">
+        
+<div class="card mb-3">
+  <div class="card-header">
+    <h6 class="card-title mb-0">
+      <i class="bi bi-list-ul me-2"></i>All Injuries
+      <small class="text-muted ms-2">(26 records)</small>
+    </h6>
+  </div>
+  <div class="card-body">
+    
+      <div class="table-responsive">
+        <table class="table table-hover table-striped kpi-paginated" data-table-id="tbl-total">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Injury Date</th>
+              <th>Injury Type</th>
+              <th>Body Part</th>
+              <th>Recovery Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Marcus Reed</strong>
+                  
+                    <br><small class="text-muted">Lancers Basketball</small>
+                  
+                </td>
+                <td>Nov 12, 2026</td>
+                <td>Strain</td>
+                <td>Back</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Ava Green</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Nov 12, 2026</td>
+                <td>Strain</td>
+                <td>Back</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Maya Sanchez</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Nov 12, 2026</td>
+                <td>Strain</td>
+                <td>Back</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Malik Stone</strong>
+                  
+                    <br><small class="text-muted">Lancers Basketball</small>
+                  
+                </td>
+                <td>Nov 10, 2026</td>
+                <td>Concussion</td>
+                <td>Head</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Ethan Clarke</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 10, 2026</td>
+                <td>Concussion</td>
+                <td>Head</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Pat Player</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Nov 08, 2026</td>
+                <td>Strain</td>
+                <td>Hamstring</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Aaron Flynn</strong>
+                  
+                    <br><small class="text-muted">Lancers Basketball</small>
+                  
+                </td>
+                <td>Nov 08, 2026</td>
+                <td>Fracture</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Chloe Nelson</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Nov 08, 2026</td>
+                <td>Fracture</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Sam Striker</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Nov 05, 2026</td>
+                <td>Contusion</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Liam Murphy</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 05, 2026</td>
+                <td>Strain</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Lucas Bennett</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 05, 2026</td>
+                <td>Strain</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Logan Hunt</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Mia Baker</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Nov 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Violet Cook</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Nov 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Owen Foster</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Oct 28, 2026</td>
+                <td>Concussion</td>
+                <td>Head</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Bryce Morgan</strong>
+                  
+                    <br><small class="text-muted">Lancers Football</small>
+                  
+                </td>
+                <td>Oct 16, 2026</td>
+                <td>Strain</td>
+                <td>Hamstring</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Pat Player</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Oct 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Zoe Rivera</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Oct 01, 2026</td>
+                <td>Fracture</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Hunter Torres</strong>
+                  
+                    <br><small class="text-muted">Lancers Football</small>
+                  
+                </td>
+                <td>Sep 16, 2026</td>
+                <td>Contusion</td>
+                <td>Knee</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Lily Evans</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Nora Collins</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Ella Stewart</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Luna Rogers</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Devon Hayes</strong>
+                  
+                    <br><small class="text-muted">Lancers Basketball</small>
+                  
+                </td>
+                <td>Aug 17, 2026</td>
+                <td>Contusion</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Pat Player</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Jul 18, 2026</td>
+                <td>Strain</td>
+                <td>Knee</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Sam Striker</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Apr 29, 2026</td>
+                <td>Concussion</td>
+                <td>Head</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div id="pager-tbl-total" class="d-flex align-items-center justify-content-end mt-2"></div>
+    
+  </div>
+</div>
+
+      </div>
+      <div class="collapse" id="kpi-active">
+        
+<div class="card mb-3">
+  <div class="card-header">
+    <h6 class="card-title mb-0">
+      <i class="bi bi-list-ul me-2"></i>Active Injuries
+      <small class="text-muted ms-2">(9 records)</small>
+    </h6>
+  </div>
+  <div class="card-body">
+    
+      <div class="table-responsive">
+        <table class="table table-hover table-striped kpi-paginated" data-table-id="tbl-active">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Injury Date</th>
+              <th>Injury Type</th>
+              <th>Body Part</th>
+              <th>Recovery Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Aaron Flynn</strong>
+                  
+                    <br><small class="text-muted">Lancers Basketball</small>
+                  
+                </td>
+                <td>Nov 08, 2026</td>
+                <td>Fracture</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Chloe Nelson</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Nov 08, 2026</td>
+                <td>Fracture</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Sam Striker</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Nov 05, 2026</td>
+                <td>Contusion</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Liam Murphy</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 05, 2026</td>
+                <td>Strain</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Lucas Bennett</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 05, 2026</td>
+                <td>Strain</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Logan Hunt</strong>
+                  
+                    <br><small class="text-muted">Lancers Soccer</small>
+                  
+                </td>
+                <td>Nov 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Mia Baker</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Nov 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Violet Cook</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Nov 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Pat Player</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Oct 01, 2026</td>
+                <td>Sprain</td>
+                <td>Ankle</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div id="pager-tbl-active" class="d-flex align-items-center justify-content-end mt-2"></div>
+    
+  </div>
+</div>
+
+      </div>
+      <div class="collapse" id="kpi-recovered">
+        
+<div class="card mb-3">
+  <div class="card-header">
+    <h6 class="card-title mb-0">
+      <i class="bi bi-list-ul me-2"></i>Recovered Injuries
+      <small class="text-muted ms-2">(8 records)</small>
+    </h6>
+  </div>
+  <div class="card-body">
+    
+      <div class="table-responsive">
+        <table class="table table-hover table-striped kpi-paginated" data-table-id="tbl-recovered">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Injury Date</th>
+              <th>Injury Type</th>
+              <th>Body Part</th>
+              <th>Recovery Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Hunter Torres</strong>
+                  
+                    <br><small class="text-muted">Lancers Football</small>
+                  
+                </td>
+                <td>Sep 16, 2026</td>
+                <td>Contusion</td>
+                <td>Knee</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Lily Evans</strong>
+                  
+                    <br><small class="text-muted">Lancers Hockey</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Nora Collins</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Ella Stewart</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Luna Rogers</strong>
+                  
+                    <br><small class="text-muted">Lancers Track</small>
+                  
+                </td>
+                <td>Sep 01, 2026</td>
+                <td>Sprain</td>
+                <td>Wrist</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Devon Hayes</strong>
+                  
+                    <br><small class="text-muted">Lancers Basketball</small>
+                  
+                </td>
+                <td>Aug 17, 2026</td>
+                <td>Contusion</td>
+                <td>Shoulder</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Pat Player</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Jul 18, 2026</td>
+                <td>Strain</td>
+                <td>Knee</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+              <tr class="data-row">
+                <td>
+                  <strong>Sam Striker</strong>
+                  
+                    <br><small class="text-muted">Lancers FC Demo</small>
+                  
+                </td>
+                <td>Apr 29, 2026</td>
+                <td>Concussion</td>
+                <td>Head</td>
+                <td>
+                  
+                    -
+                  
+                </td>
+              </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div id="pager-tbl-recovered" class="d-flex align-items-center justify-content-end mt-2"></div>
+    
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Injury Body Map -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-person-bounding-box me-2"></i>Injury Body Map
+          </h5>
+          <div class="d-flex gap-2 align-items-center">
+            <span class="ldot" style="background:#c8d0e0;border:1px solid #8896b0"></span><small>None</small>
+            <span class="ldot" style="background:#fcd34d"></span><small>1–2</small>
+            <span class="ldot" style="background:#f97316"></span><small>3–5</small>
+            <span class="ldot" style="background:#ef4444"></span><small>6+</small>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            <!-- SVG -->
+            <div class="col-lg-5">
+              <div class="svg-wrap">
+                <svg id="bodySVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 600">
+                  <rect x="0" y="0" width="500" height="600" fill="#ffffff"/>
+                  <text class="label-txt" x="125" y="20">FRONT</text>
+                  <text class="label-txt" x="375" y="20">BACK</text>
+
+                  <!-- FRONT -->
+                  <g id="front-view">
+                    <ellipse class="body-region" data-part="Head" cx="125" cy="54" rx="15" ry="19"/>
+                    <path class="body-region" data-part="Neck" d="M118 73 L132 73 L136 92 L114 92 Z"/>
+                    <path class="body-region" data-part="Shoulder" d="M92 98 C84 101 78 108 78 116 C78 125 86 131 95 129 C104 127 109 119 108 111 C107 103 101 97 92 98 Z"/>
+                    <path class="body-region" data-part="Shoulder" d="M158 98 C166 101 172 108 172 116 C172 125 164 131 155 129 C146 127 141 119 142 111 C143 103 149 97 158 98 Z"/>
+                    <path class="body-region" data-part="Chest" d="M102 102 C112 100 119 103 123 111 L123 144 C115 146 108 146 101 143 C96 136 93 128 93 119 C93 111 96 105 102 102 Z"/>
+                    <path class="body-region" data-part="Chest" d="M148 102 C138 100 131 103 127 111 L127 144 C135 146 142 146 149 143 C154 136 157 128 157 119 C157 111 154 105 148 102 Z"/>
+                    <path class="body-region" data-part="Abdomen" d="M110 149 C116 146 121 146 124 149 L123 167 C118 169 114 169 110 167 Z"/>
+                    <path class="body-region" data-part="Abdomen" d="M126 149 C129 146 134 146 140 149 L140 167 C136 169 132 169 127 167 Z"/>
+                    <path class="body-region" data-part="Abdomen" d="M109 171 C114 169 119 169 123 171 L122 189 C117 191 113 191 108 189 Z"/>
+                    <path class="body-region" data-part="Abdomen" d="M127 171 C131 169 136 169 141 171 L142 189 C137 191 133 191 128 189 Z"/>
+                    <path class="body-region" data-part="Abdomen" d="M108 193 C113 191 117 191 121 193 L120 211 C115 214 111 214 106 211 Z"/>
+                    <path class="body-region" data-part="Abdomen" d="M129 193 C133 191 137 191 142 193 L144 211 C139 214 135 214 130 211 Z"/>
+                    <path class="body-region" data-part="Obliques" d="M101 149 L108 149 L106 211 L97 223 L93 199 L94 167 Z"/>
+                    <path class="body-region" data-part="Obliques" d="M149 149 L142 149 L144 211 L153 223 L157 199 L156 167 Z"/>
+                    <path class="body-region" data-part="Upper Arm" d="M82 129 C75 148 75 170 80 191 C85 196 91 197 96 192 C99 171 98 149 94 129 Z"/>
+                    <path class="body-region" data-part="Upper Arm" d="M168 129 C175 148 175 170 170 191 C165 196 159 197 154 192 C151 171 152 149 156 129 Z"/>
+                    <path class="body-region" data-part="Forearm" d="M80 194 C72 214 72 236 77 256 C82 261 89 261 93 256 C95 235 92 214 88 194 Z"/>
+                    <path class="body-region" data-part="Forearm" d="M170 194 C178 214 178 236 173 256 C168 261 161 261 157 256 C155 235 158 214 162 194 Z"/>
+                    <path class="body-region" data-part="Pelvis/Hip" d="M104 221 C110 218 116 217 122 220 L120 246 C114 248 108 248 102 244 Z"/>
+                    <path class="body-region" data-part="Pelvis/Hip" d="M146 221 C140 218 134 217 128 220 L130 246 C136 248 142 248 148 244 Z"/>
+                    <path class="body-region" data-part="Upper Leg" d="M102 247 C112 245 118 247 122 252 C124 286 121 319 117 349 C112 353 107 353 102 349 C98 320 97 286 102 247 Z"/>
+                    <path class="body-region" data-part="Upper Leg" d="M148 247 C138 245 132 247 128 252 C126 286 129 319 133 349 C138 353 143 353 148 349 C152 320 153 286 148 247 Z"/>
+                    <ellipse class="body-region" data-part="Knee" cx="110" cy="360" rx="8" ry="7"/>
+                    <ellipse class="body-region" data-part="Knee" cx="140" cy="360" rx="8" ry="7"/>
+                    <path class="body-region" data-part="Lower Leg" d="M102 369 C110 366 115 367 118 372 C120 401 118 431 114 462 C109 466 104 466 99 462 C96 432 95 401 102 369 Z"/>
+                    <path class="body-region" data-part="Lower Leg" d="M148 369 C140 366 135 367 132 372 C130 401 132 431 136 462 C141 466 146 466 151 462 C154 432 155 401 148 369 Z"/>
+                    <ellipse class="body-region" data-part="Ankle" cx="110" cy="466" rx="8" ry="5"/>
+                    <ellipse class="body-region" data-part="Ankle" cx="140" cy="466" rx="8" ry="5"/>
+                    <path class="body-region" data-part="Foot" d="M98 474 C104 473 111 474 118 479 C117 484 109 487 99 487 C93 487 89 484 88 480 C90 477 94 475 98 474 Z"/>
+                    <path class="body-region" data-part="Foot" d="M152 474 C146 473 139 474 132 479 C133 484 141 487 151 487 C157 487 161 484 162 480 C160 477 156 475 152 474 Z"/>
+                    <path class="guide" d="M125 35 C118 39 115 47 115 56 C115 66 118 73 125 76 C132 73 135 66 135 56 C135 47 132 39 125 35 Z"/>
+                    <path class="guide" d="M114 92 C103 95 94 101 88 111"/>
+                    <path class="guide" d="M136 92 C147 95 156 101 162 111"/>
+                    <path class="guide" d="M123 111 L127 111"/>
+                    <path class="guide" d="M125 149 L125 221"/>
+                    <path class="guide" d="M102 247 C108 254 116 258 125 259 C134 258 142 254 148 247"/>
+                  </g>
+
+                  <!-- BACK -->
+                  <g id="back-view">
+                    <ellipse class="body-region" data-part="Head" cx="375" cy="54" rx="15" ry="19"/>
+                    <path class="body-region" data-part="Neck" d="M368 73 L382 73 L386 92 L364 92 Z"/>
+                    <path class="body-region" data-part="Trapezius" d="M375 92 L402 108 L392 159 L358 159 L348 108 Z"/>
+                    <path class="body-region" data-part="Shoulder" d="M342 98 C334 101 328 108 328 116 C328 125 336 131 345 129 C354 127 359 119 358 111 C357 103 351 97 342 98 Z"/>
+                    <path class="body-region" data-part="Shoulder" d="M408 98 C416 101 422 108 422 116 C422 125 414 131 405 129 C396 127 391 119 392 111 C393 103 399 97 408 98 Z"/>
+                    <path class="body-region" data-part="Upper Back" d="M353 120 C341 138 338 164 343 205 C349 219 359 227 371 228 L374 159 Z"/>
+                    <path class="body-region" data-part="Upper Back" d="M397 120 C409 138 412 164 407 205 C401 219 391 227 379 228 L376 159 Z"/>
+                    <path class="body-region" data-part="Lower Back" d="M359 229 C365 223 370 222 374 225 L373 266 C367 269 362 268 357 262 Z"/>
+                    <path class="body-region" data-part="Lower Back" d="M391 229 C385 223 380 222 376 225 L377 266 C383 269 388 268 393 262 Z"/>
+                    <path class="body-region" data-part="Upper Arm" d="M332 129 C325 148 325 170 330 191 C335 196 341 197 346 192 C349 171 348 149 344 129 Z"/>
+                    <path class="body-region" data-part="Upper Arm" d="M418 129 C425 148 425 170 420 191 C415 196 409 197 404 192 C401 171 402 149 406 129 Z"/>
+                    <path class="body-region" data-part="Forearm" d="M330 194 C322 214 322 236 327 256 C332 261 339 261 343 256 C345 235 342 214 338 194 Z"/>
+                    <path class="body-region" data-part="Forearm" d="M420 194 C428 214 428 236 423 256 C418 261 411 261 407 256 C405 235 408 214 412 194 Z"/>
+                    <path class="body-region" data-part="Glutes" d="M356 269 C347 278 344 291 347 305 C353 313 361 315 372 310 L372 273 Z"/>
+                    <path class="body-region" data-part="Glutes" d="M394 269 C403 278 406 291 403 305 C397 313 389 315 378 310 L378 273 Z"/>
+                    <path class="body-region" data-part="Upper Leg" d="M349 307 C359 304 366 306 371 311 C373 346 370 378 365 408 C360 412 355 412 350 408 C346 378 345 346 349 307 Z"/>
+                    <path class="body-region" data-part="Upper Leg" d="M401 307 C391 304 384 306 379 311 C377 346 380 378 385 408 C390 412 395 412 400 408 C404 378 405 346 401 307 Z"/>
+                    <path class="body-region" data-part="Lower Leg" d="M350 413 C358 408 364 409 367 416 C371 438 369 454 364 478 C359 482 353 482 348 478 C344 454 345 438 350 413 Z"/>
+                    <path class="body-region" data-part="Lower Leg" d="M400 413 C392 408 386 409 383 416 C379 438 381 454 386 478 C391 482 397 482 402 478 C406 454 405 438 400 413 Z"/>
+                    <ellipse class="body-region" data-part="Ankle" cx="358" cy="480" rx="8" ry="5"/>
+                    <ellipse class="body-region" data-part="Ankle" cx="392" cy="480" rx="8" ry="5"/>
+                    <path class="body-region" data-part="Foot" d="M348 488 C355 487 362 488 368 493 C367 498 360 501 350 501 C344 501 340 498 339 494 C341 491 344 489 348 488 Z"/>
+                    <path class="body-region" data-part="Foot" d="M402 488 C395 487 388 488 382 493 C383 498 390 501 400 501 C406 501 410 498 411 494 C409 491 406 489 402 488 Z"/>
+                    <path class="guide" d="M375 35 C368 39 365 47 365 56 C365 66 368 73 375 76 C382 73 385 66 385 56 C385 47 382 39 375 35 Z"/>
+                    <path class="guide" d="M364 92 C353 95 344 101 338 111"/>
+                    <path class="guide" d="M386 92 C397 95 406 101 412 111"/>
+                    <path class="guide" d="M375 92 L375 310"/>
+                  </g>
+                </svg>
+              </div>
+              <div id="infoBox" class="infobox">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <strong id="infoTitle" class="text-primary"></strong>
+                  <span id="infoBadge" class="badge bg-primary"></span>
+                </div>
+                <div id="infoStatus"></div>
+              </div>
+            </div>
+
+            <!-- Ranked list -->
+            <div class="col-lg-7">
+              <h6 class="text-muted fw-semibold mb-3"><i class="bi bi-sort-down me-1"></i>Injuries by Body Part</h6>
+              <div id="bpList"></div>
+
+              <div id="injSec" class="injsec">
+                <hr>
+                <h6 class="fw-semibold mb-2">
+                  <i class="bi bi-list-ul me-1"></i>
+                  <span id="tblTitle" class="text-primary"></span>
+                </h6>
+                <p class="text-muted small mb-2" id="bpMessage">
+                  Click a body part to see injuries — or view the full list in Injury Records.
+                </p>
+                <a id="bpInjuryLink" href="injuries.html" class="btn btn-sm btn-outline-primary">
+                  <i class="bi bi-arrow-right me-1"></i>View injuries for this body part
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bodyMapTip" class="tip"></div>
+
+  <!-- Year-over-Year Comparison -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-arrow-left-right me-2"></i>Year-over-Year: 2025 vs 2026
+          </h5>
+          <small class="text-muted">Monthly injury count comparison</small>
+        </div>
+        <div class="card-body">
+          <div style="position: relative; height: 300px;">
+            <canvas id="yoyChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts: Monthly Injury Trends + Body Parts -->
+  <div class="row mb-4">
+    <div class="col-lg-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-bar-chart me-2"></i>Monthly Injury Trends
+          </h5>
+        </div>
+        <div class="card-body">
+          <div style="position: relative; height: 300px;">
+            <canvas id="monthlyTrendsChart"></canvas>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="bi bi-bar-chart me-2"></i>Body Parts Affected
+          </h5>
+        </div>
+        <div class="card-body">
+          <div style="position: relative; height: 300px;">
+            <canvas id="bodyPartsChart"></canvas>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Initialize date pickers
+      function initDatePickers() {
+        const els = document.querySelectorAll('.date-field');
+        els.forEach(el => {
+          flatpickr(el, {
+            dateFormat: 'Y-m-d',
+            allowInput: true,
+            maxDate: 'today'
+          });
+        });
+      }
+
+      // Initialize tooltips
+      function initTooltips() {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+      }
+
+      // Initialize popovers
+      function initPopovers() {
+        const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        popoverTriggerList.map(function (popoverTriggerEl) {
+          return new bootstrap.Popover(popoverTriggerEl);
+        });
+      }
+
+      // Auto-hide alerts after 5 seconds
+      function autoHideAlerts() {
+        const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
+        alerts.forEach(alert => {
+          setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+          }, 5000);
+        });
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        initDatePickers();
+        initTooltips();
+        initPopovers();
+        autoHideAlerts();
+      });
+
+      // AJAX helper for status updates
+      function updateInjuryStatus(injuryId, newStatus) {
+        fetch(`/tracking/api/injury/${injuryId}/status/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          },
+          body: `status=${newStatus}`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert('Error updating status');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error updating status');
+        });
+      }
+    </script>
+    
+    <script>
+      // ── Notification Bell ───────────────────────────────────────────────
+      const NOTIF_FETCH_URL = "/notifications/";
+      const MARK_ALL_URL    = "/notifications/read-all/";
+      const NOTIF_CSRF      = "f5VyXUscsRvAAhjLosyqTz4IfkVoQQRhNtnTbQMsl6ARJK5JtoXBgSTFnEZ9C0lb";
+
+      function _notifTypeIcon(t) {
+        return {INJURY:'bandaid',APPOINTMENT:'calendar-check',CLEARANCE:'check-circle',EVENT:'calendar-event'}[t] || 'bell';
+      }
+      function _notifTypeColor(t) {
+        return {INJURY:'danger',APPOINTMENT:'primary',CLEARANCE:'success',EVENT:'warning'}[t] || 'secondary';
+      }
+      function _timeAgo(iso) {
+        const d = Math.floor((Date.now() - new Date(iso)) / 1000);
+        if (d < 60)    return 'just now';
+        if (d < 3600)  return Math.floor(d/60) + 'm ago';
+        if (d < 86400) return Math.floor(d/3600) + 'h ago';
+        return Math.floor(d/86400) + 'd ago';
+      }
+
+      function loadNotifications() {
+        fetch(NOTIF_FETCH_URL)
+          .then(r => r.json())
+          .then(data => {
+            const badge = document.getElementById('notifBadge');
+            if (badge) {
+              if (data.unread_count > 0) {
+                badge.textContent = data.unread_count > 99 ? '99+' : data.unread_count;
+                badge.classList.remove('d-none');
+              } else {
+                badge.classList.add('d-none');
+              }
+            }
+            const list = document.getElementById('notifList');
+            if (!list) return;
+            if (!data.notifications || !data.notifications.length) {
+              list.innerHTML = '<div class="text-center text-muted py-4 small"><i class="bi bi-bell-slash me-1"></i>No notifications yet</div>';
+              return;
+            }
+            list.innerHTML = data.notifications.map(n => `
+              <div class="px-3 py-2 border-bottom ${n.is_read ? '' : 'bg-light'}"
+                   style="cursor:pointer;"
+                   onclick="notifMarkRead(${n.id}, ${JSON.stringify(n.link || '')})">
+                <div class="d-flex align-items-start gap-2">
+                  <i class="bi bi-${_notifTypeIcon(n.type)} text-${_notifTypeColor(n.type)} mt-1 flex-shrink-0"></i>
+                  <div class="flex-grow-1 overflow-hidden">
+                    <div class="small lh-sm text-truncate" style="max-width:240px;">${n.message}</div>
+                    <div class="text-muted" style="font-size:11px;">${_timeAgo(n.created_at)}</div>
+                  </div>
+                  ${!n.is_read ? '<span class="badge bg-primary rounded-pill flex-shrink-0 align-self-center" style="font-size:8px;padding:3px 5px;">New</span>' : ''}
+                </div>
+              </div>
+            `).join('');
+          })
+          .catch(() => {});
+      }
+
+      function notifMarkRead(id, link) {
+        fetch(`/notifications/${id}/read/`, {
+          method: 'POST',
+          headers: {'X-CSRFToken': NOTIF_CSRF}
+        }).then(() => {
+          loadNotifications();
+          if (link) window.location.href = link;
+        });
+      }
+
+      function markAllRead(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+        fetch(MARK_ALL_URL, {
+          method: 'POST',
+          headers: {'X-CSRFToken': NOTIF_CSRF}
+        }).then(() => loadNotifications());
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        loadNotifications();
+        setInterval(loadNotifications, 60000);
+        const bell = document.getElementById('notifBell');
+        if (bell) bell.addEventListener('show.bs.dropdown', loadNotifications);
+      });
+    </script>
+    
+    
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const monthlyData    = [{"month": 1, "count": 0}, {"month": 2, "count": 0}, {"month": 3, "count": 0}, {"month": 4, "count": 1}, {"month": 5, "count": 0}, {"month": 6, "count": 0}, {"month": 7, "count": 1}, {"month": 8, "count": 1}, {"month": 9, "count": 5}, {"month": 10, "count": 4}, {"month": 11, "count": 14}, {"month": 12, "count": 0}];
+    const prevYearData   = [{"month": 1, "count": 0}, {"month": 2, "count": 0}, {"month": 3, "count": 0}, {"month": 4, "count": 0}, {"month": 5, "count": 0}, {"month": 6, "count": 0}, {"month": 7, "count": 0}, {"month": 8, "count": 0}, {"month": 9, "count": 0}, {"month": 10, "count": 0}, {"month": 11, "count": 0}, {"month": 12, "count": 0}];
+    const bodyPartData   = [{"body_part__name": "Wrist", "count": 6}, {"body_part__name": "Ankle", "count": 5}, {"body_part__name": "Head", "count": 4}, {"body_part__name": "Shoulder", "count": 4}, {"body_part__name": "Back", "count": 3}, {"body_part__name": "Hamstring", "count": 2}, {"body_part__name": "Knee", "count": 2}];
+
+    function getMonthName(n) {
+      return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][n-1];
+    }
+
+    // Year-over-Year comparison chart
+    const yoyCanvas = document.getElementById('yoyChart');
+    if (yoyCanvas) {
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      new Chart(yoyCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: '2025',
+              data: prevYearData.map(d => d.count),
+              backgroundColor: 'rgba(156, 163, 175, 0.7)',
+              borderColor: '#9ca3af',
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+            {
+              label: '2026',
+              data: monthlyData.map(d => d.count),
+              backgroundColor: 'rgba(59, 130, 246, 0.8)',
+              borderColor: '#3b82f6',
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: {
+              callbacks: {
+                footer: (items) => {
+                  if (items.length === 2) {
+                    const prev = items[0].raw, curr = items[1].raw;
+                    const diff = curr - prev;
+                    return diff === 0 ? 'No change' : (diff > 0 ? `▲ +${diff} vs prior year` : `▼ ${diff} vs prior year`);
+                  }
+                }
+              }
+            }
+          },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    // Monthly Trends
+    const monthlyCanvas = document.getElementById('monthlyTrendsChart');
+    if (monthlyCanvas && monthlyData && monthlyData.length > 0) {
+      new Chart(monthlyCanvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: monthlyData.map(item => getMonthName(item.month)),
+          datasets: [{
+            label: 'Injuries',
+            data: monthlyData.map(item => item.count),
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    // Body Parts Affected
+    const bodyPartsCanvas = document.getElementById('bodyPartsChart');
+    if (bodyPartsCanvas && bodyPartData && bodyPartData.length > 0) {
+      new Chart(bodyPartsCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: bodyPartData.map(item => item.body_part__name),
+          datasets: [{
+            label: 'Injuries',
+            data: bodyPartData.map(item => item.count),
+            backgroundColor: '#3b82f6',
+            borderColor: '#1d4ed8',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    // Client-side pagination for KPI tables (10 rows per page)
+    const PAGE_SIZE = 10;
+    document.querySelectorAll('table.kpi-paginated').forEach(function(table) {
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr.data-row'));
+      const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+      const tableId = table.getAttribute('data-table-id');
+      const pager = document.getElementById('pager-' + tableId);
+      let currentPage = 1;
+
+      function render() {
+        rows.forEach((tr, i) => {
+          const start = (currentPage - 1) * PAGE_SIZE;
+          const end = start + PAGE_SIZE;
+          tr.style.display = (i >= start && i < end) ? '' : 'none';
+        });
+        if (pager) {
+          pager.innerHTML = '';
+          if (totalPages <= 1) return;
+          const prev = document.createElement('button');
+          prev.className = 'btn btn-sm btn-outline-secondary me-2';
+          prev.textContent = 'Prev';
+          prev.disabled = currentPage === 1;
+          prev.onclick = () => { currentPage--; render(); };
+          pager.appendChild(prev);
+
+          const info = document.createElement('span');
+          info.className = 'me-2 small text-muted';
+          info.textContent = 'Page ' + currentPage + ' of ' + totalPages;
+          pager.appendChild(info);
+
+          const next = document.createElement('button');
+          next.className = 'btn btn-sm btn-outline-secondary';
+          next.textContent = 'Next';
+          next.disabled = currentPage === totalPages;
+          next.onclick = () => { currentPage++; render(); };
+          pager.appendChild(next);
+        }
+      }
+      render();
+    });
+
+    // Rotate chevron when KPI block expands
+    document.querySelectorAll('.kpi-block').forEach(function(block) {
+      const targetSel = block.getAttribute('data-bs-target');
+      const target = document.querySelector(targetSel);
+      if (!target) return;
+      target.addEventListener('show.bs.collapse', () => block.classList.add('open'));
+      target.addEventListener('hide.bs.collapse', () => block.classList.remove('open'));
+    });
+  });
+</script>
+
+<style>
+  .kpi-block { cursor: pointer; user-select: none; }
+  .kpi-block .toggle-chevron { transition: transform 0.25s ease; font-size: 1.25rem; color: #64748b; }
+  .kpi-block.open .toggle-chevron { transform: rotate(180deg); }
+
+  /* Body Map */
+  .svg-wrap { background:#fff; border-radius:10px; padding:10px; }
+  #bodySVG  { width:100%; height:auto; display:block; }
+  .body-region {
+    fill:#c8d0e0; stroke:#8896b0; stroke-width:1;
+    stroke-linejoin:round; stroke-linecap:round;
+    cursor:pointer; transition: fill 0.18s, filter 0.15s, stroke 0.15s;
+  }
+  .body-region:hover {
+    filter: brightness(1.15) drop-shadow(0 0 4px rgba(11,118,239,0.5));
+  }
+  .body-region.sel {
+    stroke:#0b76ef !important; stroke-width:2px !important;
+    filter: drop-shadow(0 0 6px rgba(11,118,239,0.8));
+  }
+  .guide {
+    fill:none; stroke:#8896b0; stroke-width:0.9;
+    stroke-linejoin:round; stroke-linecap:round;
+    pointer-events:none;
+  }
+  .label-txt {
+    font-size:10px; fill:#64748b; text-anchor:middle;
+    font-family: Arial, Helvetica, sans-serif;
+    pointer-events:none;
+  }
+  .h-none   { fill:#c8d0e0; }
+  .h-low    { fill:#fcd34d; }
+  .h-medium { fill:#f97316; }
+  .h-high   { fill:#ef4444; }
+
+  .tip {
+    position:fixed; background:#1e293b; color:#fff;
+    padding:5px 12px; border-radius:7px; font-size:12px; font-weight:500;
+    pointer-events:none; z-index:9999; opacity:0; transition: opacity 0.1s;
+    white-space:nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .tip.on { opacity:1; }
+
+  .ldot { width:11px; height:11px; border-radius:50%; display:inline-block; flex-shrink:0; }
+
+  .rnum {
+    width:22px; height:22px; border-radius:50%; background:#0b76ef;
+    color:#fff; font-size:10px; font-weight:700;
+    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .bpr {
+    cursor:pointer; border-radius:7px; padding:7px 10px;
+    margin-bottom:3px; transition: background 0.12s;
+  }
+  .bpr:hover { background:#f1f5f9; }
+  .bpr.on    { background:#dbeafe; }
+  .ibar {
+    height:5px; border-radius:3px; background:#e2e8f0;
+    overflow:hidden; margin-top:3px;
+  }
+  .ibf  { height:100%; border-radius:3px; transition: width 0.35s; }
+
+  .infobox {
+    background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;
+    padding:14px; margin-top:10px; display:none;
+  }
+  .infobox.on { display:block; }
+  .injsec     { display:none; margin-top:16px; }
+  .injsec.on  { display:block; }
+
+  .spill { padding:2px 8px; border-radius:9999px; font-size:11px; font-weight:500; }
+  .sa { background:#fef3c7; color:#92400e; }
+  .sr { background:#dbeafe; color:#1e40af; }
+  .sc { background:#d1fae5; color:#065f46; }
+</style>
+
+<script>
+(function() {
+  // Real data from Django context
+  const bodyPartCounts = {"Ankle": {"count": 5, "active": 4, "recovering": 1, "recovered": 0}, "Back": {"count": 3, "active": 0, "recovering": 0, "recovered": 0}, "Hamstring": {"count": 2, "active": 0, "recovering": 1, "recovered": 0}, "Head": {"count": 4, "active": 0, "recovering": 1, "recovered": 1}, "Knee": {"count": 2, "active": 0, "recovering": 0, "recovered": 2}, "Shoulder": {"count": 4, "active": 3, "recovering": 0, "recovered": 1}, "Wrist": {"count": 6, "active": 2, "recovering": 0, "recovered": 4}};
+  const INJURY_LIST_URL = "/tracking/injuries/";
+
+  // Map DB body part names → SVG data-part names when they differ
+  const PART_ALIAS = {
+    'Wrist':        'Forearm',
+    'Elbow':        'Upper Arm',
+    'Hip':          'Pelvis/Hip',
+    'Groin':        'Pelvis/Hip',
+    'Hamstring':    'Upper Leg',
+    'Quadriceps':   'Upper Leg',
+    'Thigh':        'Upper Leg',
+    'Calf':         'Lower Leg',
+    'Shin':         'Lower Leg',
+    'Collarbone':   'Shoulder',
+    'Spine':        'Lower Back',
+    'Back':         'Lower Back',
+    'Ribs':         'Chest',
+    'Buttocks':     'Glutes',
+  };
+
+  // Build data object — merge aliased parts into their SVG region
+  const data = {};
+  Object.keys(bodyPartCounts).forEach(k => {
+    const svgKey = PART_ALIAS[k] || k;
+    if (!data[svgKey]) data[svgKey] = { count: 0 };
+    data[svgKey].count += bodyPartCounts[k].count;
+  });
+
+  let sel = null;
+
+  const hc = c => c===0?'h-none':c<=2?'h-low':c<=5?'h-medium':'h-high';
+  const bc = c => c===0?'#cbd5e1':c<=2?'#fcd34d':c<=5?'#f97316':'#ef4444';
+
+  function renderSVG() {
+    document.querySelectorAll('.body-region').forEach(el => {
+      const part = el.dataset.part;
+      const c = (data[part]||{count:0}).count;
+      el.classList.remove('h-none','h-low','h-medium','h-high','sel');
+      el.classList.add(hc(c));
+      if (sel && part === sel) el.classList.add('sel');
+    });
+  }
+
+  function renderList() {
+    const sorted = Object.entries(data)
+      .filter(([,v]) => v.count > 0)
+      .sort((a,b) => b[1].count - a[1].count);
+    const max = sorted.length ? sorted[0][1].count : 1;
+    const el = document.getElementById('bpList');
+    if (!el) return;
+    el.innerHTML = sorted.length
+      ? sorted.map(([part,d],i) => `
+          <div class="bpr d-flex align-items-center gap-2 ${sel===part?'on':''}" data-bp-part="${part}">
+            <span class="rnum">${i+1}</span>
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between">
+                <span class="fw-semibold small">${part}</span>
+                <span class="small fw-bold" style="color:${bc(d.count)}">${d.count}</span>
+              </div>
+              <div class="ibar"><div class="ibf" style="width:${(d.count/max)*100}%;background:${bc(d.count)}"></div></div>
+            </div>
+          </div>`).join('')
+      : '<p class="text-muted small mb-0">No injuries recorded for this period.</p>';
+    el.querySelectorAll('.bpr').forEach(row =>
+      row.addEventListener('click', () => pick(row.dataset.bpPart))
+    );
+  }
+
+  function renderInfo(part) {
+    const d = bodyPartCounts[part]; if (!d) return;
+    document.getElementById('infoTitle').textContent = part;
+    document.getElementById('infoBadge').textContent =
+      `${d.count} injur${d.count===1?'y':'ies'}`;
+    document.getElementById('infoStatus').innerHTML =
+      `<span class="spill sa me-1">Active: ${d.active}</span>
+       <span class="spill sr me-1">Recovering: ${d.recovering}</span>
+       <span class="spill sc">Recovered: ${d.recovered}</span>`;
+    document.getElementById('infoBox').classList.add('on');
+  }
+
+  function renderLink(part) {
+    document.getElementById('tblTitle').textContent = part;
+    const link = document.getElementById('bpInjuryLink');
+    link.href = INJURY_LIST_URL + '?body_part=' + encodeURIComponent(part);
+    document.getElementById('injSec').classList.add('on');
+  }
+
+  function pick(part) {
+    if (sel === part) { clearSel(); return; }
+    sel = part;
+    renderSVG(); renderList(); renderInfo(part); renderLink(part);
+  }
+
+  function clearSel() {
+    sel = null;
+    renderSVG(); renderList();
+    document.getElementById('infoBox').classList.remove('on');
+    document.getElementById('injSec').classList.remove('on');
+  }
+
+  // Tooltip + click on SVG regions
+  const tip = document.getElementById('bodyMapTip');
+  document.querySelectorAll('.body-region').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const part = el.dataset.part;
+      const c = (data[part]||{count:0}).count;
+      tip.textContent = `${part}: ${c} injur${c===1?'y':'ies'}`;
+      tip.classList.add('on');
+      tip.style.left = (e.clientX - tip.offsetWidth/2) + 'px';
+      tip.style.top  = (e.clientY - 36) + 'px';
+    });
+    el.addEventListener('mouseleave', () => tip.classList.remove('on'));
+    el.addEventListener('click', () => pick(el.dataset.part));
+  });
+
+  renderSVG();
+  renderList();
+})();
+</script>
+
+
+    
+    {# Auto-logout on back-button: if the browser restores this page from bfcache
+       after the user has navigated away (e.g. logged out in another tab or pressed
+       back from the login page), force a redirect to logout. #}
+    <script>
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          // Page was restored from bfcache — force server check
+          fetch(window.location.href, { method: 'HEAD', credentials: 'same-origin' })
+            .then(function (res) {
+              // If we got redirected to the login page, that means the session
+              // is gone — redirect the visible page there too.
+              if (res.redirected && res.url.indexOf('/login') !== -1) {
+                window.location.replace(res.url);
+              }
+            })
+            .catch(function () {
+              window.location.replace('/login/');
+            });
+        }
+      });
+    </script>
+    
+  </body>
+</html>
+           
