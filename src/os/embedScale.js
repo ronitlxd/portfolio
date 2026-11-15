@@ -16,4 +16,8 @@
 // DeskPC.jsx was scaled by the same 3/4 factor to keep the on-screen size
 // unchanged - if this changes again, that needs to move with it (see the
 // comment on SCREEN_SCALE for the full list of things that depend on this).
-export const EMBED_SCALE = 4
+// Dev-only A/B switch for text sharpness: open the dev site with ?embed=2
+// (or 3, 4...) to try another value without editing code. Production
+// builds always use the default.
+const devOverride = import.meta.env.DEV ? Number(new URLSearchParams(location.search).get('embed')) : 0
+export const EMBED_SCALE = devOverride >= 1 && devOverride <= 6 ? devOverride : 4

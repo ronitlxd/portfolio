@@ -71,10 +71,14 @@ export default function ScreenBridge() {
         }}
       >
         <OS />
-        <div
-          className="crt-overlay"
-          style={{ '--crt-darkness': crtDarkness, '--crt-grain-opacity': crtGrain }}
-        />
+        {/* Dev-only A/B switch: ?crt=0 hides the overlay (and its blend
+            modes) to compare text sharpness without it. */}
+        {!(import.meta.env.DEV && new URLSearchParams(location.search).get('crt') === '0') && (
+          <div
+            className="crt-overlay"
+            style={{ '--crt-darkness': crtDarkness, '--crt-grain-opacity': crtGrain }}
+          />
+        )}
       </div>
     </Html>
   )
