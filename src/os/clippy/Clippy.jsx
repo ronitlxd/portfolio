@@ -98,7 +98,7 @@ export default function Clippy() {
         className="clippy"
         onClick={toggleChat}
         aria-label={chatOpen ? 'Close chat with Clippy' : 'Chat with Clippy'}
-        title="Ask Clippy about Ronit"
+        title="Chat with me"
       >
         <img src={src} alt="" draggable={false} />
       </button>

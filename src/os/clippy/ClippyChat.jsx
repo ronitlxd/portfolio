@@ -17,11 +17,12 @@ const CHAT_URL = import.meta.env.VITE_CHAT_URL || '/api/chat'
 const HISTORY = 6 // messages sent back to the server for context
 const MAX_INPUT = 500 // matches the server's own limit
 
+// Clippy is Ronit's avatar, so he speaks as Ronit in the first person.
 const GREETING =
-  "Hi, I'm Clippy! Ask me anything about Ronit, like projects, education, experience, or how to get in touch."
+  "Hi, I'm Ronit, dressed up as Clippy! Ask me about my projects, education, experience, or how to reach me."
 
 const OFFLINE =
-  "I can't reach my brain right now, the server might be offline. You can still email Ronit at ronitlad.ca@gmail.com."
+  "My brain is offline right now, the server might be down. You can still email me at ronitlad.ca@gmail.com."
 
 // Splits a leading [AnimationName] tag off a (possibly partial) reply.
 // Returns { text, key, pending }: pending means the text so far might still
@@ -141,7 +142,7 @@ export default function ClippyChat({ busy, setBusy, onAnimate, onClose }) {
             value={draft}
             maxLength={MAX_INPUT}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Ask about Ronit..."
+            placeholder="Ask me anything..."
             aria-label="Message"
             disabled={busy}
           />

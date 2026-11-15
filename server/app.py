@@ -151,6 +151,7 @@ async def chat(body: ChatRequest, request: Request):
         raise HTTPException(503, "model unavailable")
 
     async def stream():
+        after_dash = False  # strip the space a dash left at the next chunk's start
         try:
             async for line in resp.aiter_lines():
                 if not line:
@@ -159,7 +160,12 @@ async def chat(body: ChatRequest, request: Request):
                 text = chunk.get("message", {}).get("content", "")
                 if text:
                     # House style: no em dashes, even if the model slips.
-                    yield _EM_DASH.sub(", ", text)
+                    text = _EM_DASH.sub(", ", text)
+                    if after_dash:
+                        text = text.lstrip(" ")
+                    after_dash = text.endswith(", ")
+                    if text:
+                        yield text
                 if chunk.get("done"):
                     break
         finally:

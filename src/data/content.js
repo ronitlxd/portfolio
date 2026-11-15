@@ -251,6 +251,9 @@ export const securityProjects = [
   },
   {
     title: 'Trident - Autonomous Pentesting',
+    // Read by the Clippy chatbot (scripts/build-clippy-model.mjs) so it never
+    // calls this finished. Remove once the engine and adapters run.
+    status: 'in progress',
     description:
       "An offensive counterpart to my SOC work, an agent that attacks an authorized target on its own but only counts a bug as real once it builds a working proof for it, so it doesn't flood you with the false positives most scanners do. Still early, the reasoning and sandboxing skeleton is built, the actual attack engine and adapters are next.",
     tech: ['Python', 'Docker', 'Local LLM', 'Multi-Agent'],
