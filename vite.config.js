@@ -19,6 +19,8 @@ export default defineConfig({
     // Windows) when server/deploy.sh rewrote dist-server while it was running.
     // Also public/demos: static project replicas, copied in by scripts. A
     // watcher on files being written crashes Vite on Windows (EBUSY).
+    // Side effect: restart the dev server after adding new replica files,
+    // or it won't serve them (production builds are unaffected).
     watch: { ignored: ['**/dist/**', '**/dist-server/**', '**/public/demos/**'] },
     // Clippy's chat API lives on the home server. In dev it is reached
     // through an SSH tunnel on localhost:8090 (see server/deploy.sh host).
