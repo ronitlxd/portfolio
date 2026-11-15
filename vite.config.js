@@ -18,6 +18,9 @@ export default defineConfig({
     // Build output folders. Watching them crashed the dev server (EBUSY on
     // Windows) when server/deploy.sh rewrote dist-server while it was running.
     watch: { ignored: ['**/dist/**', '**/dist-server/**'] },
+    // Clippy's chat API lives on the home server. In dev it is reached
+    // through an SSH tunnel on localhost:8090 (see server/deploy.sh host).
+    proxy: { '/api': 'http://localhost:8090' },
   },
   build: {
     outDir: 'dist',

@@ -21,11 +21,16 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 // non-interactive) replaces the native one so there's still a scroll
 // position indicator.
 // -----------------------------------------------------------------------------
-export default function ScrollArea({ children, className = '' }) {
+//
+// `stickToBottom` (used by the Clippy chat): while the view is scrolled to
+// the bottom, growing content keeps it pinned there, so new messages stay
+// in view. Scrolling up releases it until the user scrolls back down.
+export default function ScrollArea({ children, className = '', stickToBottom = false }) {
   const outerRef = useRef(null)
   const innerRef = useRef(null)
   const [offset, setOffset] = useState(0)
   const [maxOffset, setMaxOffset] = useState(0)
+  const atBottomRef = useRef(true)
   // Touch-drag scrolling - onWheel below only ever fires for a real mouse
   // wheel, phones have no wheel events at all, so without this there was no
   // way to scroll these windows by touch whatsoever. Tracked as a ref (not
@@ -39,8 +44,12 @@ export default function ScrollArea({ children, className = '' }) {
     if (!outer || !inner) return
     const max = Math.max(0, inner.scrollHeight - outer.clientHeight)
     setMaxOffset(max)
-    setOffset((o) => Math.min(o, max))
-  }, [])
+    setOffset((o) => (stickToBottom && atBottomRef.current ? max : Math.min(o, max)))
+  }, [stickToBottom])
+
+  useEffect(() => {
+    atBottomRef.current = offset >= maxOffset - 8
+  }, [offset, maxOffset])
 
   useEffect(() => {
     recompute()

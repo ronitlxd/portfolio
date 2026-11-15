@@ -7,13 +7,16 @@ cd "$(dirname "$0")/.."
 source server/deploy.env
 SSH=(ssh -i "${DEPLOY_KEY/#\~/$HOME}" -o IdentitiesOnly=yes -o BatchMode=yes "$DEPLOY_HOST")
 
+echo "== clippy model file"
+node scripts/build-clippy-model.mjs
+
 echo "== build (base /)"
 # MSYS_NO_PATHCONV stops Git Bash on Windows rewriting "/" into a Windows path.
 MSYS_NO_PATHCONV=1 VITE_BASE=/ npm run build -- --outDir dist-server
 
 echo "== upload"
 tar -C dist-server -cf - . | "${SSH[@]}" 'mkdir -p ~/portfolio && rm -rf ~/portfolio/dist.new && mkdir ~/portfolio/dist.new && tar -xf - -C ~/portfolio/dist.new'
-tar -C server -cf - app.py requirements.txt portfolio.service | "${SSH[@]}" 'tar -xf - -C ~/portfolio'
+tar -C server -cf - app.py requirements.txt portfolio.service Modelfile | "${SSH[@]}" 'tar -xf - -C ~/portfolio'
 
 echo "== install and restart"
 "${SSH[@]}" '
@@ -21,6 +24,7 @@ echo "== install and restart"
   cd ~/portfolio
   [ -d venv ] || python3 -m venv venv
   venv/bin/pip install -q -r requirements.txt
+  ollama create ronit-clippy -f Modelfile >/dev/null
   rm -rf dist.old && { [ -d dist ] && mv dist dist.old || true; } && mv dist.new dist
   mkdir -p ~/.config/systemd/user
   cp portfolio.service ~/.config/systemd/user/

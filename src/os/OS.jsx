@@ -6,6 +6,7 @@ import StartMenu from './StartMenu'
 import ShutDown from './ShutDown'
 import Window from './Window'
 import { WINDOWS } from './windows/registry'
+import Clippy from './clippy/Clippy'
 import { requestZoomOut } from '../scene/sceneControlsStore'
 import './xp.css'
 import './os.css'
@@ -92,6 +93,8 @@ export default function OS() {
           </Window>
         )
       })}
+
+      <Clippy />
 
       {startOpen && (
         <StartMenu

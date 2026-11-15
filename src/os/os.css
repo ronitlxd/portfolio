@@ -1105,3 +1105,112 @@ img.project-category-icon {
 .corner-markers span:nth-child(2) { right: 0; top: 0; }
 .corner-markers span:nth-child(3) { right: 0; bottom: 0; }
 .corner-markers span:nth-child(4) { left: 0; bottom: 0; }
+
+/* ------------------------------ Clippy ------------------------------ */
+/* Clippy (os/clippy/Clippy.jsx) sits bottom-right above the taskbar, over
+   every window but under the Start menu (4500). Sprites are 124x93 pixel
+   art, kept crisp through the EMBED_SCALE upscale. */
+.clippy {
+  position: absolute;
+  right: 6px;
+  bottom: 32px;
+  z-index: 4200;
+  width: 124px;
+  height: 93px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  cursor: help;
+}
+
+.clippy img {
+  display: block;
+  width: 124px;
+  height: 93px;
+  image-rendering: pixelated;
+  pointer-events: none;
+  user-select: none;
+}
+
+.clippy:focus-visible {
+  outline: 1px dotted #000;
+}
+
+.win98-screen .window.clippy-chat {
+  position: absolute;
+  right: 20px;
+  bottom: 128px;
+  z-index: 4300;
+  width: 300px;
+  height: 320px;
+}
+
+.clippy-chat-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: #ffffe1;
+}
+
+.clippy-chat-log {
+  flex: 1;
+  min-height: 0;
+}
+
+.clippy-chat-log .scroll-area-inner {
+  padding: 8px 14px 4px 8px;
+}
+
+.clippy-msg {
+  margin: 0 0 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.clippy-msg-assistant {
+  margin-right: 18px;
+  background: #fff;
+  border: 1px solid #c9c38f;
+}
+
+.clippy-msg-user {
+  margin-left: 30px;
+  background: #dbe8fc;
+  border: 1px solid #9db7e6;
+}
+
+.clippy-typing {
+  color: #777;
+  font-style: italic;
+}
+
+.clippy-chat-input {
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border-top: 1px solid #c9c38f;
+  background: #ece9d8;
+}
+
+.clippy-chat-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 5px;
+  border: 1px solid #7f9db9;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+}
+
+.clippy-chat-input button {
+  min-width: 52px;
+  font-size: 12px;
+}

@@ -1,0 +1,53 @@
+// Clippy animation sprites (animated PNGs in public/media/clippy/) and how
+// long each one plays, in ms. Sprites and timings come from
+// github.com/felixrieseberg/clippy (MIT code, Clippy art is Microsoft's).
+// Generated from that repo's clippy-animations.tsx, do not edit by hand.
+
+const dir = `${import.meta.env.BASE_URL}media/clippy/`
+
+export const ANIMATIONS = {
+  Alert: { src: dir + "Alert.png", length: 2400 },
+  CheckingSomething: { src: dir + "CheckingSomething.png", length: 6640 },
+  Congratulate: { src: dir + "Congratulate.png", length: 3680 },
+  Default: { src: dir + "Default.png", length: 0 },
+  EmptyTrash: { src: dir + "EmptyTrash.png", length: 5000 },
+  Explain: { src: dir + "Explain.png", length: 1500 },
+  GestureDown: { src: dir + "GestureDown.png", length: 2250 },
+  GestureLeft: { src: dir + "GestureLeft.png", length: 3050 },
+  GestureRight: { src: dir + "GestureRight.png", length: 3250 },
+  GestureUp: { src: dir + "GestureUp.png", length: 2800 },
+  GetArtsy: { src: dir + "GetArtsy.png", length: 4900 },
+  GetAttention: { src: dir + "GetAttention.png", length: 2650 },
+  GetTechy: { src: dir + "GetTechy.png", length: 4500 },
+  GetWizardy: { src: dir + "GetWizardy.png", length: 3680 },
+  GoodBye: { src: dir + "GoodBye.png", length: 4450 },
+  Greeting: { src: dir + "Greeting.png", length: 4450 },
+  "Hearing 1": { src: dir + "Hearing_1.png", length: 5400 },
+  Hide: { src: dir + "Hide.png", length: 50 },
+  "Idle1 1": { src: dir + "Idle1_1.png", length: 7300 },
+  IdleAtom: { src: dir + "IdleAtom.png", length: 4500 },
+  IdleEyeBrowRaise: { src: dir + "IdleEyeBrowRaise.png", length: 1500 },
+  IdleFingerTap: { src: dir + "IdleFingerTap.png", length: 1150 },
+  IdleHeadScratch: { src: dir + "IdleHeadScratch.png", length: 1900 },
+  IdleRopePile: { src: dir + "IdleRopePile.png", length: 7500 },
+  IdleSideToSide: { src: dir + "IdleSideToSide.png", length: 5700 },
+  IdleSnooze: { src: dir + "IdleSnooze.png", length: 13600 },
+  LookDown: { src: dir + "LookDown.png", length: 1800 },
+  LookDownLeft: { src: dir + "LookDownLeft.png", length: 1800 },
+  LookDownRight: { src: dir + "LookDownRight.png", length: 1800 },
+  LookLeft: { src: dir + "LookLeft.png", length: 1800 },
+  LookRight: { src: dir + "LookRight.png", length: 1800 },
+  LookUp: { src: dir + "LookUp.png", length: 1800 },
+  LookUpLeft: { src: dir + "LookUpLeft.png", length: 1800 },
+  LookUpRight: { src: dir + "LookUpRight.png", length: 1800 },
+  Print: { src: dir + "Print.png", length: 8400 },
+  Processing: { src: dir + "Processing.png", length: 3800 },
+  RestPose: { src: dir + "RestPose.png", length: 100 },
+  Save: { src: dir + "Save.png", length: 5530 },
+  Searching: { src: dir + "Searching.png", length: 8100 },
+  SendMail: { src: dir + "SendMail.png", length: 6800 },
+  Show: { src: dir + "Show.png", length: 50 },
+  Thinking: { src: dir + "Thinking.png", length: 4500 },
+  Wave: { src: dir + "Wave.png", length: 4900 },
+  Writing: { src: dir + "Writing.png", length: 8400 },
+}

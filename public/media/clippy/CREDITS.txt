@@ -1,0 +1,4 @@
+Clippy animation sprites copied from https://github.com/felixrieseberg/clippy
+(src/renderer/images/animations). That project's code is MIT licensed
+(Copyright 2025 Felix Rieseberg). The Clippy character and imagery are
+copyrighted by Microsoft Corporation.
