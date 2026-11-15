@@ -3,102 +3,116 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PrivaRoute</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-  <link rel="stylesheet" href="driver.css">
+  <title>Driver Prompt</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <!-- Replica of the PrivaRoute engineer view. demo-data.js answers every /api request with a scripted demo. -->
+  <script src="demo-data.js"></script>
+  <script src="inspector.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="profiles.js" defer></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">Priva<span>Route</span></div>
-    <div class="clock" id="clock">--:--</div>
-    <div class="top-actions">
-      <div class="profile">
-        <button type="button" id="profile-button" class="chip" aria-haspopup="true" aria-expanded="false">Guest ▾</button>
-        <div id="profile-panel" class="popover" hidden>
-          <label>Driver <select id="profile-select"></select></label>
-          <label id="password-row" hidden>Password <input id="profile-password" type="password" autocomplete="current-password"></label>
-          <button type="button" id="profile-switch" class="primary">Switch</button>
-          <p id="profile-error" class="error" role="alert"></p>
-          <p class="hint">Each driver's data is encrypted with their own password. A guest has no private data.</p>
-        </div>
-      </div>
-      <a class="chip ghost" href="#" onclick="return false" title="The engineer view is not part of this replica">Engineer view</a>
-    </div>
-  </header>
-
-  <main class="layout">
-    <section class="display" aria-label="Display">
-      <nav class="tabs" role="tablist">
-        <button type="button" role="tab" data-panel="map" class="active">Map</button>
-        <button type="button" role="tab" data-panel="media">Media</button>
-        <button type="button" role="tab" data-panel="phone">Phone</button>
-        <button type="button" role="tab" data-panel="info">Info</button>
-      </nav>
-
-      <div class="panel active" id="panel-map">
-        <div id="map" aria-label="Map"></div>
-        <div class="route-card" id="route-card" hidden>
-          <div class="route-head">
-            <div><div class="eyebrow">Route to</div><div class="route-dest" id="route-dest"></div><div class="route-via" id="route-via"></div></div>
-            <div class="route-eta"><span id="route-time"></span><small id="route-dist"></small></div>
-          </div>
-          <div class="route-buttons">
-            <button type="button" id="drive-button" class="primary">Simulate drive</button>
-            <a id="gmaps-link" class="secondary" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
-          </div>
-          <ol class="steps" id="route-steps"></ol>
-        </div>
-      </div>
-
-      <div class="panel" id="panel-media">
-        <div class="now-playing" id="now-playing">
-          <div class="eyebrow">Media</div>
-          <div class="track" id="track-name">Nothing playing</div>
-          <div id="media-consent" class="consent" hidden>
-            <p>To play this on YouTube, the search text <strong id="consent-query"></strong> is sent to YouTube. Nothing is sent until you tap Play.</p>
-            <button type="button" id="youtube-play" class="primary">Play on YouTube</button>
-          </div>
-          <p id="media-note" class="hint"></p>
-          <div class="player" id="player"></div>
-        </div>
-      </div>
-
-      <div class="panel" id="panel-phone">
-        <div class="call-screen" id="call-screen">
-          <div class="avatar" id="call-avatar">☎</div>
-          <div class="call-name" id="call-name">No active call</div>
-          <div class="call-state" id="call-state">Calls are simulated</div>
-          <button type="button" id="end-call" class="danger" hidden>End call</button>
-        </div>
-        <div class="cards" id="message-cards"></div>
-      </div>
-
-      <div class="panel" id="panel-info">
-        <div class="cards" id="info-cards"><p class="hint">Results such as your next appointment or latest message appear here.</p></div>
-      </div>
+  <a id="driver-link" href="driver.html" title="The driver screen for the same session">Driver screen</a>
+  <div id="profile-switcher" hidden>
+    <button id="profile-button" type="button" aria-haspopup="true" aria-controls="profile-panel">Guest ▾</button>
+    <section id="profile-panel" aria-label="Driver profile" hidden>
+      <h2>Driver profile</h2>
+      <label>Profile <select id="profile-select"></select></label>
+      <label hidden>Password <input id="profile-password" type="password" autocomplete="current-password" maxlength="256"></label>
+      <button id="profile-switch" type="button">Switch</button>
+      <button id="profile-edit-open" type="button" hidden>Edit my private data</button>
+      <details>
+        <summary>Create a profile</summary>
+        <label>Name <input id="new-profile-name" maxlength="40" autocomplete="off"></label>
+        <label><span id="new-password-label">Password</span> <input id="new-profile-password" type="password" autocomplete="new-password" maxlength="256"></label>
+        <button id="profile-create" type="button">Create and sign in</button>
+      </details>
+      <p id="profile-error" role="alert"></p>
+      <p class="profile-note">The guest has no private data. Each profile's private database is encrypted with its password.</p>
     </section>
-
-    <section class="conversation" aria-label="Conversation">
-      <div class="messages" id="messages" aria-live="polite">
-        <div class="msg assistant intro">Hi! Ask for directions, music, calls or messages. Personal details stay on this vehicle or are masked before a larger model sees them.</div>
-      </div>
-      <div class="pending" id="confirm-card" hidden>
-        <div class="eyebrow">Confirm before I do this</div>
-        <ul id="confirm-steps"></ul>
-        <div class="row"><button type="button" id="confirm-yes" class="primary">Confirm</button><button type="button" id="confirm-no" class="secondary">Cancel</button></div>
-      </div>
-      <form class="composer" id="composer">
-        <input id="prompt" autocomplete="off" maxlength="2000" placeholder="Ask anything…" aria-label="Request">
-        <button type="button" id="mic" class="secondary mic" aria-pressed="false" aria-label="Speak your request" title="Speak your request (transcribed on this vehicle)" hidden>🎤</button>
-        <button type="submit" id="send" class="primary">Send</button>
-      </form>
-      <div class="status" id="status" aria-live="polite"></div>
+  </div>
+  <section id="profile-editor" aria-labelledby="editor-heading" hidden>
+    <div class="editor-header"><h2 id="editor-heading">My private data</h2><button id="editor-close" type="button">Close</button></div>
+    <p class="profile-note">Saved only in this profile's encrypted database. Places use coordinates so the address never goes to map services.</p>
+    <h3>Contacts</h3>
+    <ul id="editor-contacts"></ul>
+    <form id="add-contact" class="editor-form">
+      <input name="alias" placeholder="What you call them (mom)" maxlength="40" required>
+      <input name="label" placeholder="Name (Priya Shah)" maxlength="80" required>
+      <input name="email" placeholder="Email or phone (optional)" maxlength="120">
+      <button type="submit">Add contact</button>
+    </form>
+    <h3>Places</h3>
+    <ul id="editor-places"></ul>
+    <form id="add-place" class="editor-form">
+      <input name="alias" placeholder="Place (home, gym)" maxlength="40" required>
+      <input name="label" placeholder="Label (Home)" maxlength="80" required>
+      <input name="address" placeholder="Address (optional, shown only)" maxlength="200">
+      <input name="latitude" placeholder="Latitude" inputmode="decimal" required>
+      <input name="longitude" placeholder="Longitude" inputmode="decimal" required>
+      <button type="submit">Add place</button>
+    </form>
+    <h3>Preferences</h3>
+    <ul id="editor-preferences"></ul>
+    <form id="add-preference" class="editor-form">
+      <select name="key"><option value="usual_playlist">Usual music</option><option value="usual_drink">Usual drink</option></select>
+      <input name="value" placeholder="Value (Jazz, Oat latte)" maxlength="80" required>
+      <button type="submit">Save preference</button>
+    </form>
+    <p id="editor-error" role="alert"></p>
+  </section>
+  <main id="workspace" aria-label="PrivaRoute prompt routing workspace">
+    <section id="flow-panel" aria-labelledby="flow-heading">
+      <h1 id="flow-heading">Architecture flow</h1>
+      <div id="architecture-trace" aria-live="polite"></div>
     </section>
+    <aside id="right-rail">
+      <section id="json-inspector" aria-labelledby="inspector-heading">
+        <h2 id="inspector-heading">Block details</h2>
+        <p id="inspector-selection">Driver Prompt</p>
+        <div id="inspector-json" aria-live="polite"></div>
+      </section>
+      <section id="api-preview-panel" aria-labelledby="api-preview-heading">
+        <h2 id="api-preview-heading">Response</h2>
+        <div id="response-content" aria-live="polite">
+          <p id="response-state"></p>
+          <p id="response-answer">Your response will appear here.</p>
+          <div id="response-api-section" hidden>
+            <h3>Sample API Call</h3>
+            <p id="api-preview-contract"></p>
+            <pre id="api-preview"></pre>
+          </div>
+        </div>
+      </section>
+      <section id="history-panel" aria-labelledby="history-heading">
+        <div class="panel-heading-row">
+          <h2 id="history-heading">Prompt history</h2>
+          <span id="history-count">0 / 20</span>
+        </div>
+        <div id="prompt-history" aria-live="polite"></div>
+      </section>
+    </aside>
   </main>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <!-- Replica of the PrivaRoute driver screen. demo-data.js answers every /api request with a scripted demo. -->
-  <script src="demo-data.js"></script>
-  <script src="driver.js"></script>
+  <form id="prompt-form">
+    <p id="status" role="status" aria-live="polite" aria-atomic="true">Waiting for a prompt.</p>
+    <textarea id="prompt" name="prompt" rows="1" maxlength="2000" placeholder="Type a prompt…" aria-label="Driver prompt" enterkeyhint="send" required></textarea>
+    <div class="execution-controls">
+      <button id="run-simulation" type="button">Run request</button>
+      <button id="cancel-request" type="button">Cancel request</button>
+      <button id="reset-session" type="button">Reset session</button>
+      <span id="simulation-state">V2 integrated · sample data · simulated apps</span>
+    </div>
+    <div id="clarification-controls" hidden>
+      <label id="clarification-question" for="clarification-answer"></label>
+      <input id="clarification-answer" maxlength="2000" aria-label="Clarification answer">
+      <button id="answer-clarification" type="button">Submit answer</button>
+    </div>
+    <div id="confirmation-controls" hidden>
+      <span id="confirmation-summary"></span>
+      <button id="confirm-action" type="button">Confirm plan</button>
+      <button id="cancel-action" type="button">Cancel</button>
+    </div>
+  </form>
 </body>
 </html>
