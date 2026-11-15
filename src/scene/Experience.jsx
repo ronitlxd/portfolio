@@ -6,7 +6,7 @@ import * as THREE from 'three'
 import { SCREEN_TARGET, SCREEN_POSITION, SCREEN_ROTATION, SCREEN_SCALE } from './DeskPC'
 import ScreenBridge from './ScreenBridge'
 import OfficePack from './OfficePack'
-import LampSwitch from './LampSwitch'
+import SceneSwitches from './GlowSwitch'
 import CameraRig, { WIDE, FrozenCamera } from './CameraRig'
 import IntroHUD from './IntroHUD'
 import AssetLoader from './AssetLoader'
@@ -127,7 +127,7 @@ export default function Experience() {
               gone - just the 90s office pack, individually editable part by
               part (see OfficePack.jsx), plus the resume screen. */}
           <OfficePack fanOn={controls.fanOn} lightsOn={controls.lightsOn} />
-          <LampSwitch />
+          <SceneSwitches />
 
           {/* Shadow-only ground catcher: ContactShadows renders its blurred
               shadow onto its OWN internal plane, which it draws with a
