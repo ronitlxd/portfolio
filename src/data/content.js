@@ -486,6 +486,20 @@ export const firewallEasterEgg = {
   body: 'This is a protected system file. The good ones always look. Curiosity is half of security, keep poking.',
 }
 
+// The "My Projects" desktop folder: projects with a UI, each opened in the
+// replica browser (os/windows/BrowserWindow.jsx). `path` is a static replica
+// page under public/demos/ that uses sample data only; null means the
+// replica isn't built yet and the browser shows a "coming soon" page.
+// `address` is only what the fake address bar displays.
+export const projectReplicas = [
+  { id: 'voltlab', title: 'VoltLAB', subtitle: 'Home Lab dashboard', glyph: '\u{1F6E1}\u{FE0F}', address: 'http://voltlab.lab/', path: 'demos/voltlab/index.html' },
+  { id: 'privaroute', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: null },
+  { id: 'agentic-soc', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: null },
+  { id: 'argus', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: null },
+  { id: 'athlete', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: null },
+  { id: 'educompare', title: 'Educompare', subtitle: 'Course comparison (team)', glyph: '\u{1F393}', address: 'http://educompare.local/', path: null },
+]
+
 // Desktop / Start menu external links.
 export const links = {
   email: 'mailto:ronitlad.ca@gmail.com',

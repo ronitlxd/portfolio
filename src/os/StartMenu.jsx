@@ -31,6 +31,7 @@ export default function StartMenu({ onOpen, onExternal, onShutDown, onClose }) {
       <div className="rail">Ronit Lad</div>
       <div className="items">
         {item('My Showcase', '\u{1F5A5}\u{FE0F}', () => onOpen('showcase'))}
+        {item('My Projects', '\u{1F4C1}', () => onOpen('projects'))}
         {item('SOC_Lab', '\u{1F5B3}\u{FE0F}', () => onOpen('soclab'))}
         {item('firewall.sys', '\u{1F6E1}\u{FE0F}', () => onOpen('firewall'))}
         {item('Paint', '\u{1F3A8}', () => onOpen('paint'))}

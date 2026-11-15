@@ -2,6 +2,8 @@ import ShowcaseWindow from './ShowcaseWindow'
 import SocLabWindow from './SocLabWindow'
 import FirewallWindow from './FirewallWindow'
 import PaintWindow from './PaintWindow'
+import ProjectsFolderWindow from './ProjectsFolderWindow'
+import BrowserWindow from './BrowserWindow'
 import { links } from '../../data/content'
 
 // TASK 6: About/Skills/Projects/Contact used to be their own windows here -
@@ -34,6 +36,8 @@ function centered({ width, height }) {
 // desktop icons (left 84px), wallpaper and Clippy (bottom-right) visible.
 const SHOWCASE_SIZE = { width: 600, height: 420 }
 const PAINT_SIZE = { width: 600, height: 440 }
+const FOLDER_SIZE = { width: 560, height: 360 }
+const BROWSER_SIZE = { width: 740, height: 520 }
 
 // Each window: id -> { title, icon (emoji glyph), Component, size, pos }
 export const WINDOWS = {
@@ -76,11 +80,26 @@ export const WINDOWS = {
     size: PAINT_SIZE,
     pos: centered(PAINT_SIZE),
   },
+  projects: {
+    title: 'My Projects',
+    icon: '\u{1F4C1}', // folder
+    Component: ProjectsFolderWindow,
+    size: FOLDER_SIZE,
+    pos: centered(FOLDER_SIZE),
+  },
+  browser: {
+    title: 'Internet Explorer',
+    icon: '\u{1F310}', // globe
+    Component: BrowserWindow,
+    size: BROWSER_SIZE,
+    pos: centered(BROWSER_SIZE),
+  },
 }
 
 // Desktop icons, in display order. `external` opens a URL instead of a window.
 export const DESKTOP_ICONS = [
   { id: 'showcase', label: 'My Showcase', glyph: '\u{1F5A5}\u{FE0F}' },
+  { id: 'projects', label: 'My Projects', glyph: '\u{1F4C1}' },
   { id: 'soclab', label: 'SOC_Lab', glyph: '\u{1F5B3}\u{FE0F}' },
   { id: 'firewall', label: 'firewall.sys', glyph: '\u{1F6E1}\u{FE0F}' },
   { id: 'paint', label: 'Paint', glyph: '\u{1F3A8}' },

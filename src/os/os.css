@@ -1214,3 +1214,217 @@ img.project-category-icon {
   min-width: 52px;
   font-size: 12px;
 }
+
+/* ------------------------------ My Projects folder ------------------------------ */
+/* ProjectsFolderWindow.jsx: XP Explorer layout, address bar on top, blue
+   task pane on the left, large project icons on the right. */
+.explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  font-size: 11px;
+}
+
+.explorer-bar,
+.browser-toolbar,
+.browser-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  background: #ece9d8;
+  border-bottom: 1px solid #aca899;
+}
+
+.explorer-label,
+.browser-label {
+  color: #555;
+  flex: none;
+}
+
+.explorer-address,
+.browser-address {
+  flex: 1;
+  min-width: 0;
+  padding: 2px 5px;
+  border: 1px solid #7f9db9;
+  background: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.explorer-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.explorer-tasks {
+  flex: none;
+  width: 150px;
+  padding: 10px 8px;
+  background: linear-gradient(#7ba2e7, #6375d6);
+}
+
+.explorer-task-box {
+  margin-bottom: 10px;
+  border-radius: 3px 3px 0 0;
+  background: #d6dff7;
+  overflow: hidden;
+}
+
+.explorer-task-title {
+  padding: 4px 8px;
+  background: linear-gradient(90deg, #fff, #c6d3f7);
+  color: #215dc6;
+  font-weight: bold;
+}
+
+.explorer-task-box a,
+.explorer-task-box p {
+  display: block;
+  margin: 0;
+  padding: 5px 8px;
+  color: #215dc6;
+  line-height: 1.35;
+}
+
+.explorer-task-box p {
+  color: #333;
+}
+
+.explorer-task-box a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.explorer-task-box a.disabled {
+  color: #8a9bc4;
+  cursor: default;
+  text-decoration: none;
+}
+
+.explorer-items {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: start;
+  gap: 6px;
+  padding: 12px;
+}
+
+.explorer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+.explorer-item.selected {
+  background: #316ac5;
+  border-color: #316ac5;
+  color: #fff;
+}
+
+.explorer-item.selected .explorer-item-sub {
+  color: #dbe6ff;
+}
+
+.explorer-item-glyph {
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+.explorer-item-title {
+  font-weight: bold;
+}
+
+.explorer-item-sub {
+  color: #666;
+  font-size: 10px;
+}
+
+/* ------------------------------ Replica browser ------------------------------ */
+/* BrowserWindow.jsx: IE-style chrome around an <iframe> that renders a
+   project replica at desktop width, scaled down to fit. */
+.browser {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ece9d8;
+  font-size: 11px;
+}
+
+.browser-toolbar button {
+  min-width: 0;
+  padding: 1px 8px;
+  font-size: 11px;
+  flex: none;
+}
+
+.browser-links {
+  gap: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.browser-links a {
+  color: #000;
+  cursor: pointer;
+}
+
+.browser-links a.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.browser-notice {
+  padding: 3px 8px;
+  background: #ffffe1;
+  border-bottom: 1px solid #c9c38f;
+  color: #333;
+}
+
+.browser-view {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.browser-view iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  transform-origin: 0 0;
+  background: #fff;
+}
+
+.browser-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #444;
+  font-size: 13px;
+}
+
+.browser-placeholder span {
+  font-size: 42px;
+}
+
+.browser-placeholder p {
+  margin: 0;
+}
