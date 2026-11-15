@@ -26,17 +26,17 @@ const listeners = new Set()
 // - os.css's rgba()/opacity rules reference those vars (with a fallback) so
 // this store is the only place the "current" value lives, same idea as
 // fanOn/lightsOn above.
-// crtDarkness/crtGrain default to Ronit's tuned values (0.08/0.89), set live
-// via the "Screen" section of the edit-mode panel and confirmed as the
-// desired look - a subtle vignette darkening plus a pronounced grain/noise
-// layer. Still fully adjustable from that same panel.
+// crtDarkness/crtGrain default to Ronit's tuned values: a subtle vignette
+// darkening plus a light grain/noise layer (grain lowered from 0.89 to 0.35
+// for a cleaner screen). Still adjustable from the "Screen" section of the
+// edit-mode panel.
 let state = {
   fanOn: true,
   lightsOn: true,
   zoomedToScreen: false,
   zoomOutSignal: 0,
   crtDarkness: 0.08,
-  crtGrain: 0.89,
+  crtGrain: 0.35,
 }
 
 function emit() {

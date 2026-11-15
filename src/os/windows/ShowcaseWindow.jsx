@@ -5,7 +5,6 @@ import {
   aboutPage,
   educationPage,
   experience,
-  projectsIntro,
   projectCategories,
   securityProjects,
   devProjects,
@@ -101,9 +100,10 @@ function AboutPage() {
   )
 }
 
-// Projects landing (henryheffernan.com-style): a big "Projects" heading,
-// intro paragraph, and two clickable XP-style category cards (Security Ops
-// / Dev Projects) instead of one long list. Each card's icon slot now
+// Projects landing (henryheffernan.com-style): a big "Projects" heading and
+// two clickable XP-style category cards (Security Ops / Dev Projects)
+// instead of one long list. The "& Security" subhead and intro paragraph
+// were removed at Ronit's request. Each card's icon slot now
 // renders its real artwork (projectCategories[].icon in data/content.js) -
 // .project-category-icon in os.css keeps the dashed border as a fallback
 // for whichever category doesn't have one yet.
@@ -111,8 +111,6 @@ function ProjectsLanding({ setPage }) {
   return (
     <>
       <h1 className="welcome-heading">Projects</h1>
-      <p className="projects-subhead">&amp; Security</p>
-      <p>{projectsIntro}</p>
       <div className="project-category-grid">
         {projectCategories.map((cat) => (
           <button
