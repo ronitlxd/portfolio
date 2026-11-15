@@ -78,69 +78,179 @@ canvas {
   pointer-events: none;
 }
 
-/* XP-style boot screen: wordmark, segmented blue bar driven by the real
-   download percentage (AssetLoader.jsx), status line underneath. */
+/* XP-style boot screen (AssetLoader.jsx): flag + wordmark, a bar whose
+   blocks fill with the real download progress, corner footers, then a blue
+   "welcome" screen. Sizes scale down on narrow screens via --boot-u. */
 .boot-xp {
+  /* One design pixel: 1px, shrinking on screens narrower than 420px or
+     shorter than 480px (landscape phones) so nothing is cut off. */
+  --boot-u: min(1px, calc(100vw / 420), calc(100vh / 480));
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 48px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: #fff;
-}
-
-.boot-xp-wordmark {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  font-family: Tahoma, Verdana, sans-serif;
   user-select: none;
 }
 
-.boot-xp-name {
-  font-size: clamp(36px, 8vw, 64px);
-  font-weight: 700;
-  letter-spacing: -1px;
-}
-
-.boot-xp-sub {
-  font-size: clamp(14px, 3vw, 22px);
-  font-style: italic;
-  color: #f08c22;
-  margin-top: 4px;
-}
-
-.boot-xp-bar {
+.boot-logo {
   display: flex;
-  gap: 2px;
-  width: min(220px, 70vw);
-  height: 18px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: calc(70 * var(--boot-u));
+  animation: boot-fade-in 0.8s ease-out;
+}
+
+.boot-flag {
+  width: calc(200 * var(--boot-u));
+  height: auto;
+  margin-bottom: calc(8 * var(--boot-u));
+}
+
+.boot-ms {
+  align-self: flex-start;
+  margin-left: calc(6 * var(--boot-u));
+  font-size: calc(16 * var(--boot-u));
+  color: #8a8a8a;
+  letter-spacing: 0.5px;
+}
+
+.boot-ms sup {
+  font-size: 0.55em;
+}
+
+.boot-wordmark {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.boot-windows {
+  font-size: calc(56 * var(--boot-u));
+  font-weight: bold;
+  font-style: italic;
+  color: #fff;
+  letter-spacing: -2px;
+}
+
+.boot-xp-tag {
+  position: relative;
+  top: calc(-14 * var(--boot-u));
+  margin-left: calc(4 * var(--boot-u));
+  font-size: calc(44 * var(--boot-u));
+  font-weight: bold;
+  font-style: italic;
+  color: #ff6a00;
+}
+
+.boot-tm {
+  position: relative;
+  top: calc(-30 * var(--boot-u));
+  margin-left: 2px;
+  font-size: calc(10 * var(--boot-u));
+  color: #8a8a8a;
+}
+
+/* 12 blocks of 11px with 3px gaps = 165px, plus padding and border. */
+.boot-bar {
+  flex: none;
+  width: 173px;
+  height: 20px;
   padding: 3px;
-  border: 2px solid #b2b2b2;
-  border-radius: 4px;
-  background: #000;
+  border: 1px solid #555;
+  border-radius: 3px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-.boot-xp-seg {
-  flex: 1;
+.boot-blocks {
+  display: flex;
+  gap: 3px;
+  width: fit-content;
+  height: 100%;
+}
+
+.boot-block {
+  flex: none;
+  width: 11px;
+  height: 100%;
   border-radius: 1px;
-  background: transparent;
-  transition: background 0.15s linear;
 }
 
-.boot-xp-seg.on {
-  background: linear-gradient(#a8c8ff, #2a5bd7 45%, #1a3fa8 55%, #6d9bff);
+.boot-block.on {
+  background: linear-gradient(180deg, #5aa7ff 0%, #2472d6 40%, #10509f 100%);
 }
 
-.boot-xp-status {
-  margin: -32px 0 0;
+/* Download finished, scene still starting: XP's three sliding blocks. */
+.boot-blocks-slide {
+  animation: boot-slide 1.8s linear infinite;
+}
+
+@keyframes boot-slide {
+  from { transform: translateX(-45px); }
+  to { transform: translateX(170px); }
+}
+
+@keyframes boot-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.boot-foot {
+  position: absolute;
+  bottom: 28px;
+  color: #8a8a8a;
+  font-size: 11px;
+}
+
+.boot-foot-left {
+  left: 28px;
+}
+
+.boot-foot-right {
+  right: 28px;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.boot-foot sup {
+  font-size: 0.55em;
+}
+
+.boot-welcome {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0050d0 0%, #3080e8 50%, #60a8f8 100%);
   font-family: Tahoma, Verdana, sans-serif;
-  font-size: 13px;
-  color: #9a9a9a;
-  font-variant-numeric: tabular-nums;
+}
+
+.boot-welcome span {
+  font-size: 36px;
+  font-weight: bold;
+  font-style: italic;
+  color: #fff;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  animation: boot-welcome-in 0.8s ease-out;
+}
+
+@keyframes boot-welcome-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-blocks-slide,
+  .boot-logo,
+  .boot-welcome span {
+    animation: none;
+  }
 }
 
 /* ------------------------------ intro corner HUD ------------------------------ */
