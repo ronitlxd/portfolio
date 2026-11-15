@@ -31,6 +31,7 @@ add(
   `Email: ${p.email}`,
   `GitHub: ${p.github}`,
   `LinkedIn: ${p.linkedin}`,
+  `Demos on this site: open the "My Projects" folder on the desktop (or a project's "View replica" button) to try interactive replicas of ${c.projectReplicas.map((r) => r.title).join(', ')}. They use sample data only.`,
   '',
   '## About me',
   c.aboutPage.intro,
