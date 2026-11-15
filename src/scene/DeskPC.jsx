@@ -1,4 +1,5 @@
 import Prop from './Prop'
+import { EMBED_SCALE } from '../os/embedScale'
 
 // -----------------------------------------------------------------------------
 // HERO PROP (v2 - single combined model).
@@ -17,23 +18,33 @@ import Prop from './Prop'
 export const GROUP = [0, 0, 0]
 export const MODEL_SCALE = 0.01
 
-// Finalized via the "screen" entry in the edit-mode layout editor (drag,
-// tilt, and scale the OS plane onto the glass, then "Copy all as code").
-// World-space transform for the "screen" Editable in Experience.jsx.
+// World-space transform for the "screen" Editable in Experience.jsx, i.e.
+// where the OS (<Html transform> in ScreenBridge.jsx) sits on the CRT.
 //
-// SCREEN_SCALE is inversely proportional to EMBED_SCALE (os/embedScale.js)
-// - the outer <Html> pixel box grows by EMBED_SCALE, so this has to shrink
-// by the same factor to keep the actual on-screen size/position on the
-// glass unchanged. EMBED_SCALE went 2 -> 3 -> 4 for an increasingly
-// clearer/sharper screen, so these values were multiplied by 3/4 (from
-// [0.0056, 0.00533, 0.00267]) to match. If EMBED_SCALE changes again, scale
-// these by (old/new) the same way.
-export const SCREEN_POSITION = [5.409, 1.121, 4.105]
-export const SCREEN_ROTATION = [-2.865, 1.565, 2.866]
-// Re-baked from a live "Copy all as code" dump out of the edit-mode layout
-// editor (screen nudged/rescaled by hand on the glass) - position/rotation
-// unchanged, only the scale moved.
-export const SCREEN_SCALE = [0.004, 0.004, 0.001]
+// Fitted to the real glass, not hand-dragged. The glass is its own mesh in
+// the office pack (node "Object_187", material "Monitor_Glass.001", inside
+// Monitor_002.001_93). Its four corner vertices, in world space and
+// including that monitor's PART_OFFSETS nudge in OfficePack.jsx (shift
+// -0.818 and 1.199x stretch along z), lie in the plane x = 5.4143 and span
+// z 3.9301..4.2822 and y 0.9991..1.2424. If the monitor's PART_OFFSETS
+// change, these numbers must be recomputed from the glass again.
+const GLASS_CENTER = [5.4143, 1.1208, 4.1062]
+const GLASS_WIDTH = 0.3521 // along world z
+const GLASS_HEIGHT = 0.2433 // along world y
+
+export const SCREEN_POSITION = GLASS_CENTER
+// Faces +X (towards the camera): a quarter turn about Y puts the OS's
+// right edge along -z and its normal along +x.
+export const SCREEN_ROTATION = [0, Math.PI / 2, 0]
+// drei's <Html transform> maps 40 CSS px to 1 world unit (times this
+// scale), and the OS box is 800x600 * EMBED_SCALE px. So this stretches it
+// to exactly the glass. The glass is wider than 4:3 (because of the 1.199x
+// monitor stretch), so x ends up about 8.5% larger than y.
+export const SCREEN_SCALE = [
+  (GLASS_WIDTH * 40) / (800 * EMBED_SCALE),
+  (GLASS_HEIGHT * 40) / (600 * EMBED_SCALE),
+  0.001,
+]
 
 // target OrbitControls aims at (see Experience.jsx)
 export const SCREEN_TARGET = SCREEN_POSITION
