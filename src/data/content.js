@@ -26,7 +26,9 @@ export const profile = {
 // now, but cheap to keep as a fallback/short-form version rather than
 // deleting it outright).
 export const aboutPage = {
-  heading: 'Welcome',
+  // Big "Welcome" heading removed at Ronit's request. Set a string here to
+  // bring a heading back above the intro.
+  heading: '',
   intro:
     "I'm a cybersecurity enthusiast pursuing my Master of Applied Computing at the University of Windsor. I build and break things to learn how to defend them, mostly around SOC operations, detection, and log analysis. Now I'm looking to do it for real, in a live IT security environment.",
   // Henry-style inline photo: a real (if very old) photo dropped into the

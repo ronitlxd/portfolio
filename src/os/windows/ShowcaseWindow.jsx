@@ -35,8 +35,9 @@ import {
 // convention as the rest of this project).
 // -----------------------------------------------------------------------------
 
+// No Home page anymore (Ronit's request): the window opens straight on
+// About, with the sidebar always shown.
 const NAV = [
-  { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' },
@@ -72,7 +73,7 @@ function AboutFigure({ fig, extraClass }) {
 function AboutPage() {
   return (
     <>
-      <h1 className="welcome-heading">{aboutPage.heading}</h1>
+      {aboutPage.heading && <h1 className="welcome-heading">{aboutPage.heading}</h1>}
       <p>{aboutPage.intro}</p>
       {aboutPage.figures?.map((fig) => (
         <AboutFigure key={fig.src} fig={fig} />
@@ -507,26 +508,10 @@ const PAGES = {
 }
 
 export default function ShowcaseWindow() {
-  const [page, setPage] = useState('home')
+  const [page, setPage] = useState('about')
   // Which single project "More" was last clicked on, plus which category
   // list to return to - read by ProjectDetailPage, set by ProjectList.
   const [activeProject, setActiveProject] = useState(null)
-
-  if (page === 'home') {
-    return (
-      <div className="showcase">
-        <h1>{profile.name}</h1>
-        <p className="subtitle">Cybersecurity Enthusiast</p>
-        <nav className="nav-row">
-          <a tabIndex={0} onClick={() => setPage('about')}>ABOUT</a>
-          <a tabIndex={0} onClick={() => setPage('education')}>EDUCATION</a>
-          <a tabIndex={0} onClick={() => setPage('projects')}>PROJECTS</a>
-          <a tabIndex={0} onClick={() => setPage('experience')}>EXPERIENCE</a>
-          <a tabIndex={0} onClick={() => setPage('contact')}>CONTACT</a>
-        </nav>
-      </div>
-    )
-  }
 
   const Page = PAGES[page]
   const inProjects =
