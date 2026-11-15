@@ -32,7 +32,10 @@ const SHOW_EDIT_OVERLAY = false
 //  2. Fog (added directly on <Canvas>, args=[BG, near, far]) does the actual
 //     "infinite backdrop" work - it's what makes the cubicle's far edges
 //     dissolve into BG instead of ending in a hard silhouette.
-const BG = '#d4d4d4'
+const BG = '#b4b4b4'
+// The overhead fill Lightformer used to share BG's colour. Kept at the old,
+// lighter value so darkening the backdrop doesn't also dim the cubicle.
+const FILL_LIGHT = '#d4d4d4'
 
 // Floor/desk footprint center, read off the office pack's own baked node
 // transforms (same source as CAMERA_TARGET in CameraRig.jsx and the various
@@ -203,7 +206,7 @@ export default function Experience() {
           <Environment resolution={256} background={false}>
             <Lightformer intensity={0.9} color="#ffffff" position={[-2, 2, -1]} scale={[6, 6, 1]} />
             <Lightformer intensity={0.65} color="#f0f0ee" position={[2.5, 3, 2]} scale={[6, 6, 1]} />
-            <Lightformer intensity={0.45} color={BG} position={[0, 5, 0]} scale={[10, 10, 1]} />
+            <Lightformer intensity={0.45} color={FILL_LIGHT} position={[0, 5, 0]} scale={[10, 10, 1]} />
           </Environment>
 
           <Preload all />
