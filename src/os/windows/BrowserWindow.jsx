@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { projectReplicas } from '../../data/content'
 import { showReplica, useCurrentReplica } from '../browserStore'
+import { FOLDER_PATH } from './ProjectsFolderWindow'
 
 /**
  * Internet Explorer style window that shows a project replica (a static
@@ -46,7 +47,9 @@ export default function BrowserWindow() {
           {'↻'} Refresh
         </button>
         <span className="browser-label">Address</span>
-        <div className="browser-address">{project.address}</div>
+        {/* The replica is "opened" from the My Projects folder, so the
+            address shows that file's path, like IE did for local files. */}
+        <div className="browser-address">{`${FOLDER_PATH}\\${project.file}`}</div>
         <button type="button" onClick={() => src && window.open(src, '_blank', 'noopener')} disabled={!src} title="Open the replica full size in a new tab">
           Open in new tab
         </button>

@@ -1229,8 +1229,10 @@ img.project-category-icon {
 }
 
 /* ------------------------------ My Projects folder ------------------------------ */
-/* ProjectsFolderWindow.jsx: XP Explorer layout, address bar on top, blue
-   task pane on the left, large project icons on the right. */
+/* ProjectsFolderWindow.jsx: XP Explorer layout. Menu bar, toolbar (Views),
+   address bar, blue task pane on the left, files as Icons or Details on the
+   right, status bar at the bottom. The toolbar strip, labels and address
+   box are shared with the browser window below. */
 .explorer {
   display: flex;
   flex-direction: column;
@@ -1239,6 +1241,16 @@ img.project-category-icon {
   font-size: 11px;
 }
 
+.explorer-menu {
+  display: flex;
+  gap: 12px;
+  padding: 2px 8px;
+  background: #ece9d8;
+  border-bottom: 1px solid #d4d0c8;
+  user-select: none;
+}
+
+.explorer-toolbar,
 .explorer-bar,
 .browser-toolbar,
 .browser-links {
@@ -1248,6 +1260,29 @@ img.project-category-icon {
   padding: 3px 6px;
   background: #ece9d8;
   border-bottom: 1px solid #aca899;
+}
+
+.explorer-toolbar {
+  gap: 3px;
+}
+
+.explorer-toolbar button {
+  min-width: 0;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.explorer-toolbar button.pressed {
+  background: #fff;
+  box-shadow: inset 1px 1px 0 #808080;
+  border-color: #808080;
+}
+
+.explorer-sep {
+  width: 1px;
+  height: 18px;
+  margin: 0 3px;
+  background: #aca899;
 }
 
 .explorer-label,
@@ -1276,20 +1311,21 @@ img.project-category-icon {
 
 .explorer-tasks {
   flex: none;
-  width: 150px;
-  padding: 10px 8px;
+  width: 140px;
+  padding: 8px 7px;
   background: linear-gradient(#7ba2e7, #6375d6);
+  overflow: hidden;
 }
 
 .explorer-task-box {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   border-radius: 3px 3px 0 0;
   background: #d6dff7;
   overflow: hidden;
 }
 
 .explorer-task-title {
-  padding: 4px 8px;
+  padding: 3px 7px;
   background: linear-gradient(90deg, #fff, #c6d3f7);
   color: #215dc6;
   font-weight: bold;
@@ -1299,13 +1335,14 @@ img.project-category-icon {
 .explorer-task-box p {
   display: block;
   margin: 0;
-  padding: 5px 8px;
+  padding: 3px 7px;
   color: #215dc6;
   line-height: 1.35;
 }
 
 .explorer-task-box p {
   color: #333;
+  overflow-wrap: anywhere;
 }
 
 .explorer-task-box a {
@@ -1319,50 +1356,97 @@ img.project-category-icon {
   text-decoration: none;
 }
 
+/* Icons view */
 .explorer-items {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
   align-content: start;
   gap: 6px;
-  padding: 12px;
+  padding: 10px;
 }
 
 .explorer-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 6px 4px;
+  gap: 3px;
+  padding: 4px 2px;
   border: 1px solid transparent;
-  border-radius: 3px;
   text-align: center;
   cursor: default;
   user-select: none;
 }
 
-.explorer-item.selected {
+.explorer-item-title {
+  padding: 0 2px;
+  overflow-wrap: anywhere;
+}
+
+.explorer-item.selected .explorer-item-title,
+.explorer-details-row.selected {
   background: #316ac5;
-  border-color: #316ac5;
   color: #fff;
 }
 
-.explorer-item.selected .explorer-item-sub {
-  color: #dbe6ff;
+.explorer-item.selected svg {
+  opacity: 0.75;
 }
 
-.explorer-item-glyph {
-  font-size: 34px;
-  line-height: 1.1;
+/* Details view */
+.explorer-details {
+  flex: 1;
+  min-width: 0;
+  align-self: start;
 }
 
-.explorer-item-title {
-  font-weight: bold;
+.explorer-details-head,
+.explorer-details-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) 0.8fr 1.3fr 1.6fr;
+  align-items: center;
 }
 
-.explorer-item-sub {
-  color: #666;
-  font-size: 10px;
+.explorer-details-head button {
+  min-width: 0;
+  padding: 2px 6px;
+  border: none;
+  border-right: 1px solid #d4d0c8;
+  border-bottom: 1px solid #d4d0c8;
+  border-radius: 0;
+  background: linear-gradient(#fff, #ece9d8);
+  box-shadow: none;
+  font-size: 11px;
+  text-align: left;
+}
+
+.explorer-details-row {
+  padding: 1px 0;
+  cursor: default;
+  user-select: none;
+}
+
+.explorer-details-row span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.explorer-details-row .num {
+  justify-content: flex-end;
+}
+
+.explorer-status {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 8px;
+  background: #ece9d8;
+  border-top: 1px solid #aca899;
+  color: #333;
 }
 
 /* ------------------------------ Replica browser ------------------------------ */

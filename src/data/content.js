@@ -542,15 +542,17 @@ export const firewallEasterEgg = {
 // replica browser (os/windows/BrowserWindow.jsx). `path` is a static replica
 // page under public/demos/ that uses sample data only; null means the
 // replica isn't built yet and the browser shows a "coming soon" page.
-// `address` is only what the fake address bar displays. `project` is the
-// matching project's title, for its "View replica" button in the Showcase.
+// `file` and `sizeKb` are what the folder lists (sizeKb is the replica
+// folder's real total size). `address` is no longer shown (the browser shows
+// the file's path). `project` is the matching project's title, for its
+// "View replica" button in the Showcase.
 export const projectReplicas = [
-  { id: 'voltlab', project: 'Home Lab', title: 'VoltLAB', subtitle: 'Home Lab dashboard', glyph: '\u{1F6E1}\u{FE0F}', address: 'http://voltlab.lab/', path: 'demos/voltlab/index.html' },
-  { id: 'privaroute', project: 'PrivaRoute - Private In-Car AI', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: 'demos/privaroute/index.html' },
-  { id: 'agentic-soc', project: 'Agentic SOC', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: 'demos/agentic-soc/index.html' },
-  { id: 'argus', project: 'Argus - Server Ops', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: 'demos/argus/index.html' },
-  { id: 'athlete', project: 'Athlete Injury Dashboard', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: 'demos/athlete/index.html' },
-  { id: 'educompare', project: 'Educompare', title: 'Educompare', subtitle: 'Course comparison (team)', glyph: '\u{1F393}', address: 'http://educompare.local/', path: 'demos/educompare/index.html' },
+  { id: 'voltlab', file: 'VoltLAB.html', sizeKb: 53, project: 'Home Lab', title: 'VoltLAB', subtitle: 'Home Lab dashboard', glyph: '\u{1F6E1}\u{FE0F}', address: 'http://voltlab.lab/', path: 'demos/voltlab/index.html' },
+  { id: 'privaroute', file: 'PrivaRoute.html', sizeKb: 127, project: 'PrivaRoute - Private In-Car AI', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: 'demos/privaroute/index.html' },
+  { id: 'agentic-soc', file: 'Agentic SOC.html', sizeKb: 24, project: 'Agentic SOC', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: 'demos/agentic-soc/index.html' },
+  { id: 'argus', file: 'Argus.html', sizeKb: 12, project: 'Argus - Server Ops', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: 'demos/argus/index.html' },
+  { id: 'athlete', file: 'Athlete Injury Dashboard.html', sizeKb: 313, project: 'Athlete Injury Dashboard', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: 'demos/athlete/index.html' },
+  { id: 'educompare', file: 'Educompare.html', sizeKb: 497, project: 'Educompare', title: 'Educompare', subtitle: 'Course comparison (team)', glyph: '\u{1F393}', address: 'http://educompare.local/', path: 'demos/educompare/index.html' },
 ]
 
 // Desktop / Start menu external links.

@@ -36,7 +36,7 @@ function centered({ width, height }) {
 // desktop icons (left 84px), wallpaper and Clippy (bottom-right) visible.
 const SHOWCASE_SIZE = { width: 600, height: 420 }
 const PAINT_SIZE = { width: 600, height: 440 }
-const FOLDER_SIZE = { width: 560, height: 360 }
+const FOLDER_SIZE = { width: 620, height: 400 }
 const BROWSER_SIZE = { width: 740, height: 520 }
 
 // Each window: id -> { title, icon (emoji glyph), Component, size, pos }
