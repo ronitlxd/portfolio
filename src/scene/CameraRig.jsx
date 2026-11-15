@@ -3,7 +3,13 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { SCREEN_POSITION, SCREEN_ROTATION } from './DeskPC'
 import { setZoomedToScreen, useSceneControlsState } from './sceneControlsStore'
+import { lampSwitchRef } from './LampSwitch'
 
+// Clicks on the lamp switch (LampSwitch.jsx) belong to the switch, not the
+// camera. This listener runs before R3F's own handlers, so it checks for a
+// hit itself instead of relying on stopPropagation.
+const switchRay = new THREE.Raycaster()
+const switchNDC = new THREE.Vector2()
 // -----------------------------------------------------------------------------
 // CINEMATIC CAMERA RIG - four stages, per Ronit's latest spec:
 //
@@ -204,6 +210,13 @@ export default function CameraRig({ onStart }) {
 
     const onDown = (e) => {
       if (tweenRef.current.active) return // ignore clicks mid-transition
+
+      if (lampSwitchRef.current) {
+        const r = el.getBoundingClientRect()
+        switchNDC.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1)
+        switchRay.setFromCamera(switchNDC, camera)
+        if (switchRay.intersectObject(lampSwitchRef.current).length) return
+      }
 
       if (stageRef.current === 'idle') {
         stageRef.current = 'table'
