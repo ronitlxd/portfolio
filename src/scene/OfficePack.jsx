@@ -4,9 +4,7 @@ import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import Editable from './Editable'
 import { useEditState } from './editStore'
-
-const BASE = import.meta.env.BASE_URL
-const URL = `${BASE}models/90s_retro_office_pack.glb`
+import { useModelUrl } from './modelLoader'
 
 // Node_25_117 is a lamp fixture - its world position (from the glb's own
 // node transforms, same approach as CLOCK_PIVOT/CAMERA_TARGET) anchors the
@@ -278,7 +276,9 @@ const _fanOffset = new THREE.Vector3()
 const LAMP_INTENSITY = 9
 
 export default function OfficePack({ fanOn = true, lightsOn = true }) {
-  const { scene } = useGLTF(URL)
+  // Blob URL from modelLoader.js, which streams the .glb itself so the boot
+  // screen can show real download progress.
+  const { scene } = useGLTF(useModelUrl())
 
   const parts = useMemo(() => {
     const clone = scene.clone(true)
@@ -426,5 +426,3 @@ export default function OfficePack({ fanOn = true, lightsOn = true }) {
     </>
   )
 }
-
-useGLTF.preload(URL)

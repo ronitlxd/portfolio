@@ -1,30 +1,54 @@
+import { useModelProgress } from './modelLoader'
+
 // -----------------------------------------------------------------------------
-// Henry's site shows a terminal-style loading screen while its 3D assets
-// (desk model etc.) are still downloading, before you can interact with
-// anything. Ours had a gap there too: Experience.jsx's <Suspense
-// fallback={null}> means the office pack's .glb just renders nothing while
-// it loads, a blank flash of the BG color. This fills that gap with a
-// looping GIF (boot.gif) instead of a blank screen.
+// XP-style boot screen shown while the office pack's .glb downloads. The bar
+// fills with the REAL download percentage (modelLoader.js streams the file
+// and counts bytes), then reads "Starting up" between 100% and the first
+// painted frame.
 //
 // `ready` comes from Experience.jsx's sceneReady state, which only flips
 // true once SceneReady.jsx (mounted inside the same Suspense boundary as
 // the actual scene content) has confirmed a real frame has painted - NOT
-// just once Three.js's loading manager reports 100%. Those two moments
-// aren't the same: loading-manager-done can land a beat before the GPU has
-// actually uploaded/painted anything, which was showing as a white flash
-// between this overlay disappearing and the model appearing. Gating on
-// `ready` instead closes that gap.
+// just once the download hits 100%. Those two moments aren't the same:
+// the GPU still has to parse the model and upload textures, which showed
+// as a white flash when the overlay hid too early. Gating on `ready`
+// closes that gap.
 //
-// This always renders the same <img> (mounted once, never torn down) and
-// only toggles visibility via a class - conditionally rendering (returning
-// null while not ready) would unmount and remount the <img>, which resets
-// the GIF back to frame 1 each time. Keeping it permanently mounted lets it
-// play and loop continuously (it's authored with an infinite NETSCAPE loop
-// count) the entire time it's visible.
+// Always mounted, only hidden with a class, so the fade-out transition in
+// index.css can run.
+// -----------------------------------------------------------------------------
+
+const SEGMENTS = 20
+
 export default function AssetLoader({ ready }) {
+  const progress = useModelProgress()
+  const pct = Math.round(progress * 100)
+  const lit = Math.round(progress * SEGMENTS)
+
   return (
     <div className={`asset-loader${ready ? ' asset-loader-hidden' : ''}`}>
-      <img src={`${import.meta.env.BASE_URL}media/boot.gif`} alt="Loading" />
+      <div className="boot-xp">
+        <div className="boot-xp-wordmark">
+          <span className="boot-xp-name">Ronit Lad</span>
+          <span className="boot-xp-sub">portfolio</span>
+        </div>
+
+        <div
+          className="boot-xp-bar"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={pct}
+        >
+          {Array.from({ length: SEGMENTS }, (_, i) => (
+            <span key={i} className={`boot-xp-seg${i < lit ? ' on' : ''}`} />
+          ))}
+        </div>
+
+        <p className="boot-xp-status">
+          {progress < 1 ? `Loading ${pct}%` : 'Starting up'}
+        </p>
+      </div>
     </div>
   )
 }
