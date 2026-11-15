@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus</title>
+<!-- Replica of Argus, a terminal (TUI) app, rebuilt as a web page from its
+     screenshot. Every answer and number is scripted sample data; nothing
+     runs on any server. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0b0b0b; --panel: #0d0d0d; --yellow: #f5c518; --amber: #e6a817; --green: #4caf50; --dim: #8a8a8a; --text: #e8e8e8; --teal: #0e6b6b; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 15px/1.5 'JetBrains Mono', ui-monospace, Consolas, monospace; display: flex; flex-direction: column; padding: 12px; gap: 10px; }
+  .box { border: 2px solid var(--amber); background: var(--panel); }
+  header { border-color: #3c9a4a; display: flex; justify-content: space-between; align-items: center; padding: 6px 14px; }
+  header .brand { color: var(--yellow); font-weight: 700; }
+  header .model, footer { color: var(--dim); }
+  header .clock { color: var(--yellow); margin-left: 14px; }
+  .dot { color: var(--green); }
+  main { flex: 1; min-height: 0; display: flex; gap: 10px; }
+  aside { width: 260px; flex: none; padding: 10px 16px; }
+  aside h2 { margin: 0; font-size: 15px; color: var(--yellow); }
+  aside .k { display: inline-block; width: 64px; color: #cfcfcf; }
+  aside ul { list-style: none; padding: 0; margin: 14px 0 0; }
+  aside li::before { content: '\25CF'; color: var(--green); margin-right: 10px; }
+  aside li.off::before { color: #d9534f; }
+  .center { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  #log { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 18px; }
+  .logo { text-align: center; color: var(--yellow); }
+  .logo .eye { font-weight: 700; }
+  .logo pre { margin: 6px 0 4px; line-height: 1; font-size: 15px; font-weight: 700; text-shadow: 2px 2px 0 #8a6d00; }
+  .logo .tag { color: var(--dim); }
+  .you { margin: 18px 0 6px; font-weight: 700; }
+  .you span { font-weight: 400; }
+  .reply { margin: 0 0 6px 24px; white-space: pre-wrap; }
+  .reply.err { color: #ff7b72; }
+  #activity { height: 96px; overflow-y: auto; padding: 6px 18px; background: #161616; color: var(--dim); }
+  #activity .ok { color: var(--green); }
+  #activity .gated { color: var(--yellow); }
+  #activity .fail { color: #ff7b72; }
+  form { display: flex; align-items: center; padding: 6px 14px; gap: 8px; }
+  form label { color: var(--dim); }
+  form input { flex: 1; background: transparent; border: 0; outline: 0; color: var(--text); font: inherit; }
+  footer { padding: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #gate { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.6); }
+  #gate.open { display: flex; }
+  #gate .panel { border: 2px solid var(--yellow); background: #111; padding: 14px 20px; min-width: 460px; max-width: 80vw; }
+  #gate h3 { margin: 0 0 10px; color: var(--yellow); font-size: 15px; text-align: center; }
+  #gate pre { margin: 0 0 12px; white-space: pre-wrap; font: inherit; }
+  #gate .ask { color: var(--yellow); font-weight: 700; }
+  #gate button { font: inherit; background: #222; color: var(--text); border: 1px solid #555; padding: 3px 14px; margin-left: 8px; cursor: pointer; }
+  #gate button.y { border-color: var(--green); }
+  #log::-webkit-scrollbar, #activity::-webkit-scrollbar { width: 14px; }
+  #log::-webkit-scrollbar-thumb, #activity::-webkit-scrollbar-thumb { background: var(--teal); }
+</style>
+</head>
+<body>
+<header class="box">
+  <div><span class="brand">&lt;&#9673;&gt; ARGUS</span> &nbsp; <span class="model">hermes3:8b</span></div>
+  <div><span class="dot">&#9679;</span> connected &middot; local <span class="clock" id="clock">--:--:--</span></div>
+</header>
+
+<main>
+  <aside class="box">
+    <h2>VITALS</h2>
+    <div><span class="k">LOAD</span><span id="load">0.52 0.61 0.58</span></div>
+    <div><span class="k">MEM</span><span id="mem">29%</span></div>
+    <div><span class="k">DISK</span><span>11% (/)</span></div>
+    <ul id="services"></ul>
+  </aside>
+
+  <div class="center">
+    <div class="box" id="log">
+      <div class="logo">
+        <div class="eye">&lt;&#9673;&gt;</div>
+<pre> ███  ████   ████ █   █  ████
+█   █ █   █ █     █   █ █
+█████ ████  █  ██ █   █  ███
+█   █ █  █  █   █ █   █     █
+█   █ █   █  ████  ███  ████ </pre>
+        <div class="tag">all-seeing server operations agent</div>
+      </div>
+      <div class="reply" style="margin-top:16px;color:var(--dim)">This is a replica with sample data. Try: "any failed logins?", "is suricata running?", "disk usage", "what ports are open?", or "restart splunk".</div>
+    </div>
+    <div class="box" id="activity"></div>
+  </div>
+</main>
+
+<form class="box" id="prompt-form" autocomplete="off">
+  <label for="prompt">you&gt;</label>
+  <input id="prompt" placeholder="ask about the server..." maxlength="200">
+</form>
+<footer>hermes3:8b &middot; <span class="dot">&#9679;</span> connected &middot; session 5a7c0e21 &middot; last: <span id="last">none</span> &middot; auto &nbsp; ^C quit &middot; v toggle vitals</footer>
+
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="panel">
+    <h3 id="gate-title">APPROVAL REQUIRED</h3>
+    <pre id="gate-text"></pre>
+    <div><span class="ask">Run this? (y/n)</span><button class="y" id="gate-yes">y</button><button id="gate-no">n</button></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id)
+  const pad = (n) => String(n).padStart(2, '0')
+  const now = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}` }
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms))
+
+  // Sample server state. Addresses come from the documentation ranges.
+  const services = { ssh: 'active', suricata: 'active', splunkd: 'active', apache2: 'active', mariadb: 'active' }
+  const uptime = { ssh: '6d 4h', suricata: '6d 4h', splunkd: '6d 4h', apache2: '2d 11h', mariadb: '6d 4h' }
+  const memMb = { ssh: 6, suricata: 612, splunkd: 1840, apache2: 48, mariadb: 212 }
+
+  function drawServices() {
+    $('services').innerHTML = ''
+    for (const [name, state] of Object.entries(services)) {
+      const li = document.createElement('li')
+      li.textContent = name
+      if (state !== 'active') li.className = 'off'
+      $('services').append(li)
+    }
+  }
+  drawServices()
+  setInterval(() => { $('clock').textContent = now() }, 1000)
+  setInterval(() => {
+    const l = () => (0.4 + Math.random() * 0.5).toFixed(2)
+    $('load').textContent = `${l()} ${l()} ${l()}`
+    $('mem').textContent = `${28 + Math.floor(Math.random() * 3)}%`
+  }, 3000)
+  $('clock').textContent = now()
+
+  const log = $('log'), activity = $('activity')
+  function say(cls, html) {
+    const el = document.createElement('div')
+    el.className = cls
+    el.innerHTML = html
+    log.append(el)
+    log.scrollTop = log.scrollHeight
+    return el
+  }
+  function feed(html) {
+    const el = document.createElement('div')
+    el.innerHTML = `${now()} ${html}`
+    activity.append(el)
+    activity.scrollTop = activity.scrollHeight
+  }
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+
+  // Gate: resolves true only on an explicit yes, like the real confirm().
+  function approve(preview) {
+    return new Promise((resolve) => {
+      $('gate-text').textContent = preview
+      $('gate').classList.add('open')
+      const done = (ok) => { $('gate').classList.remove('open'); document.removeEventListener('keydown', key); resolve(ok) }
+      const key = (e) => { if (e.key === 'y') done(true); else if (e.key === 'n' || e.key === 'Escape') done(false) }
+      $('gate-yes').onclick = () => done(true)
+      $('gate-no').onclick = () => done(false)
+      document.addEventListener('keydown', key)
+    })
+  }
+
+  const findService = (q) => Object.keys(services).find((s) => q.includes(s) || (s === 'splunkd' && q.includes('splunk')) || (s === 'apache2' && q.includes('apache')) || (s === 'mariadb' && /maria|mysql|database/.test(q)))
+
+  async function tool(name, gated = false) {
+    feed(gated ? `<span class="gated">gated</span> ${name}` : `<span class="ok">&#10003;</span> ${name}`)
+    $('last').textContent = name
+    await wait(350)
+  }
+
+  async function answer(q) {
+    if (/^(hi|hello|hey)\b/.test(q)) return 'Hello! Ask me about services, logs, logins, disk, memory or ports.'
+
+    const svc = findService(q)
+    const change = q.match(/\b(restart|stop|start)\b/)
+    if (change && svc) {
+      const action = change[1]
+      await tool('control_service', true)
+      const ok = await approve(`systemctl ${action} ${svc}\n\nRationale: requested by the operator`)
+      if (!ok) { feed('declined by operator'); return 'Okay, nothing was changed.' }
+      feed(`<span class="ok">&#10003;</span> control_service (${action} ${svc})`)
+      services[svc] = action === 'stop' ? 'inactive' : 'active'
+      uptime[svc] = action === 'stop' ? '-' : '0m'
+      drawServices()
+      return `${svc} ${action === 'stop' ? 'stopped, now inactive (dead)' : `${action}ed, now active (running)`}. Logged to the audit trail.`
+    }
+    if (/\b(run|execute|command|delete|rm |kill)\b/.test(q)) {
+      await tool('propose_command', true)
+      const ok = await approve(`${q.replace(/^(please\s+)?(run|execute)\s+/, '')}\n\nRationale: requested by the operator`)
+      feed(ok ? '<span class="ok">&#10003;</span> propose_command' : 'declined by operator')
+      return ok ? 'This is a replica, so nothing really ran. On the real server the exact command above would run once and be logged.' : 'Okay, nothing was run.'
+    }
+    if (/fail|brute|login|ssh attempt/.test(q)) {
+      await tool('failed_logins')
+      return 'There were 3 failed SSH logins in the last hour, all for root from 203.0.113.7. 14 failed attempts are recorded in total, the most recent at 22:41.'
+    }
+    if (svc || /status|running|up\b/.test(q)) {
+      const s = svc || 'suricata'
+      await tool('service_status')
+      return services[s] === 'active' ? `${s} is active (running) for ${uptime[s]}, using ${memMb[s]} MB.` : `${s} is inactive (dead).`
+    }
+    if (/disk|storage|space/.test(q)) { await tool('disk_usage'); return '/ is at 11% (97 GB used of 914 GB). Nothing is close to full.' }
+    if (/mem|ram|cpu|load|resource/.test(q)) { await tool('resource_usage'); return `Load ${$('load').textContent}, memory ${$('mem').textContent} of 15.5 GB, CPU mostly idle.` }
+    if (/port|listen/.test(q)) { await tool('listening_ports'); return 'Listening: 22 (ssh), 80 (apache2), 8000 and 8089 (splunkd), 3306 on localhost only (mariadb).' }
+    if (/process|top|heavy/.test(q)) { await tool('top_processes'); return 'Top by memory: splunkd 1.8 GB, suricata 612 MB, mariadb 212 MB.' }
+    if (/uptime|reboot/.test(q)) { await tool('uptime_info'); return 'Up 6 days 4 hours since the last reboot.' }
+    return 'I can check service status, logs, failed logins, disk, memory, ports and processes. Anything that changes the server needs your approval first.'
+  }
+
+  let busy = false
+  $('prompt-form').addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const text = $('prompt').value.trim()
+    if (!text || busy) return
+    busy = true
+    $('prompt').value = ''
+    say('you', `you&gt; <span>${esc(text)}</span>`)
+    feed('thinking...')
+    await wait(700)
+    const reply = await answer(text.toLowerCase())
+    say('reply', esc(reply))
+    busy = false
+    $('prompt').focus()
+  })
+})()
+</script>
+</body>
+</html>
