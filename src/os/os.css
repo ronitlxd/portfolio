@@ -1428,3 +1428,8 @@ img.project-category-icon {
 .browser-placeholder p {
   margin: 0;
 }
+
+/* "View replica" next to "View on GitHub" on a project's detail page. */
+.view-replica-btn {
+  margin-left: 8px;
+}

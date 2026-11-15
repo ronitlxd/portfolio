@@ -252,6 +252,22 @@ export const securityProjects = [
     ],
   },
   {
+    // Facts from RESUME_PROJECT_PrivaRoute.md. Prototype, built for a
+    // University of Windsor industry project with JLR North America.
+    title: 'PrivaRoute - Private In-Car AI',
+    description:
+      "An in-car AI assistant prototype that keeps the driver's data on the vehicle. It sends each request to a local or a larger model, masks anything private before the larger model sees it, and only acts after the driver approves. Built for a University of Windsor industry project in collaboration with Jaguar Land Rover North America.",
+    tech: ['Python', 'Ollama', 'AES-256-GCM', 'Argon2id', 'Whisper', 'SQLite', 'Leaflet'],
+    code: 'https://github.com/ronitlxd',
+    detailParagraphs: [
+      "A car assistant hears a lot of private things, names, addresses, appointments, who you call. I wanted one that never hands that to a bigger model in the cloud, so PrivaRoute decides where every request goes before anything leaves the vehicle.",
+      'A small on-device model (Qwen3 4B) classifies each request, and deterministic Python rules check that call. Simple or sensitive requests stay on the local model, harder ones go to a larger 8B model. Before that happens, names, places and contacts are swapped for placeholders and restored on the vehicle afterward. In live tests, 0 private values were sent.',
+      "Each driver's profile is encrypted with AES-256-GCM using a key derived from their password with Argon2id. Five failed attempts trigger a lockout that doubles up to an hour, and switching drivers clears all context. A four-tier data policy keeps PINs, card numbers and IDs on the vehicle no matter what.",
+      'Nothing runs just because a model said so. Every step is checked against an allowlist, steps the driver never asked for are dropped, and the driver confirms the plan before it runs. Every request also gets a privacy receipt saying which model answered, what was masked and which outside services were contacted, logged without the content.',
+      "It also has on-device voice input with faster-whisper, a live map with multi-stop route ordering, and an engineer view that traces every pipeline stage. It runs on my own Ubuntu server, covered by 381 automated tests. It's a prototype, the larger model is a local stand-in and the vehicle actions are simulated.",
+    ],
+  },
+  {
     title: 'Trident - Autonomous Pentesting',
     // Read by the Clippy chatbot (scripts/build-clippy-model.mjs) so it never
     // calls this finished. Remove once the engine and adapters run.
@@ -406,7 +422,36 @@ export const educationPage = [
 // file - kept as separate fields so ExperiencePage can render the same
 // heading-level structure the file specified, instead of the old single
 // "role - org" line.
+// The first two entries are a university industry project and a client
+// project, not jobs, and say so in `company`. PrivaRoute facts come from
+// RESUME_PROJECT_PrivaRoute.md (JLR was the course's industry affiliate, so
+// "in collaboration with", never an employer; it's a prototype). Ronit built
+// both systems end to end.
 export const experience = [
+  {
+    company: 'PrivaRoute, University of Windsor industry project',
+    role: 'Built in collaboration with Jaguar Land Rover North America',
+    when: 'Sep to Nov 2026, Windsor, ON',
+    bullets: [
+      'Built a prototype in-car AI assistant end to end, routing each request between an on-device 4B model and a larger 8B model, with the routing classifier checked by deterministic Python rules.',
+      'Masked names, places and contacts before any larger-model call and restored them on the vehicle, sending 0 private values in live tests.',
+      'Encrypted each driver\'s profile with AES-256-GCM using an Argon2id-derived key, with lockout after repeated failed attempts and full context isolation between drivers.',
+      'Required driver approval for every action through an allowlisted capability contract tied to a plan hash, and logged a content-free privacy receipt for each request.',
+      'Deployed it on my own Ubuntu server with systemd and Tailscale, covered by 381 automated tests.',
+    ],
+  },
+  {
+    company: 'University of Windsor Human Kinetics, client project',
+    role: 'Full-Stack Developer, Athlete Injury Dashboard',
+    when: 'Jun to Sep 2026, Windsor, ON',
+    bullets: [
+      'Built a Django injury-tracking system for a real client, with role-based access for admins, coaches, doctors and players.',
+      'Built the analytics dashboard with injury type, body part and severity breakdowns, monthly and year-over-year trends, and academic-year filters.',
+      'Added appointment requests, follow-ups, notifications, and CSV, PDF and Excel exports for staff reporting.',
+      'Protected logins with lockout after repeated failures and kept every record, including recovered injuries, for accurate end-of-year analysis.',
+      'Handed the system off cleanly to the next development team.',
+    ],
+  },
   {
     company: 'CAD Consultant',
     role: 'Assistant Web Engineer',
@@ -490,14 +535,15 @@ export const firewallEasterEgg = {
 // replica browser (os/windows/BrowserWindow.jsx). `path` is a static replica
 // page under public/demos/ that uses sample data only; null means the
 // replica isn't built yet and the browser shows a "coming soon" page.
-// `address` is only what the fake address bar displays.
+// `address` is only what the fake address bar displays. `project` is the
+// matching project's title, for its "View replica" button in the Showcase.
 export const projectReplicas = [
-  { id: 'voltlab', title: 'VoltLAB', subtitle: 'Home Lab dashboard', glyph: '\u{1F6E1}\u{FE0F}', address: 'http://voltlab.lab/', path: 'demos/voltlab/index.html' },
-  { id: 'privaroute', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: 'demos/privaroute/index.html' },
-  { id: 'agentic-soc', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: 'demos/agentic-soc/index.html' },
-  { id: 'argus', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: 'demos/argus/index.html' },
-  { id: 'athlete', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: 'demos/athlete/index.html' },
-  { id: 'educompare', title: 'Educompare', subtitle: 'Course comparison (team)', glyph: '\u{1F393}', address: 'http://educompare.local/', path: 'demos/educompare/index.html' },
+  { id: 'voltlab', project: 'Home Lab', title: 'VoltLAB', subtitle: 'Home Lab dashboard', glyph: '\u{1F6E1}\u{FE0F}', address: 'http://voltlab.lab/', path: 'demos/voltlab/index.html' },
+  { id: 'privaroute', project: 'PrivaRoute - Private In-Car AI', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: 'demos/privaroute/index.html' },
+  { id: 'agentic-soc', project: 'Agentic SOC', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: 'demos/agentic-soc/index.html' },
+  { id: 'argus', project: 'Argus - Server Ops', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: 'demos/argus/index.html' },
+  { id: 'athlete', project: 'Athlete Injury Dashboard', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: 'demos/athlete/index.html' },
+  { id: 'educompare', project: 'Educompare', title: 'Educompare', subtitle: 'Course comparison (team)', glyph: '\u{1F393}', address: 'http://educompare.local/', path: 'demos/educompare/index.html' },
 ]
 
 // Desktop / Start menu external links.

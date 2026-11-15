@@ -10,7 +10,9 @@ import {
   securityProjects,
   devProjects,
   links,
+  projectReplicas,
 } from '../../data/content'
+import { showReplica } from '../browserStore'
 
 // -----------------------------------------------------------------------------
 // TASK 6 (corrected): NOT one long scrolling page - separate pages that swap
@@ -201,7 +203,8 @@ function DevProjectsPage({ setPage, setActiveProject }) {
 // opening anything new - `activeProject` carries the project's own fields
 // plus which category list to return to (`backTo`, set by ProjectList
 // above).
-function ProjectDetailPage({ setPage, activeProject }) {
+function ProjectDetailPage({ setPage, activeProject, openWindow }) {
+  const replica = projectReplicas.find((r) => r.project === activeProject?.title)
   if (!activeProject) {
     // Shouldn't normally happen (this page is only reachable via a "More"
     // click, which always sets activeProject first) - falls back to the
@@ -279,6 +282,20 @@ function ProjectDetailPage({ setPage, activeProject }) {
       <a href={activeProject.code} target="_blank" rel="noreferrer">
         <button>View on GitHub</button>
       </a>
+      {/* Opens this project's interactive replica (My Projects folder) in
+          the browser window, when it has one. */}
+      {replica && (
+        <button
+          type="button"
+          className="view-replica-btn"
+          onClick={() => {
+            showReplica(replica.id)
+            openWindow?.('browser')
+          }}
+        >
+          View replica
+        </button>
+      )}
     </>
   )
 }
@@ -507,7 +524,7 @@ const PAGES = {
   contact: ContactPage,
 }
 
-export default function ShowcaseWindow() {
+export default function ShowcaseWindow({ openWindow }) {
   const [page, setPage] = useState('about')
   // Which single project "More" was last clicked on, plus which category
   // list to return to - read by ProjectDetailPage, set by ProjectList.
@@ -566,7 +583,12 @@ export default function ShowcaseWindow() {
           About/Experience/Projects rendering blurrier than Home/Contact). */}
       <ScrollArea className="showcase-content-scroll">
         <div className="showcase-content">
-          <Page setPage={setPage} activeProject={activeProject} setActiveProject={setActiveProject} />
+          <Page
+            setPage={setPage}
+            activeProject={activeProject}
+            setActiveProject={setActiveProject}
+            openWindow={openWindow}
+          />
         </div>
       </ScrollArea>
     </div>
