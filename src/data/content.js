@@ -493,7 +493,7 @@ export const firewallEasterEgg = {
 // `address` is only what the fake address bar displays.
 export const projectReplicas = [
   { id: 'voltlab', title: 'VoltLAB', subtitle: 'Home Lab dashboard', glyph: '\u{1F6E1}\u{FE0F}', address: 'http://voltlab.lab/', path: 'demos/voltlab/index.html' },
-  { id: 'privaroute', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: null },
+  { id: 'privaroute', title: 'PrivaRoute', subtitle: 'In-car AI assistant', glyph: '\u{1F697}', address: 'http://privaroute.local/', path: 'demos/privaroute/index.html' },
   { id: 'agentic-soc', title: 'Agentic SOC', subtitle: 'SOC web console', glyph: '\u{1F916}', address: 'http://agentic-soc.lab/', path: null },
   { id: 'argus', title: 'Argus', subtitle: 'Server ops agent', glyph: '\u{1F5A5}\u{FE0F}', address: 'http://argus.lab/', path: null },
   { id: 'athlete', title: 'Athlete Injury Dashboard', subtitle: 'UWindsor Human Kinetics', glyph: '\u{1F3C3}', address: 'http://lancer-injuries.local/', path: null },
