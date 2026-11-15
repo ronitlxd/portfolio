@@ -3,8 +3,8 @@ import { projectReplicas } from '../../data/content'
 import { showReplica } from '../browserStore'
 
 /**
- * "My Projects" as an XP Explorer window: menu bar, toolbar with Views
- * (Icons / Details), address bar, blue task pane, and one .html file per
+ * "My Projects" as an XP Explorer window: menu bar, a Views switch
+ * (Icons / Details), address bar, and one .html file per
  * project replica. Double click (or Enter, or a tap on touch) opens the file
  * in the Internet Explorer window.
  */
@@ -54,7 +54,6 @@ export default function ProjectsFolderWindow({ openWindow }) {
     showReplica(id)
     openWindow('browser')
   }
-  const openNewTab = (p) => p.path && window.open(`${import.meta.env.BASE_URL}${p.path}`, '_blank', 'noopener')
 
   const itemProps = (p) => ({
     role: 'option',
@@ -78,13 +77,6 @@ export default function ProjectsFolderWindow({ openWindow }) {
       </div>
 
       <div className="explorer-toolbar">
-        <button type="button" disabled>{'\u25C0'} Back</button>
-        <button type="button" disabled>{'\u25B6'}</button>
-        <button type="button" disabled>{'\u2B06'} Up</button>
-        <span className="explorer-sep" />
-        <button type="button" disabled>Search</button>
-        <button type="button" disabled>Folders</button>
-        <span className="explorer-sep" />
         <span className="explorer-label">Views</span>
         <button type="button" className={view === 'icons' ? 'pressed' : ''} onClick={() => setView('icons')}>
           Icons
@@ -102,45 +94,6 @@ export default function ProjectsFolderWindow({ openWindow }) {
       </div>
 
       <div className="explorer-main">
-        <aside className="explorer-tasks">
-          <div className="explorer-task-box">
-            <div className="explorer-task-title">File and Folder Tasks</div>
-            <a tabIndex={0} className={current ? '' : 'disabled'} onClick={() => current && open(current.id)}>
-              Open this file
-            </a>
-            <a tabIndex={0} className={current ? '' : 'disabled'} onClick={() => current && openNewTab(current)}>
-              Open in a new tab
-            </a>
-          </div>
-          <div className="explorer-task-box">
-            <div className="explorer-task-title">Other Places</div>
-            <a tabIndex={0} className="disabled">Desktop</a>
-            <a tabIndex={0} className="disabled">My Documents</a>
-          </div>
-          <div className="explorer-task-box">
-            <div className="explorer-task-title">Details</div>
-            {current ? (
-              <p>
-                <strong>{current.file}</strong>
-                <br />
-                HTML Document
-                <br />
-                {current.subtitle}
-                <br />
-                Size: {current.sizeKb} KB
-              </p>
-            ) : (
-              <p>
-                <strong>My Projects</strong>
-                <br />
-                File Folder
-                <br />
-                Interactive replicas of my projects, sample data only.
-              </p>
-            )}
-          </div>
-        </aside>
-
         {view === 'icons' ? (
           <div className="explorer-items" role="listbox" aria-label="Project files">
             {files.map((p) => (

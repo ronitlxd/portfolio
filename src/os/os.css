@@ -1251,9 +1251,7 @@ img.project-category-icon {
 }
 
 .explorer-toolbar,
-.explorer-bar,
-.browser-toolbar,
-.browser-links {
+.explorer-bar {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1278,21 +1276,12 @@ img.project-category-icon {
   border-color: #808080;
 }
 
-.explorer-sep {
-  width: 1px;
-  height: 18px;
-  margin: 0 3px;
-  background: #aca899;
-}
-
-.explorer-label,
-.browser-label {
+.explorer-label {
   color: #555;
   flex: none;
 }
 
-.explorer-address,
-.browser-address {
+.explorer-address {
   flex: 1;
   min-width: 0;
   padding: 2px 5px;
@@ -1307,53 +1296,6 @@ img.project-category-icon {
   display: flex;
   flex: 1;
   min-height: 0;
-}
-
-.explorer-tasks {
-  flex: none;
-  width: 140px;
-  padding: 8px 7px;
-  background: linear-gradient(#7ba2e7, #6375d6);
-  overflow: hidden;
-}
-
-.explorer-task-box {
-  margin-bottom: 8px;
-  border-radius: 3px 3px 0 0;
-  background: #d6dff7;
-  overflow: hidden;
-}
-
-.explorer-task-title {
-  padding: 3px 7px;
-  background: linear-gradient(90deg, #fff, #c6d3f7);
-  color: #215dc6;
-  font-weight: bold;
-}
-
-.explorer-task-box a,
-.explorer-task-box p {
-  display: block;
-  margin: 0;
-  padding: 3px 7px;
-  color: #215dc6;
-  line-height: 1.35;
-}
-
-.explorer-task-box p {
-  color: #333;
-  overflow-wrap: anywhere;
-}
-
-.explorer-task-box a {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.explorer-task-box a.disabled {
-  color: #8a9bc4;
-  cursor: default;
-  text-decoration: none;
 }
 
 /* Icons view */
@@ -1450,44 +1392,14 @@ img.project-category-icon {
 }
 
 /* ------------------------------ Replica browser ------------------------------ */
-/* BrowserWindow.jsx: IE-style chrome around an <iframe> that renders a
-   project replica at desktop width, scaled down to fit. */
+/* BrowserWindow.jsx: an <iframe> that renders a project replica at desktop
+   width, scaled down to fit, above an IE-style status bar. */
 .browser {
   display: flex;
   flex-direction: column;
   height: 100%;
   background: #ece9d8;
   font-size: 11px;
-}
-
-.browser-toolbar button {
-  min-width: 0;
-  padding: 1px 8px;
-  font-size: 11px;
-  flex: none;
-}
-
-.browser-links {
-  gap: 10px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.browser-links a {
-  color: #000;
-  cursor: pointer;
-}
-
-.browser-links a.active {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.browser-notice {
-  padding: 3px 8px;
-  background: #ffffe1;
-  border-bottom: 1px solid #c9c38f;
-  color: #333;
 }
 
 .browser-view {
@@ -1505,6 +1417,17 @@ img.project-category-icon {
   border: none;
   transform-origin: 0 0;
   background: #fff;
+}
+
+.browser-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 8px;
+  background: #ece9d8;
+  border-top: 1px solid #aca899;
+  color: #333;
+  white-space: nowrap;
 }
 
 .browser-placeholder {

@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { projectReplicas } from '../../data/content'
-import { showReplica, useCurrentReplica } from '../browserStore'
-import { FOLDER_PATH } from './ProjectsFolderWindow'
+import { useCurrentReplica } from '../browserStore'
 
 /**
  * Internet Explorer style window that shows a project replica (a static
- * page under public/demos/, sample data only) in an <iframe>.
+ * page under public/demos/, sample data only) in an <iframe>. No toolbar,
+ * address or links bars (removed at Ronit's request): just the page, and an
+ * IE-style status bar at the bottom that keeps the "sample data" note.
  *
  * The replicas are desktop web apps laid out for ~1100px+ screens, and this
  * window is ~700px wide, so the page is rendered at PAGE_WIDTH and scaled
- * down to fit instead of reflowing into its cramped/mobile layout. "Open in
- * new tab" shows the same replica full size.
+ * down to fit instead of reflowing into its cramped/mobile layout.
  */
 
 const PAGE_WIDTH = 1100
@@ -20,9 +20,7 @@ export default function BrowserWindow() {
   const currentId = useCurrentReplica()
   const project = projectReplicas.find((p) => p.id === currentId) ?? projectReplicas[0]
   const viewRef = useRef(null)
-  const frameRef = useRef(null)
   const [view, setView] = useState({ w: 0, h: 0 })
-  const [reloads, setReloads] = useState(0)
 
   // Track the viewport's layout size (unaffected by the 3D transform).
   useEffect(() => {
@@ -39,45 +37,10 @@ export default function BrowserWindow() {
 
   return (
     <div className="browser">
-      <div className="browser-toolbar">
-        <button type="button" onClick={() => frameRef.current?.contentWindow?.history.back()} disabled={!src}>
-          {'◀'} Back
-        </button>
-        <button type="button" onClick={() => setReloads((n) => n + 1)} disabled={!src}>
-          {'↻'} Refresh
-        </button>
-        <span className="browser-label">Address</span>
-        {/* The replica is "opened" from the My Projects folder, so the
-            address shows that file's path, like IE did for local files. */}
-        <div className="browser-address">{`${FOLDER_PATH}\\${project.file}`}</div>
-        <button type="button" onClick={() => src && window.open(src, '_blank', 'noopener')} disabled={!src} title="Open the replica full size in a new tab">
-          Open in new tab
-        </button>
-      </div>
-
-      <div className="browser-links">
-        <span className="browser-label">Links</span>
-        {projectReplicas.map((p) => (
-          <a
-            key={p.id}
-            tabIndex={0}
-            className={p.id === project.id ? 'active' : ''}
-            onClick={() => showReplica(p.id)}
-          >
-            {p.title}
-          </a>
-        ))}
-      </div>
-
-      <div className="browser-notice">
-        Interactive replica of {project.title}. Everything shown is sample data, nothing connects to a real system.
-      </div>
-
       <div className="browser-view" ref={viewRef}>
         {src ? (
           <iframe
-            key={`${project.id}-${reloads}`}
-            ref={frameRef}
+            key={project.id}
             title={`${project.title} replica`}
             src={src}
             sandbox="allow-scripts allow-same-origin"
@@ -94,6 +57,11 @@ export default function BrowserWindow() {
             <p>This replica is still being built. Check back soon.</p>
           </div>
         )}
+      </div>
+
+      <div className="browser-status">
+        <span>Done</span>
+        <span>{project.file} · Replica with sample data only</span>
       </div>
     </div>
   )
