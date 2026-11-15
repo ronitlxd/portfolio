@@ -8,7 +8,6 @@ import ScreenBridge from './ScreenBridge'
 import OfficePack from './OfficePack'
 import SceneSwitches from './GlowSwitch'
 import CameraRig, { WIDE, FrozenCamera } from './CameraRig'
-import IntroHUD from './IntroHUD'
 import AssetLoader from './AssetLoader'
 import SceneReady from './SceneReady'
 import Editable from './Editable'
@@ -65,10 +64,6 @@ const CANVAS_DPR = isTouchDevice ? Math.min(window.devicePixelRatio || 1, 1.5) :
 export default function Experience() {
   const edit = useEditState()
   const controls = useSceneControlsState()
-  // Flips true the instant the user first clicks to start the camera rig
-  // (see CameraRig's onStart) - drives the typewriter corner HUD so it types
-  // in sync with the initial dolly-in, same as henryheffernan.com.
-  const [heroStarted, setHeroStarted] = useState(false)
   // True only once the scene has actually painted a frame (see
   // SceneReady.jsx, mounted inside the Suspense boundary below) - NOT the
   // same moment as "assets finished downloading". Loading manager progress
@@ -87,7 +82,9 @@ export default function Experience() {
           EditModeOverlay.jsx) is still intact. */}
       {SHOW_EDIT_OVERLAY && <EditModeOverlay />}
 
-      <IntroHUD active={heroStarted} />
+      {/* The top-left corner HUD (name, title, clock, fan and lights
+          buttons, IntroHUD.jsx) was removed at Ronit's request. The file is
+          kept; render <IntroHUD active /> here to bring it back. */}
 
       {/* Looping boot.gif over the gap while the office pack's .glb (and
           any other tracked assets) are still downloading - see
@@ -241,7 +238,7 @@ export default function Experience() {
             maxPolarAngle={Math.PI / 2 - 0.02}
           />
         ) : CAMERA_RIG_ENABLED ? (
-          <CameraRig onStart={() => setHeroStarted(true)} />
+          <CameraRig />
         ) : (
           <FrozenCamera />
         )}

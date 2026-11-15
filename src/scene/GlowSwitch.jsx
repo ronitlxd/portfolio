@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useSceneControlsState, toggleLights, toggleFan } from './sceneControlsStore'
+import { useSceneControlsState, toggleLights } from './sceneControlsStore'
 
 // -----------------------------------------------------------------------------
 // Small glowing push buttons placed on real objects in the office pack.
-// Each one toggles something in sceneControlsStore, the same state the "F"
-// and "L" buttons in the corner HUD use, so they always stay in sync.
+// Each one toggles something in sceneControlsStore (currently just the desk
+// lamp's lights).
 //
 // They glow warm while their thing is on and dim red while off, so they stay
 // findable in the dark. toneMapped={false} lets the emissive colour go past
@@ -95,27 +95,11 @@ function GlowSwitch({ position, normal = [0, 1, 0], radius = 0.011, on, onToggle
 // sits near the front (+x, camera-facing) edge.
 const LAMP_SWITCH = [5.675, 0.749, 3.357]
 
-// Desk fan. The white hub cap belongs to the blade disc (Node_71_227),
-// centred on FAN_PIVOT in OfficePack.jsx plus that part's PART_OFFSETS nudge
-// (-0.037, -0.1, +0.357) = (5.2711, 0.8766, 5.4668). Its front face is
-// 0.018 along the spin axis (0.6815, 0, -0.7318), which points at the
-// camera; the button sits just in front of it, inside the wire grille.
-const FAN_AXIS = [0.6815, 0, -0.7318]
-const FAN_SWITCH = [5.2711 + 0.6815 * 0.021, 0.8766, 5.4668 - 0.7318 * 0.021]
+// A fan switch on the hub cap was tried and removed at Ronit's request. If
+// it comes back: the cap's front face is at (5.2711, 0.8766, 5.4668) plus
+// 0.021 along the fan's spin axis (0.6815, 0, -0.7318), radius 0.009.
 
 export default function SceneSwitches() {
-  const { lightsOn, fanOn } = useSceneControlsState()
-  return (
-    <>
-      <GlowSwitch label="lamp-switch" position={LAMP_SWITCH} on={lightsOn} onToggle={toggleLights} />
-      <GlowSwitch
-        label="fan-switch"
-        position={FAN_SWITCH}
-        normal={FAN_AXIS}
-        radius={0.009}
-        on={fanOn}
-        onToggle={toggleFan}
-      />
-    </>
-  )
+  const { lightsOn } = useSceneControlsState()
+  return <GlowSwitch label="lamp-switch" position={LAMP_SWITCH} on={lightsOn} onToggle={toggleLights} />
 }
