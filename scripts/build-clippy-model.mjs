@@ -58,9 +58,12 @@ const project = (pr) => {
     `Status: ${pr.status === 'in progress' ? 'IN PROGRESS, not finished, I am still building it' : 'finished'}`,
     `Tech: ${pr.tech.join(', ')}`,
     `Code: ${pr.code}`,
-    pr.description,
   )
+  // The short description mostly repeats the detail paragraphs, and the
+  // whole prompt has to fit the model's 6144-token context with room for
+  // chat history, so include it only when there are no details.
   if (pr.detailParagraphs) add(...pr.detailParagraphs)
+  else add(pr.description)
   if (pr.detailAgents) add(...pr.detailAgents.map((a) => `- ${a.name}: ${a.description}`))
   add('')
 }

@@ -50,6 +50,20 @@ CGPA 3.48 / 4.0
 - Spent time on UI/UX across Android, iOS, and web, which taught me that a secure system nobody can use isn't really secure, someone still has to want to use it right.
 
 ## Work experience
+### Built in collaboration with Jaguar Land Rover North America at PrivaRoute, University of Windsor industry project, Sep to Nov 2026, Windsor, ON
+- Built a prototype in-car AI assistant end to end, routing each request between an on-device 4B model and a larger 8B model, with the routing classifier checked by deterministic Python rules.
+- Masked names, places and contacts before any larger-model call and restored them on the vehicle, sending 0 private values in live tests.
+- Encrypted each driver's profile with AES-256-GCM using an Argon2id-derived key, with lockout after repeated failed attempts and full context isolation between drivers.
+- Required driver approval for every action through an allowlisted capability contract tied to a plan hash, and logged a content-free privacy receipt for each request.
+- Deployed it on my own Ubuntu server with systemd and Tailscale, covered by 381 automated tests.
+
+### Full-Stack Developer, Athlete Injury Dashboard at University of Windsor Human Kinetics, client project, Jun to Sep 2026, Windsor, ON
+- Built a Django injury-tracking system for a real client, with role-based access for admins, coaches, doctors and players.
+- Built the analytics dashboard with injury type, body part and severity breakdowns, monthly and year-over-year trends, and academic-year filters.
+- Added appointment requests, follow-ups, notifications, and CSV, PDF and Excel exports for staff reporting.
+- Protected logins with lockout after repeated failures and kept every record, including recovered injuries, for accurate end-of-year analysis.
+- Handed the system off cleanly to the next development team.
+
 ### Assistant Web Engineer at CAD Consultant, Feb to Jun 2024, India
 - Contributed to full-stack development across 3+ client projects, applying secure coding practices (input validation, sanitized queries, least-privilege API access) to reduce common web vulnerabilities.
 - Translated business requirements into technical specs and documentation, flagging authentication, data-handling, and access-control needs early in the design phase.
@@ -68,17 +82,16 @@ Data & Tools: MSSQL, MongoDB, PostgreSQL, Git / GitHub, Jira, Jupyter
 - Sterling Cybersecurity Workshop
 
 ## My projects at a glance
-Finished: Home Lab; Agentic SOC; Argus - Server Ops; Packet Sniffer; AWS Security Scanner; Attacks; Athlete Injury Dashboard; Food Redistribution; Educompare; Adaptive RAG Pipeline
+Finished: Home Lab; Agentic SOC; Argus - Server Ops; PrivaRoute - Private In-Car AI; Packet Sniffer; AWS Security Scanner; Attacks; Athlete Injury Dashboard; Food Redistribution; Educompare; Adaptive RAG Pipeline
 Still in progress: Trident - Autonomous Pentesting
 Have their own GitHub repo linked on this site: Home Lab; Agentic SOC; Argus - Server Ops; Trident - Autonomous Pentesting; Packet Sniffer; AWS Security Scanner; Athlete Injury Dashboard; Adaptive RAG Pipeline
-No dedicated repo linked yet (only my GitHub profile): Attacks; Food Redistribution; Educompare
+No dedicated repo linked yet (only my GitHub profile): PrivaRoute - Private In-Car AI; Attacks; Food Redistribution; Educompare
 
 ## Security projects
 ### Home Lab
 Status: finished
 Tech: Linux, VPN, Tor, Self-hosted
 Code: https://github.com/ronitlxd/Home_SOC_Lab
-Started as a personal need, not a school assignment. I wanted a private alternative to cloud drives I couldn't see inside of, my own VPN instead of trusting a third party, and a Tor proxy because I was curious how the dark web actually worked. An old laptop turned into a full Linux home lab, and it's the base every other security project here runs on top of.
 A personal need, not a school assignment: a private alternative to cloud tools I couldn't see inside of. Runs 24/7 on a spare laptop (Ubuntu Server 24.04, 16GB RAM), not a cloud VM, because understanding a SOC meant actually living inside one.
 Splunk Free and Suricata IDS (65,000+ Emerging Threats rules) watch real traffic, including live Tor evasion routed through Proxychains, not staged data.
 The centerpiece: a dashboard built from scratch with Flask, psutil, and Chart.js, one real-time view of service health, system resources, and live Suricata/Splunk activity.
@@ -100,18 +113,26 @@ Built specifically to defend the home lab above. Splunk SIEM pulls logs from eve
 Status: finished
 Tech: Python, Ollama, Local LLM, Textual, systemd
 Code: https://github.com/ronitlxd/server-ops-agent
-A local AI agent that runs on my home server and lets me manage it in plain English, ask it about failed logins or tell it to restart a service, and it actually goes and checks. It never changes anything without asking me first, since letting a language model run raw shell commands is exactly how you wreck a server or hand an attacker a way in.
 I wanted an AI that could actually operate my server, not just tell me how to. The obvious way to build that is to let the model spit out shell commands and run them, that's also how you wreck a server or hand an attacker a way in, so the whole project became an exercise in giving an AI real power without letting it hold the keys.
 A local language model, running entirely on my own hardware through Ollama, reads what I type and picks from a fixed menu of tools instead of running raw shell. Read-only tools, checking service status, tailing logs, counting failed logins, run automatically since they can't break anything. Anything that changes the system stops, shows me exactly what it wants to do, and waits for my approval. Every action, approved or not, lands in an append-only audit log.
 The part I think is actually interesting is that I stopped trusting the model to read. Small models running on modest hardware confabulate, mine looked at three real failed logins in the data and confidently told me there were none, another time it invented a whole table of fake stats for tools it never even ran. The fix was to stop asking the model to parse or count anything. If a fact can be computed in code, it gets computed in Python, and the model only gets handed the finished number to phrase into a sentence.
 The model turned out to be the weak link, not the architecture. No amount of prompt tweaking made it reliably pick the right tool, so the fragile questions get routed in code before the model even sees them, and it runs no matter what the model would have picked on its own. Correctness lives in the code, not the model, which means I can swap in a bigger model later and it gets nicer to talk to, but it doesn't get safer, because the safety was never the model's job.
 It runs as a terminal dashboard, live server vitals down one side, a plain English prompt at the bottom, and an approval popup any time it wants to touch the system. Fifteen tools total, thirteen read-only and two that require my sign-off, running entirely on 4GB of VRAM with nothing leaving the machine.
 
+### PrivaRoute - Private In-Car AI
+Status: finished
+Tech: Python, Ollama, AES-256-GCM, Argon2id, Whisper, SQLite, Leaflet
+Code: https://github.com/ronitlxd
+A car assistant hears a lot of private things, names, addresses, appointments, who you call. I wanted one that never hands that to a bigger model in the cloud, so PrivaRoute decides where every request goes before anything leaves the vehicle.
+A small on-device model (Qwen3 4B) classifies each request, and deterministic Python rules check that call. Simple or sensitive requests stay on the local model, harder ones go to a larger 8B model. Before that happens, names, places and contacts are swapped for placeholders and restored on the vehicle afterward. In live tests, 0 private values were sent.
+Each driver's profile is encrypted with AES-256-GCM using a key derived from their password with Argon2id. Five failed attempts trigger a lockout that doubles up to an hour, and switching drivers clears all context. A four-tier data policy keeps PINs, card numbers and IDs on the vehicle no matter what.
+Nothing runs just because a model said so. Every step is checked against an allowlist, steps the driver never asked for are dropped, and the driver confirms the plan before it runs. Every request also gets a privacy receipt saying which model answered, what was masked and which outside services were contacted, logged without the content.
+It also has on-device voice input with faster-whisper, a live map with multi-stop route ordering, and an engineer view that traces every pipeline stage. It runs on my own Ubuntu server, covered by 381 automated tests. It's a prototype, the larger model is a local stand-in and the vehicle actions are simulated.
+
 ### Trident - Autonomous Pentesting
 Status: IN PROGRESS, not finished, I am still building it
 Tech: Python, Docker, Local LLM, Multi-Agent
 Code: https://github.com/ronitlxd/Multi-Agent-Pentesting-AI
-An offensive counterpart to my SOC work, an agent that attacks an authorized target on its own but only counts a bug as real once it builds a working proof for it, so it doesn't flood you with the false positives most scanners do. Still early, the reasoning and sandboxing skeleton is built, the actual attack engine and adapters are next.
 I wanted an offensive counterpart to my defensive SOC work, something that plays the attacker's side and actually proves what it finds instead of shipping a hundred maybe-bugs and making a human sort the real ones from the noise. A finding I can't reproduce doesn't get reported, that rule shapes the entire design.
 The work splits across three roles. A Planner reasons about the target and breaks it into a tree of tasks, recon then enumeration then specific vulnerability hypotheses, tracking what's been tried and what's still open. An Executor runs the actual tools inside a fresh Docker sandbox per job, so nothing it does touches my own machines. An Analyst takes whatever the Executor thinks it found and tries to build a real working proof from scratch. If it can't, the finding dies there, that validation gate is the thing I care about most.
 The engine itself doesn't know or care why it's running, thin adapters plug it into different jobs on top of the same core: a bug bounty hunter, a gate inside a build pipeline that blocks a release, a sweep across an org's own IP ranges for forgotten boxes, a recheck that a patched bug stays dead, or the red half of a pair with my defensive SOC pipeline, where it fires an exploit and the blue side has to prove it caught it. Each adapter is maybe a hundred lines, the engine is the hard part and I only write it once.
@@ -122,7 +143,6 @@ Right now this is Phase 0. The reasoning and sandboxing skeleton is built, reuse
 Status: finished
 Tech: Python, Raw Sockets, TCP/IP
 Code: https://github.com/ronitlxd/Packet_sniffer
-My own Wireshark, built from raw sockets in Python to capture and analyze live traffic across Ethernet, IPv4, TCP, UDP, and ICMP. Parses headers to pull IPs, ports, and TCP flags for real-time monitoring, mostly so I'd actually understand what a packet capture tool is doing instead of just clicking around one.
 Most people who want to see packet-level traffic just open Wireshark. I built my own instead, from raw sockets in Python with zero third-party dependencies, just the standard library, because I wanted to actually understand what a packet capture tool does under the hood, not just click around one someone else wrote.
 It parses Ethernet frames, IPv4 headers, and TCP/UDP/ICMP payloads in real time, pulling IPs, ports, and TCP flags straight off the wire. No framework is doing the heavy lifting here, every layer of the stack gets decoded by hand, which is exactly the kind of low-level understanding that separates using a security tool from actually being able to build one.
 
@@ -130,7 +150,6 @@ It parses Ethernet frames, IPv4 headers, and TCP/UDP/ICMP payloads in real time,
 Status: finished
 Tech: AWS, Python, IAM, Cloud Security
 Code: https://github.com/ronitlxd/aws-security-scanner
-Checks an AWS account against common misconfiguration patterns, open S3 buckets, overly permissive IAM policies, security groups left wide open, the kind of small mistakes behind most real cloud breaches. Built to catch what a manual checklist would catch, automatically.
 Most cloud security tools tell you what's wrong after someone else already found it. I built mine backwards: I deliberately misconfigured a real AWS account first, public S3 buckets, open security groups, unrotated keys, then wrote a scanner from scratch to catch every mistake I'd made.
 It runs 15 checks across S3, IAM, EC2 security groups, and EBS, and every finding maps to a specific CIS AWS Foundations Benchmark v1.5 control, so the output never just says something is wrong, it says exactly which standard it violates and why. It's entirely read-only, runs against a locked-down IAM policy, and outputs a CI-friendly exit code plus JSON and Markdown reports, built to slot directly into a real pipeline, not just sit as a personal script.
 
@@ -145,7 +164,6 @@ A collection of classic attacks I performed myself specifically to learn how the
 Status: finished
 Tech: Django, Bootstrap, Chart.js, PostgreSQL
 Code: https://github.com/Uwindsor-Human-Kinetics/HK-S26-COMP8967-Team12
-Built for a real client, University of Windsor Human Kinetics, as part of my Master's program. A dashboard that tracks athlete injury data so coaches and staff can actually see patterns instead of digging through spreadsheets. First project where I had to answer to someone outside a classroom for what I shipped.
 Built for a real client, University of Windsor Human Kinetics, as the Lancer Athlete Injury Tracking System, the first project where I had to answer to someone outside a classroom for what I shipped, and hand it off cleanly to the next development team.
 Django-based with role-based access for admins, coaches, doctors, and players, each one only sees what's relevant to their job.
 The core of it is a full analytics dashboard: injury type, body part, and severity distribution, monthly trends, and academic-year filtering, giving coaches and staff a way to actually see patterns instead of digging through spreadsheets.
@@ -167,7 +185,6 @@ Automated course comparison across Coursera, Udemy, and edX using Selenium and J
 Status: finished
 Tech: Next.js, TypeScript, FastAPI, pgvector
 Code: https://github.com/ronitlxd/Adaptive_Rag_With_Frontend
-Next.js / TypeScript frontend for a RAG system applying five vector-pruning strategies (cosine, k-means, MMR) to shrink index size while preserving answer quality. FastAPI backend with sentence-transformers and pgvector. This is where I actually got my hands on training and configuring LLM models instead of just calling an API.
 Most people building with LLMs just call an API and move on. This project is where I went past that, a full Next.js/TypeScript frontend over a FastAPI backend, and actually got my hands on training and configuring the models underneath instead of treating them as a black box.
 It applies one of five vector-pruning strategies, cosine, cosine-whitened, k-means, MMR, or none, before storage, shrinking the index size while keeping answer quality intact. A Dev Mode inspector exposes the entire pipeline live: ingestion, chunking, embedding, pruning, and retrieval, complete with per-chunk scores and an embedding heatmap most RAG demos never show. Every answer comes back with page-level source citations, so nothing is ever a black-box response.
 
