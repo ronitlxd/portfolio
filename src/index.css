@@ -79,8 +79,7 @@ canvas {
 }
 
 /* XP-style boot screen (AssetLoader.jsx): flag + wordmark, a bar whose
-   blocks fill with the real download progress, corner footers, then a blue
-   "welcome" screen. Sizes scale down on narrow screens via --boot-u. */
+   blocks fill with the real download progress, and corner footers. Sizes scale down on narrow screens via --boot-u. */
 .boot-xp {
   /* One design pixel: 1px, shrinking on screens narrower than 420px or
      shorter than 480px (landscape phones) so nothing is cut off. */
@@ -220,35 +219,9 @@ canvas {
   font-size: 0.55em;
 }
 
-.boot-welcome {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #0050d0 0%, #3080e8 50%, #60a8f8 100%);
-  font-family: Tahoma, Verdana, sans-serif;
-}
-
-.boot-welcome span {
-  font-size: 36px;
-  font-weight: bold;
-  font-style: italic;
-  color: #fff;
-  letter-spacing: 3px;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-  animation: boot-welcome-in 0.8s ease-out;
-}
-
-@keyframes boot-welcome-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .boot-blocks-slide,
-  .boot-logo,
-  .boot-welcome span {
+  .boot-logo {
     animation: none;
   }
 }

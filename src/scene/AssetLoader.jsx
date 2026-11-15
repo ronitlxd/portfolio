@@ -1,28 +1,24 @@
-import { useEffect, useState } from 'react'
 import { useModelProgress } from './modelLoader'
 
 // -----------------------------------------------------------------------------
-// XP-style boot screen shown while the office pack's .glb downloads, then a
-// short blue "welcome" screen before the 3D scene is revealed.
+// XP-style boot screen shown while the office pack's .glb downloads.
 //
-// Three stages:
+// Two stages:
 //  - download: the bar's blocks fill left to right with the REAL download
 //    progress (modelLoader.js streams the file and counts bytes).
 //  - starting: download is done but the GPU is still parsing the model and
 //    uploading textures. The bar switches to XP's sliding-blocks loop so the
 //    screen doesn't look frozen.
-//  - welcome: `ready` flipped true, i.e. SceneReady.jsx (inside the scene's
-//    Suspense boundary) confirmed a real frame has painted. Shown for
-//    WELCOME_MS, then the overlay fades out. Gating on `ready` rather than
-//    on download-complete is what prevents a white flash before the model
-//    appears.
+// The overlay fades out once `ready` flips true, i.e. SceneReady.jsx (inside
+// the scene's Suspense boundary) confirmed a real frame has painted. Gating
+// on `ready` rather than on download-complete is what prevents a white flash
+// before the model appears.
 //
 // Always mounted, only hidden with a class, so the fade-out transition in
 // index.css can run.
 // -----------------------------------------------------------------------------
 
 const BLOCKS = 12
-const WELCOME_MS = 1200
 
 function Flag() {
   return (
@@ -56,66 +52,53 @@ function Flag() {
 
 export default function AssetLoader({ ready }) {
   const progress = useModelProgress()
-  const [welcomeDone, setWelcomeDone] = useState(false)
-
-  useEffect(() => {
-    if (!ready) return
-    const t = setTimeout(() => setWelcomeDone(true), WELCOME_MS)
-    return () => clearTimeout(t)
-  }, [ready])
 
   const downloading = progress < 1
   const lit = Math.round(progress * BLOCKS)
 
   return (
-    <div className={`asset-loader${welcomeDone ? ' asset-loader-hidden' : ''}`}>
-      {ready ? (
-        <div className="boot-welcome">
-          <span>welcome</span>
-        </div>
-      ) : (
-        <div className="boot-xp">
-          <div className="boot-logo">
-            <Flag />
-            <div className="boot-ms">
-              Microsoft<sup>&reg;</sup>
-            </div>
-            <div className="boot-wordmark">
-              <span className="boot-windows">Windows</span>
-              <span className="boot-xp-tag">xp</span>
-              <sup className="boot-tm">&trade;</sup>
-            </div>
+    <div className={`asset-loader${ready ? ' asset-loader-hidden' : ''}`}>
+      <div className="boot-xp">
+        <div className="boot-logo">
+          <Flag />
+          <div className="boot-ms">
+            Microsoft<sup>&reg;</sup>
           </div>
-
-          <div
-            className="boot-bar"
-            role="progressbar"
-            aria-label="Loading"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(progress * 100)}
-          >
-            {downloading ? (
-              <div className="boot-blocks">
-                {Array.from({ length: BLOCKS }, (_, i) => (
-                  <span key={i} className={`boot-block${i < lit ? ' on' : ''}`} />
-                ))}
-              </div>
-            ) : (
-              <div className="boot-blocks boot-blocks-slide">
-                <span className="boot-block on" />
-                <span className="boot-block on" />
-                <span className="boot-block on" />
-              </div>
-            )}
-          </div>
-
-          <div className="boot-foot boot-foot-left">Copyright &copy; Ronit Lad</div>
-          <div className="boot-foot boot-foot-right">
-            Portfolio<sup>&reg;</sup>
+          <div className="boot-wordmark">
+            <span className="boot-windows">Windows</span>
+            <span className="boot-xp-tag">xp</span>
+            <sup className="boot-tm">&trade;</sup>
           </div>
         </div>
-      )}
+
+        <div
+          className="boot-bar"
+          role="progressbar"
+          aria-label="Loading"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress * 100)}
+        >
+          {downloading ? (
+            <div className="boot-blocks">
+              {Array.from({ length: BLOCKS }, (_, i) => (
+                <span key={i} className={`boot-block${i < lit ? ' on' : ''}`} />
+              ))}
+            </div>
+          ) : (
+            <div className="boot-blocks boot-blocks-slide">
+              <span className="boot-block on" />
+              <span className="boot-block on" />
+              <span className="boot-block on" />
+            </div>
+          )}
+        </div>
+
+        <div className="boot-foot boot-foot-left">Copyright &copy; Ronit Lad</div>
+        <div className="boot-foot boot-foot-right">
+          Portfolio<sup>&reg;</sup>
+        </div>
+      </div>
     </div>
   )
 }
