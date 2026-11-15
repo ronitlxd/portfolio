@@ -322,7 +322,7 @@ export const devProjects = [
     detailImages: [
       { src: `${import.meta.env.BASE_URL}media/athleatinjurydashboard1.png`, caption: 'The dashboard: injury trends across the roster at a glance.' },
       { src: `${import.meta.env.BASE_URL}media/athleatinjurydashboard2.png`, caption: 'Filtering by injury type, body part, and severity.' },
-      { src: `${import.meta.env.BASE_URL}media/athleatinjurydsahboard3.png`, caption: 'Role-based views, each user sees only what applies to them.' },
+      { src: `${import.meta.env.BASE_URL}media/athleatinjurydashboard3.png`, caption: 'Role-based views, each user sees only what applies to them.' },
     ],
   },
   {

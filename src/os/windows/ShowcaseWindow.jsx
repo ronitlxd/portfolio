@@ -516,7 +516,7 @@ export default function ShowcaseWindow() {
     return (
       <div className="showcase">
         <h1>{profile.name}</h1>
-        <p className="subtitle">Cybersecurity Anthusist</p>
+        <p className="subtitle">Cybersecurity Enthusiast</p>
         <nav className="nav-row">
           <a tabIndex={0} onClick={() => setPage('about')}>ABOUT</a>
           <a tabIndex={0} onClick={() => setPage('education')}>EDUCATION</a>
