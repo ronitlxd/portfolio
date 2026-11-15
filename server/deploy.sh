@@ -31,6 +31,6 @@ echo "== install and restart"
   systemctl --user daemon-reload
   systemctl --user enable -q portfolio
   systemctl --user restart portfolio
-  sleep 2
-  curl -fsS localhost:8080/api/health && echo " <- service is up"
+  # The service can take a few seconds to start listening after a restart.
+  for i in $(seq 1 15); do curl -fsS localhost:8080/api/health && { echo " <- service is up"; exit 0; }; sleep 2; done; echo "service did not come up"; exit 1
 '
