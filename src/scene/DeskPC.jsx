@@ -36,13 +36,19 @@ export const SCREEN_POSITION = GLASS_CENTER
 // Faces +X (towards the camera): a quarter turn about Y puts the OS's
 // right edge along -z and its normal along +x.
 export const SCREEN_ROTATION = [0, Math.PI / 2, 0]
+// A thin strip of dark glass left showing around the picture, like a real
+// CRT's unlit edge. In the OS's own pixels (800x600), on every side.
+const GLASS_MARGIN_PX = 5
+
 // drei's <Html transform> maps 40 CSS px to 1 world unit (times this
-// scale), and the OS box is 800x600 * EMBED_SCALE px. So this stretches it
-// to exactly the glass. The glass is wider than 4:3 (because of the 1.199x
-// monitor stretch), so x ends up about 8.5% larger than y.
+// scale), and the OS box is 800x600 * EMBED_SCALE px. So this fits it to
+// the glass minus the margin. The glass is wider than 4:3 (because of the
+// 1.199x monitor stretch), so x ends up about 8.5% larger than y.
+const W = 800
+const H = 600
 export const SCREEN_SCALE = [
-  (GLASS_WIDTH * 40) / (800 * EMBED_SCALE),
-  (GLASS_HEIGHT * 40) / (600 * EMBED_SCALE),
+  (GLASS_WIDTH * ((W - 2 * GLASS_MARGIN_PX) / W) * 40) / (W * EMBED_SCALE),
+  (GLASS_HEIGHT * ((H - 2 * GLASS_MARGIN_PX) / H) * 40) / (H * EMBED_SCALE),
   0.001,
 ]
 
