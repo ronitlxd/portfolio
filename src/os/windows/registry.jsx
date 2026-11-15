@@ -30,7 +30,9 @@ function centered({ width, height }) {
 // Bumped up from 680x420 (still fits the 800x600 desktop with a small
 // margin on all sides, above the 30px taskbar) - `centered()` below
 // recomputes position from this size, so it stays centered automatically.
-const SHOWCASE_SIZE = { width: 760, height: 540 }
+// Was 760x540, which covered nearly the whole desktop. 600x420 leaves the
+// desktop icons (left 84px), wallpaper and Clippy (bottom-right) visible.
+const SHOWCASE_SIZE = { width: 600, height: 420 }
 const PAINT_SIZE = { width: 600, height: 440 }
 
 // Each window: id -> { title, icon (emoji glyph), Component, size, pos }
