@@ -36,3 +36,7 @@ __pycache__/
 # stray duplicate copy of public/models/*.glb sitting at the project root -
 # same files, not referenced by any code, just extra weight
 /objects/
+
+# home-server build output and deploy settings (server/deploy.sh)
+dist-server
+server/deploy.env

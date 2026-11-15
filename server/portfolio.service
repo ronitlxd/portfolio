@@ -1,0 +1,14 @@
+# systemd USER service (no root needed). Installed by deploy.sh to
+# ~/.config/systemd/user/portfolio.service
+[Unit]
+Description=Ronit Lad portfolio site
+After=network.target
+
+[Service]
+WorkingDirectory=%h/portfolio
+ExecStart=%h/portfolio/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8080
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

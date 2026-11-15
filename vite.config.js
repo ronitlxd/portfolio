@@ -8,7 +8,8 @@ import react from '@vitejs/plugin-react'
 // If you deploy to a USER/ORG repo (<user>.github.io served at the root),
 // leave it as '/'.
 // This is the ONLY line you need to change when you name the repo.
-const base = '/portfolio/'
+// The home-server build overrides it with VITE_BASE=/ (see server/deploy.sh).
+const base = process.env.VITE_BASE || '/portfolio/'
 
 export default defineConfig({
   base,
