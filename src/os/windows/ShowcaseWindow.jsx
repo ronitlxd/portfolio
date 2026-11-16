@@ -43,7 +43,6 @@ const NAV = [
   { id: 'about', label: 'About' },
   { id: 'education', label: 'Education' },
   { id: 'experience', label: 'Experience' },
-  { id: 'clients', label: 'Client Projects' },
   { id: 'projects', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -103,7 +102,8 @@ function AboutPage() {
 }
 
 // Projects landing (henryheffernan.com-style): a big "Projects" heading and
-// two clickable XP-style category cards (Security Ops / Dev Projects)
+// three clickable XP-style category cards (Security Ops / Dev Projects /
+// Client Projects)
 // instead of one long list. The "& Security" subhead and intro paragraph
 // were removed at Ronit's request. Each card's icon slot now
 // renders its real artwork (projectCategories[].icon in data/content.js) -
@@ -363,9 +363,13 @@ function ExperiencePage() {
 }
 
 // University industry and client projects, kept apart from paid work.
-function ClientProjectsPage({ openWindow }) {
+// The third block on the Projects page.
+function ClientProjectsPage({ setPage, openWindow }) {
   return (
     <>
+      <a className="linklike back-link" tabIndex={0} onClick={() => setPage('projects')}>
+        &larr; Back to Projects
+      </a>
       <h2>Client Projects</h2>
       {clientProjects.map((e) => (
         <ExperienceEntry key={e.company} entry={e} openWindow={openWindow} />
@@ -546,7 +550,7 @@ const PAGES = {
   about: AboutPage,
   education: EducationPage,
   experience: ExperiencePage,
-  clients: ClientProjectsPage,
+  'projects-clients': ClientProjectsPage,
   projects: ProjectsLanding,
   'projects-security': SecurityProjectsPage,
   'projects-dev': DevProjectsPage,
@@ -565,6 +569,7 @@ export default function ShowcaseWindow({ openWindow }) {
     page === 'projects' ||
     page === 'projects-security' ||
     page === 'projects-dev' ||
+    page === 'projects-clients' ||
     page === 'project-detail'
   // While on the detail page, the sub-nav should still highlight whichever
   // category list the open project actually belongs to.

@@ -155,6 +155,8 @@ export const projectsIntro =
 export const projectCategories = [
   { id: 'security', label: 'Security Ops', sub: 'PROJECTS', icon: `${import.meta.env.BASE_URL}media/play_13862274.png` },
   { id: 'dev', label: 'Dev Projects', sub: 'PROJECTS', icon: `${import.meta.env.BASE_URL}media/web.png` },
+  // University industry and client work (the `clientProjects` list below).
+  { id: 'clients', label: 'Client Projects', sub: 'PROJECTS', icon: `${import.meta.env.BASE_URL}media/clients.svg` },
 ]
 
 // `detail` bullets below are pulled from each project's actual GitHub
@@ -422,7 +424,8 @@ export const educationPage = [
 // file - kept as separate fields so ExperiencePage can render the same
 // heading-level structure the file specified, instead of the old single
 // "role - org" line.
-// Client Projects page (its own nav entry, separate from Experience): a
+// Client Projects page (third block on the Projects page, separate from
+// Experience): a
 // university industry project and a client project, not jobs. PrivaRoute
 // facts come from RESUME_PROJECT_PrivaRoute.md (JLR was the course's
 // industry affiliate, so "in collaboration with", never an employer; it's a
