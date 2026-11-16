@@ -61,9 +61,10 @@
 }
 
 .showcase h1 {
-  /* Bold Comic Sans MS per Ronit's request, replacing the earlier Holtwood
+  /* One family (Montserrat) for all Showcase text, headings heavy. Was Comic
+     Sans MS, before that Holtwood
      One SC/Playfair Display heading treatment everywhere (this file). */
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.5px;
   /* Sized/spaced against the henryheffernan.com reference's landing title -
@@ -117,7 +118,7 @@
   /* Widened from 150px so the larger name/nav text below (matching Henry's
      sizing) has room to sit comfortably, same ~19% proportion of the
      window width as before. */
-  width: 115px;
+  width: 124px;
   flex-shrink: 0;
   padding: 14px 10px;
   background: #fafafa;
@@ -137,9 +138,9 @@
 
 .showcase-sidebar h2 {
   margin: 0 0 2px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.2px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.3px;
   /* Matches Henry's larger two-line-wrapping sidebar name (was 19px). */
   font-size: 17px;
   color: #000;
@@ -169,10 +170,11 @@
 
 .sidebar-nav a {
   /* Was 12px. */
-  font-size: 11px;
+  font-size: 12px;
   color: #0000ee;
   text-decoration: underline;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .sidebar-nav a:hover {
@@ -232,37 +234,38 @@
   /* More generous margins overall, matching the reference's roomier
      content pane (was 18px/30px/18px/22px). Extra right padding still
      clears ScrollArea's 10px thumb track. */
-  padding: 20px 31px 20px 24px;
+  padding: 28px 40px 28px 32px;
 }
 
 .showcase-content h2 {
-  margin: 0 0 12px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  margin: 0 0 16px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.2px;
   /* Was 19px. */
-  font-size: 20px;
+  font-size: 22px;
   color: #000;
 }
 
-/* About page's opening line only - "Welcome" in big bold Comic Sans MS, same
+/* About page's opening line only - a big heavy heading (was Comic Sans), same
    family/weight as the other content headings above, just a lot larger
    (matches the henryheffernan.com reference's big "Welcome" h1). */
 .welcome-heading {
   margin: 0 0 12px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.6px;
   /* Was 36px - closer to Henry's proportionally huge page titles. */
   font-size: 36px;
   color: #000;
 }
 
 .showcase-content p {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   /* Was 12px/1.5, then 13px - bumped again for readability. */
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.65;
+  text-align: justify;
 }
 
 /* Experience section - one job entry, matching experience.txt's own
@@ -271,36 +274,39 @@
    ShowcaseWindow.jsx header comment) - Education has its own page now,
    Certifications/Skills are unused for the moment. */
 .exp-item {
-  margin-bottom: 14px;
+  margin-bottom: 26px;
 }
 
 .exp-item .exp-company {
-  margin: 0 0 3px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  margin: 0 0 6px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.4px;
   /* Was 24px. */
-  font-size: 23px;
+  font-size: 26px;
   color: #000;
+  line-height: 1.15;
 }
 
 .exp-item .exp-role {
-  margin: 0 0 2px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  font-size: 13px;
+  margin: 0 0 10px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+  font-size: 14px;
   color: #000;
+  display: inline-block;
 }
 
 .exp-item .exp-when {
-  margin: 0 0 10px;
+  margin: 3px 0 10px 12px;
   font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
-  font-weight: normal;
+  font-weight: 600;
   letter-spacing: normal;
   font-size: 11px;
-  color: #666;
-  font-style: italic;
+  color: #333;
+  font-style: normal;
+  float: right;
 }
 
 /* Old .exp-org/h3 rules from the previous "role - org" single-line layout
@@ -315,9 +321,9 @@
 
 .edu-item .edu-degree {
   margin: 0 0 3px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.3px;
   /* Was 20px. */
   font-size: 20px;
   color: #000;
@@ -334,7 +340,7 @@
 
 .about-subhead {
   margin: 17px 0 9px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   font-size: 13px;
   color: #000;
@@ -436,7 +442,7 @@
 
 .agent-name {
   margin: 0 0 3px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   font-size: 12px;
   color: #000;
@@ -444,7 +450,7 @@
 
 .exp-subhead {
   margin: 15px 0 9px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   font-size: 13px;
@@ -463,8 +469,10 @@
 .exp-bullets {
   margin: 0 0 10px;
   padding-left: 17px;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.65;
+  text-align: justify;
+  clear: both;
 }
 
 .exp-bullets li {
@@ -516,7 +524,7 @@
    still used inside each category's list, just reached via a click now. */
 .projects-subhead {
   margin: -5px 0 12px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   font-size: 15px;
   color: #333;
@@ -579,7 +587,7 @@ img.project-category-icon {
 }
 
 .project-category-title {
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   /* Was 22px. */
   font-size: 22px;
@@ -610,9 +618,9 @@ img.project-category-icon {
 
 .project-title {
   margin: 0 0 4px;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.3px;
   /* Was 22px. */
   font-size: 21px;
   color: #000;
@@ -736,7 +744,7 @@ img.project-category-icon {
 
 .contact-heading {
   margin: 0;
-  font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive, sans-serif;
+  font-family: 'Montserrat', Tahoma, Verdana, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.3px;
   /* Was 36px, matches .welcome-heading's bump to 44px. */
@@ -889,7 +897,10 @@ img.project-category-icon {
      if the var is ever unset. */
   background-color: rgba(0, 0, 0, var(--crt-darkness, 0.08));
   /* Faint horizontal scanlines, 1px dark every 3px of the 800x600 screen. */
-  background-image: repeating-linear-gradient(
+  /* A soft pale haze over the glass, then the scanlines. */
+  background-image:
+    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 70%),
+    repeating-linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.07) 0,
     rgba(0, 0, 0, 0.07) 1px,
