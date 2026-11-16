@@ -40,3 +40,6 @@ __pycache__/
 # home-server build output and deploy settings (server/deploy.sh)
 dist-server
 server/deploy.env
+
+# security review notes: lists server weaknesses, never publish
+SECURITY_PLAN.md
