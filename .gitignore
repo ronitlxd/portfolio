@@ -43,3 +43,6 @@ server/deploy.env
 
 # security review notes: lists server weaknesses, never publish
 SECURITY_PLAN.md
+
+# local Claude Code settings and preview configs
+.claude/
