@@ -412,7 +412,9 @@ function LinkedinGlyph() {
 // FormSubmit that has to be clicked to activate delivery; every submission
 // after that goes straight through automatically.
 function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', company: '', message: '' })
+  // `_honey` is a honeypot: hidden from people, bots fill it in. FormSubmit
+  // drops any submission where it is set, and we don't even send those.
+  const [form, setForm] = useState({ name: '', email: '', company: '', message: '', _honey: '' })
   const [status, setStatus] = useState('idle') // idle | sending | sent | error
 
   const handleChange = (e) => {
@@ -422,6 +424,10 @@ function ContactPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (form._honey) {
+      setStatus('sent')
+      return
+    }
     setStatus('sending')
     try {
       const res = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
@@ -433,6 +439,7 @@ function ContactPage() {
           company: form.company || '(not provided)',
           message: form.message,
           _subject: `Portfolio contact from ${form.name}`,
+          _honey: form._honey,
         }),
       })
       if (!res.ok) throw new Error('FormSubmit request failed')
@@ -479,6 +486,18 @@ function ContactPage() {
         </p>
       ) : (
         <form className="contact-form" onSubmit={handleSubmit}>
+          {/* Honeypot, see _honey above. Off-screen, not focusable, ignored by
+              screen readers and password managers. */}
+          <input
+            type="text"
+            name="_honey"
+            value={form._honey}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+          />
           <label>
             <span className="required">*</span>Your name:
             <input
@@ -486,6 +505,7 @@ function ContactPage() {
               value={form.name}
               onChange={handleChange}
               placeholder="Name"
+              maxLength={100}
               required
             />
           </label>
@@ -497,6 +517,7 @@ function ContactPage() {
               value={form.email}
               onChange={handleChange}
               placeholder="Email"
+              maxLength={200}
               required
             />
           </label>
@@ -507,6 +528,7 @@ function ContactPage() {
               value={form.company}
               onChange={handleChange}
               placeholder="Company"
+              maxLength={100}
             />
           </label>
           <label>
@@ -517,6 +539,7 @@ function ContactPage() {
               onChange={handleChange}
               placeholder="Message"
               rows={5}
+              maxLength={3000}
               required
             />
           </label>

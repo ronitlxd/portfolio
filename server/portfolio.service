@@ -6,7 +6,9 @@ After=network.target
 
 [Service]
 WorkingDirectory=%h/portfolio
-ExecStart=%h/portfolio/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8080
+# Connection limits: at most 64 open connections, idle keep-alive closed
+# after 5s, request headers capped at 16 KB (slow or huge-header floods).
+ExecStart=%h/portfolio/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8080 --limit-concurrency 64 --timeout-keep-alive 5 --h11-max-incomplete-event-size 16384
 Restart=on-failure
 RestartSec=3
 
