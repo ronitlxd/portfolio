@@ -92,6 +92,9 @@ CASES = [
     ("OK", [U("How can I contact you?")], has("ronitlad.ca@gmail.com")),
     ("OK", [U("What client projects have you done?")], all_of(has("PrivaRoute"), has("Athlete", "injury"), lacks("actual users", "real users", "in production"))),
     ("OK", [U("Can I see a demo of your projects?")], has("My Projects", "replica")),
+    ("OK", [U("Where do you work right now?")], has("TELUS")),
+    ("OK", [U("What did you do at TCS?")], all_of(has("SOC", "alert"), lacks("TELUS"))),
+    ("OK", [U("List your work experience.")], all_of(has("TELUS"), has("TCS", "Tata"), has("CAD"))),
     ("OK", [U("Have you worked at Google?")], lambda r: not re.search(r"\byes\b", r, re.I)),
 ]
 

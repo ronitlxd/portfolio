@@ -463,6 +463,29 @@ export const clientProjects = [
 // Work experience (jobs only).
 export const experience = [
   {
+    company: 'TELUS',
+    role: 'Cybersecurity Analyst Intern',
+    when: 'Jul 2026 to Present, Canada',
+    bullets: [
+      'Investigate security alerts in Splunk and Microsoft Sentinel, assess severity and escalate real threats.',
+      'Correlate events with KQL, build incident timelines and map attacker techniques to MITRE ATT&CK.',
+      'Review AWS configurations against CIS benchmarks and recommend fixes for risky permissions and exposed resources.',
+      'Analyze suspicious network activity with Suricata and Wireshark.',
+      'Automate recurring analysis and reporting with Python and Bash, and track findings in Jira.',
+    ],
+  },
+  {
+    company: 'Tata Consultancy Services (TCS)',
+    role: 'SOC Analyst L1',
+    when: 'Jan 2023 to Jul 2025, India',
+    bullets: [
+      'Monitored and triaged SIEM alerts across enterprise systems, classifying severity and escalating to L2 analysts.',
+      'Investigated login failures and unusual account behavior to spot possible unauthorized access.',
+      'Separated legitimate activity from suspicious behavior and flagged affected assets and exposed services.',
+      'Prepared escalation summaries with timelines and indicators of compromise, and maintained incident records.',
+    ],
+  },
+  {
     company: 'CAD Consultant',
     role: 'Assistant Web Engineer',
     when: 'Feb to Jun 2024, India',

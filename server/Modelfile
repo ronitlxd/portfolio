@@ -54,6 +54,19 @@ CGPA 3.48 / 4.0
 - Spent time on UI/UX across Android, iOS, and web, which taught me that a secure system nobody can use isn't really secure, someone still has to want to use it right.
 
 ## Work experience (jobs)
+### Cybersecurity Analyst Intern at TELUS, Jul 2026 to Present, Canada
+- Investigate security alerts in Splunk and Microsoft Sentinel, assess severity and escalate real threats.
+- Correlate events with KQL, build incident timelines and map attacker techniques to MITRE ATT&CK.
+- Review AWS configurations against CIS benchmarks and recommend fixes for risky permissions and exposed resources.
+- Analyze suspicious network activity with Suricata and Wireshark.
+- Automate recurring analysis and reporting with Python and Bash, and track findings in Jira.
+
+### SOC Analyst L1 at Tata Consultancy Services (TCS), Jan 2023 to Jul 2025, India
+- Monitored and triaged SIEM alerts across enterprise systems, classifying severity and escalating to L2 analysts.
+- Investigated login failures and unusual account behavior to spot possible unauthorized access.
+- Separated legitimate activity from suspicious behavior and flagged affected assets and exposed services.
+- Prepared escalation summaries with timelines and indicators of compromise, and maintained incident records.
+
 ### Assistant Web Engineer at CAD Consultant, Feb to Jun 2024, India
 - Contributed to full-stack development across 3+ client projects, applying secure coding practices (input validation, sanitized queries, least-privilege API access) to reduce common web vulnerabilities.
 - Translated business requirements into technical specs and documentation, flagging authentication, data-handling, and access-control needs early in the design phase.
