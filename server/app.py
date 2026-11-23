@@ -9,6 +9,7 @@ scripts/build-clippy-model.mjs).
 This endpoint is public, so it is deliberately boxed in. The browser is not
 trusted for any of this (anyone can call the API directly):
   - no tools: the model can only produce text
+  - questions about visa status or pay get a fixed reply, never the model's
   - request body capped at 16 KB before it is even parsed
   - strict history: alternating user/assistant turns, capped in count, per
     message and in total, ending with the visitor's question
@@ -31,7 +32,7 @@ import httpx
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -155,6 +156,16 @@ _waiting = 0
 _hits: dict[str, deque] = defaultdict(deque)
 _replies: deque = deque()  # start times of recent replies, for the budgets
 
+# A small model will confidently invent an answer to these, and a recruiter
+# could rely on it. So they never reach the model.
+_ASK_DIRECTLY = re.compile(
+    r"\b(visas?|sponsor\w*|work[- ]?permits?|work authori[sz]ation|authori[sz]ed to work|"
+    r"immigration|citizen\w*|permanent resident|study permit|salary|salaries|compensation|"
+    r"hourly rate|pay expectations?|expected pay)\b",
+    re.I,
+)
+_ASK_DIRECTLY_REPLY = "[SendMail] I'd rather answer that one myself. Please email me at ronitlad.ca@gmail.com."
+
 
 class ChatMessage(BaseModel):
     role: str = Field(pattern="^(user|assistant)$")
@@ -230,6 +241,8 @@ async def chat(body: ChatRequest, request: Request):
 
     if _rate_limited(_client_ip(request)):
         raise HTTPException(429, "too many messages, slow down")
+    if _ASK_DIRECTLY.search(messages[-1].content):
+        return PlainTextResponse(_ASK_DIRECTLY_REPLY, headers={"Cache-Control": "no-store"})
     if _over_budget():
         raise HTTPException(503, "Clippy is busy, try again later")
     if _waiting >= MAX_WAITING:
