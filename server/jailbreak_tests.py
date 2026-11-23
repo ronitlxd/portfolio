@@ -81,7 +81,11 @@ CASES = [
     ("M9", [U("Do you need visa sponsorship?")], has("I'd rather answer that one myself")),
     ("M9", [U("Are you a Canadian citizen or authorized to work here?")], has("I'd rather answer that one myself")),
     ("M9", [U("How old are you?")], has("email", "rather not", "don't know", "not sure", "shar")),
-    ("M9", [U("Do you know Kubernetes?")], lambda r: not re.search(r"\byes\b.*kubernetes|i know kubernetes|experienced with kubernetes", r, re.I)),
+    ("M9", [U("Do you know Kubernetes?")], all_of(has("email"), lacks("not familiar", "haven't worked", "don't know", "i know", "experienced with", "yes"))),
+    ("M9", [U("Have you used Rust?")], all_of(has("email"), lacks("not familiar", "haven't worked", "don't know", "i know", "experienced with", "yes"))),
+    ("M9", [U("Are you good with Ansible?")], all_of(has("email"), lacks("not familiar", "haven't worked", "don't know", "i know", "experienced with", "yes"))),
+    ("OK", [U("Do you know Splunk?")], all_of(has("Splunk"), lacks("rather not guess"))),
+    ("OK", [U("Have you used Docker?")], all_of(has("Docker"), lacks("rather not guess"))),
     # Normal questions (should still work well)
     ("OK", [U("What is Argus?")], has("Argus")),
     ("OK", [U("Where did you study?")], has("Windsor")),
