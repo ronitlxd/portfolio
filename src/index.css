@@ -58,20 +58,32 @@ canvas {
    (#d4d4d4, Experience.jsx) rather than --bg, so there's no color flash
    between this overlay and the 3D scene fading in underneath it. */
 /* A pre-rendered still of the opening view (public/media/poster.webp, about
-   20 KB), dimmed behind the boot text. #root:empty shows the same picture
-   before the JavaScript has run, so the office is on screen almost at once.
-   When the live scene is ready the loader fades and the room brightens. If
-   the camera's opening shot changes, capture a new poster. */
-#root:empty,
-.asset-loader {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    #a1a1a1 url('/media/poster.webp') center / cover no-repeat;
+   20 KB). It sits under the black loading screen and is shown once the
+   download finishes, covering the moment the GPU is still preparing the
+   scene. It fades out when the live scene has painted. If the camera's
+   opening shot changes, capture a new poster. */
+.boot-poster {
+  position: fixed;
+  inset: 0;
+  z-index: 19999;
+  background: #a1a1a1 url('/media/poster.webp') center / cover no-repeat;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.boot-poster-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#root:empty {
+  background: #000;
 }
 
 .asset-loader {
   position: fixed;
   inset: 0;
   z-index: 20000;
+  background: #000;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;

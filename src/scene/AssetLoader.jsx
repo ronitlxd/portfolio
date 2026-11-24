@@ -1,4 +1,9 @@
+import { useEffect, useState } from 'react'
 import { FALLBACK_BYTES, useModelProgress } from './modelLoader'
+
+// How long "All Content Loaded" stays on screen before the black loader
+// gives way to the poster still (if the live scene isn't ready by then).
+const POSTER_DELAY_MS = 600
 
 // -----------------------------------------------------------------------------
 // XP-style boot screen shown while the office pack's .glb downloads.
@@ -83,12 +88,23 @@ function BiosReadout({ progress }) {
 
 export default function AssetLoader({ ready }) {
   const progress = useModelProgress()
+  const downloaded = progress >= 1
+  const [showPoster, setShowPoster] = useState(false)
+
+  useEffect(() => {
+    if (!downloaded) return undefined
+    const t = setTimeout(() => setShowPoster(true), POSTER_DELAY_MS)
+    return () => clearTimeout(t)
+  }, [downloaded])
 
   const showBlocks = progress < 1
   const lit = Math.round(progress * BLOCKS)
 
   return (
-    <div className={`asset-loader${ready ? ' asset-loader-hidden' : ''}`}>
+    <>
+    {/* Pre-rendered still under the black loader, see .boot-poster in index.css. */}
+    <div className={`boot-poster${ready ? ' boot-poster-hidden' : ''}`} aria-hidden="true" />
+    <div className={`asset-loader${ready || showPoster ? ' asset-loader-hidden' : ''}`}>
       <BiosReadout progress={progress} />
       <div className="boot-xp">
         <div className="boot-logo">
@@ -132,5 +148,6 @@ export default function AssetLoader({ ready }) {
         </div>
       </div>
     </div>
+    </>
   )
 }
