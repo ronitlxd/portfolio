@@ -15,22 +15,25 @@ echo "== build (base /)"
 MSYS_NO_PATHCONV=1 VITE_BASE=/ npm run build -- --outDir dist-server
 
 echo "== upload"
-tar -C dist-server -cf - . | "${SSH[@]}" 'mkdir -p ~/portfolio && rm -rf ~/portfolio/dist.new && mkdir ~/portfolio/dist.new && tar -xf - -C ~/portfolio/dist.new'
-tar -C server -cf - app.py requirements.txt portfolio.service Modelfile | "${SSH[@]}" 'tar -xf - -C ~/portfolio'
+# /srv/portfolio belongs to the deploy account; the service (account
+# `portfolio`) can only read it. Set up once by setup-service-account.sh.
+tar -C dist-server -cf - . | "${SSH[@]}" 'rm -rf /srv/portfolio/dist.new && mkdir /srv/portfolio/dist.new && tar -xf - -C /srv/portfolio/dist.new'
+tar -C server -cf - app.py requirements.txt portfolio.service Modelfile security_tests.py jailbreak_tests.py | "${SSH[@]}" 'tar -xf - -C /srv/portfolio'
 
 echo "== install and restart"
 "${SSH[@]}" '
   set -e
-  cd ~/portfolio
+  cd /srv/portfolio
   [ -d venv ] || python3 -m venv venv
   venv/bin/pip install -q -r requirements.txt
-  ollama create ronit-clippy -f Modelfile >/dev/null
+  # Ollama is a snap, which can only read files under the home folder.
+  install -D -m 644 Modelfile ~/clippy-model/Modelfile
+  ollama create ronit-clippy -f ~/clippy-model/Modelfile >/dev/null
   rm -rf dist.old && { [ -d dist ] && mv dist dist.old || true; } && mv dist.new dist
-  mkdir -p ~/.config/systemd/user
-  cp portfolio.service ~/.config/systemd/user/
-  systemctl --user daemon-reload
-  systemctl --user enable -q portfolio
-  systemctl --user restart portfolio
+  chmod -R a+rX,go-w dist
+  # Changing the unit file needs a manual sudo step (it sets the account).
+  cmp -s portfolio.service /etc/systemd/system/portfolio.service || echo "NOTE: portfolio.service changed, install it with: sudo install -m 644 /srv/portfolio/portfolio.service /etc/systemd/system/ && sudo systemctl daemon-reload"
+  sudo -n systemctl restart portfolio.service
   # The service can take a few seconds to start listening after a restart.
   for i in $(seq 1 15); do curl -fsS localhost:8080/api/health && { echo " <- service is up"; exit 0; }; sleep 2; done; echo "service did not come up"; exit 1
 '

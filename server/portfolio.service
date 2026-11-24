@@ -1,16 +1,60 @@
-# systemd USER service (no root needed). Installed by deploy.sh to
-# ~/.config/systemd/user/portfolio.service
+# systemd SYSTEM service. Installed to /etc/systemd/system/portfolio.service
+# by server/setup-service-account.sh, refreshed by server/deploy.sh.
+#
+# Runs as the `portfolio` account, which has no sudo, no lxd and no login
+# shell. The code in /srv/portfolio belongs to the deploy account, so the
+# service can read it but cannot change it.
 [Unit]
-Description=Ronit Lad portfolio site
-After=network.target
+Description=Ronit Lad portfolio site and Clippy chat API
+After=network.target snap.ollama.listener.service
 
 [Service]
-WorkingDirectory=%h/portfolio
+User=portfolio
+Group=portfolio
+WorkingDirectory=/srv/portfolio
+Environment=PYTHONDONTWRITEBYTECODE=1
 # Connection limits: at most 64 open connections, idle keep-alive closed
 # after 5s, request headers capped at 16 KB (slow or huge-header floods).
-ExecStart=%h/portfolio/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8080 --limit-concurrency 64 --timeout-keep-alive 5 --h11-max-incomplete-event-size 16384
+ExecStart=/srv/portfolio/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8080 --limit-concurrency 64 --timeout-keep-alive 5 --h11-max-incomplete-event-size 16384
 Restart=on-failure
 RestartSec=3
 
+# Sandbox. The app only reads its own files and talks to Ollama on localhost.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+ProcSubset=pid
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RemoveIPC=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+# Network: only localhost (Tailscale Funnel delivers visitors over
+# 127.0.0.1, and Ollama listens there). Nothing else in or out.
+IPAddressDeny=any
+IPAddressAllow=localhost
+UMask=0077
+
+# Resource caps, so a flood cannot take the whole machine down.
+MemoryMax=512M
+CPUQuota=100%
+TasksMax=64
+
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
