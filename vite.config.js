@@ -42,9 +42,40 @@ function contentSecurityPolicy() {
   }
 }
 
+// Starts the 3D model download while the JavaScript is still loading. The
+// fetch in scene/modelLoader.js picks up this same request.
+function preloadModel() {
+  return {
+    name: 'preload-model',
+    apply: 'build',
+    transformIndexHtml: () => [
+      {
+        tag: 'link',
+        attrs: {
+          rel: 'preload',
+          href: `${base}models/office_pack.opt.glb`,
+          as: 'fetch',
+          type: 'model/gltf-binary',
+          crossorigin: 'anonymous',
+        },
+        injectTo: 'head',
+      },
+    ],
+  }
+}
+
+// Large libraries get their own files, so a content update doesn't make
+// returning visitors download them again.
+function vendorChunk(id) {
+  if (!id.includes('node_modules')) return undefined
+  if (/node_modules[\\/]three[\\/]/.test(id)) return 'three'
+  if (/node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return 'react'
+  return 'scene-libs'
+}
+
 export default defineConfig({
   base,
-  plugins: [react(), contentSecurityPolicy()],
+  plugins: [react(), contentSecurityPolicy(), preloadModel()],
   server: {
     // Build output folders. Watching them crashed the dev server (EBUSY on
     // Windows) when server/deploy.sh rewrote dist-server while it was running.
@@ -61,5 +92,6 @@ export default defineConfig({
     outDir: 'dist',
     // Keep chunks readable; three/drei are large so we let Vite split them.
     chunkSizeWarningLimit: 1500,
+    rollupOptions: { output: { manualChunks: vendorChunk } },
   },
 })

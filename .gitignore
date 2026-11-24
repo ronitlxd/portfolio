@@ -46,3 +46,6 @@ SECURITY_PLAN.md
 
 # local Claude Code settings and preview configs
 .claude/
+
+# Full-size 3D model, the web copy is built from it
+source-assets/

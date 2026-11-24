@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Boot from './Boot'
 import Desktop from './Desktop'
 import Taskbar from './Taskbar'
@@ -89,7 +89,10 @@ export default function OS() {
             onFocus={() => focus(id)}
             onClose={() => close(id)}
           >
-            <Body openWindow={open} onClose={() => close(id)} />
+            {/* Kept here so a window loading its code can't suspend the 3D scene. */}
+            <Suspense fallback={null}>
+              <Body openWindow={open} onClose={() => close(id)} />
+            </Suspense>
           </Window>
         )
       })}

@@ -1,10 +1,14 @@
+import { lazy } from 'react'
 import ShowcaseWindow from './ShowcaseWindow'
-import SocLabWindow from './SocLabWindow'
-import FirewallWindow from './FirewallWindow'
-import PaintWindow from './PaintWindow'
 import ProjectsFolderWindow from './ProjectsFolderWindow'
-import BrowserWindow from './BrowserWindow'
 import Icon from '../icons'
+
+// Not open at startup, so they load the first time they're opened. OS.jsx
+// wraps every window body in Suspense.
+const SocLabWindow = lazy(() => import('./SocLabWindow'))
+const FirewallWindow = lazy(() => import('./FirewallWindow'))
+const PaintWindow = lazy(() => import('./PaintWindow'))
+const BrowserWindow = lazy(() => import('./BrowserWindow'))
 
 // TASK 6: About/Skills/Projects/Contact used to be their own windows here -
 // collapsed into one scrollable page inside ShowcaseWindow.jsx (see that

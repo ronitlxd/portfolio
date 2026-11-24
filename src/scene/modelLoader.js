@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react'
 
 // -----------------------------------------------------------------------------
-// The office pack is one 56MB .glb, so Three's loading manager only ever
+// The office pack is one .glb, so Three's loading manager only ever
 // reports 0% then 100% for it - useless for a progress bar. Instead this
 // downloads the file itself as a stream, counts bytes as they arrive, and
 // hands useGLTF a blob: URL of the finished file. The boot screen
@@ -12,11 +12,12 @@ import { useSyncExternalStore } from 'react'
 // shared promise via useModelUrl().
 // -----------------------------------------------------------------------------
 
-const URL_PATH = `${import.meta.env.BASE_URL}models/90s_retro_office_pack.glb`
+// Built from the full-size original by scripts/optimize-model.mjs.
+const URL_PATH = `${import.meta.env.BASE_URL}models/office_pack.opt.glb`
 
 // Used only when the server sends no Content-Length (e.g. compressed
-// transfer). Keep in sync with public/models/90s_retro_office_pack.glb.
-export const FALLBACK_BYTES = 56545468
+// transfer). Keep in sync with public/models/office_pack.opt.glb.
+export const FALLBACK_BYTES = 4678260
 
 let progress = 0 // 0..1
 const listeners = new Set()
