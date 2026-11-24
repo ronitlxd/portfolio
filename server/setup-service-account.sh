@@ -2,7 +2,7 @@
 # One-time move of the portfolio service off the main account (SECURITY_PLAN
 # S3 and S4). Run on the server, from the folder this file was copied to:
 #
-#   sudo bash setup-service-account.sh lad91
+#   sudo bash setup-service-account.sh <deploy-user>
 #
 # The argument is the deploy account (the one deploy.sh logs in as).
 # What it does:
