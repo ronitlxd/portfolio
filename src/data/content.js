@@ -58,7 +58,7 @@ export const aboutPage = {
       figure: {
         src: `${import.meta.env.BASE_URL}media/fig2.jpeg`,
         caption: 'Figure 2: Me, 2026.',
-        beforeParagraph: 0,
+        beforeParagraph: 1,
       },
     },
     {
