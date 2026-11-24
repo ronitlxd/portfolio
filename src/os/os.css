@@ -475,6 +475,10 @@
   clear: both;
 }
 
+.about-section-clear {
+  clear: both;
+}
+
 .exp-bullets li {
   margin-bottom: 7px;
 }

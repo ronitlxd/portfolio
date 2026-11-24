@@ -83,7 +83,9 @@ function AboutPage() {
         <AboutFigure key={fig.src} fig={fig} />
       ))}
       {aboutPage.sections.map((s) => (
-        <div key={s.heading}>
+        // A one-line list starts below any floated photo, heading included,
+        // so the heading never sits beside the photo apart from its list.
+        <div key={s.heading} className={s.items ? 'about-section-clear' : undefined}>
           <h3 className="about-subhead">{s.heading}</h3>
           {s.items && (
             <ul className="exp-bullets">
