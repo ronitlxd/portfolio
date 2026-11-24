@@ -31,11 +31,11 @@ LinkedIn: https://linkedin.com/in/ronit-lad
 Demos on this site: open the "My Projects" folder on the desktop (or a project's "View replica" button) to try interactive replicas of VoltLAB, PrivaRoute, Agentic SOC, Argus, Athlete Injury Dashboard, Educompare. They use sample data only.
 
 ## About me
-I'm a cybersecurity enthusiast pursuing my Master of Applied Computing at the University of Windsor. I build and break things to learn how to defend them, mostly around SOC operations, detection, and log analysis. Now I'm looking to do it for real, in a live IT security environment.
+I'm a Cybersecurity Analyst Intern at TELUS and a Master of Applied Computing student at the University of Windsor. Before that I worked as a SOC Analyst at TCS. I build and break things to learn how to defend them, mostly around SOC operations, detection, and log analysis.
 About:
 I started messing with computers because I wanted to know how a bunch of 1s and 0s turns into an actual game. I built calculators, small games, websites, whatever got me closer to understanding it. That's what got me into computer engineering, where I picked up Python, JavaScript, HTML, and CSS.
 Then AI showed up and changed the math. Anyone can build a website in an afternoon now, and break one just as fast. That's the part I got interested in: if building and breaking are both easy, defending is the harder, more useful skill.
-Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, with correlation rules catching attacks, a local model helping on what the rules miss, and agents handling triage, investigation and response. Basically I taught myself the job before anyone gave it to me.
+Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, with correlation rules catching attacks, a local model helping on what the rules miss, and agents handling triage, investigation and response.
 Side quests:
 Outside of security, I trade stocks and crypto. A friend got me into it during my internship and I started paper trading to learn the basics. Turns out it rewards the same things security does: patience, research, telling signal from noise.
 Off the terminal, I'm usually gaming, at the gym, or cooking. Gaming's what got me into computers in the first place, the gym's where I reset, and cooking's the one hobby where I build something and get to enjoy it same day.
@@ -46,7 +46,7 @@ CGPA 3.1 / 4.0
 - Core coursework in software engineering, advanced algorithms, and advanced databases, the kind that pushes past syntax into how systems are actually designed to scale and hold up under load.
 - Advanced Systems Programming meant living inside Linux day to day instead of just using it, which lines up well with the home lab I already run.
 - Networking and Data Security was my highest grade, with hands-on labs on attacks like ARP poisoning, man-in-the-middle and SYN floods.
-- A hands-on project for a real client, Human Kinetics, building an athlete injury dashboard, the first time I've had to answer to someone outside a classroom for what I build.
+- A hands-on project for a real client, Human Kinetics, building an athlete injury dashboard.
 - Outside the classroom I've been to Sterling cybersecurity workshops and jumped into Capture The Flag competitions, chasing the same hands-on itch that got me building a home SOC lab in the first place.
 
 ### B.Tech Computer Science & Engineering, Uka Tarsadia University (Jul 2021 to May 2025)
@@ -187,7 +187,7 @@ Classic attacks I performed in my COMP 8677 Networking and Data Security labs, i
 Status: finished
 Tech: Django, Bootstrap, Chart.js
 Code: https://github.com/ronitlxd
-Built for a real client, University of Windsor Human Kinetics, as the Lancer Athlete Injury Tracking System, the first project where I had to answer to someone outside a classroom for what I shipped, and hand it off cleanly to the next development team.
+Built for a real client, University of Windsor Human Kinetics, as the Lancer Athlete Injury Tracking System, then handed off cleanly to the next development team.
 Django-based with role-based access for admins, coaches, doctors, and players, each one only sees what's relevant to their job.
 Deliberately preserves every injury record, including recovered ones, since the whole point is accurate end-of-year trend analysis, not just a live status board.
 

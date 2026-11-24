@@ -36,7 +36,8 @@ add(
   '',
   '## About me',
   c.aboutPage.intro,
-  ...c.aboutPage.sections.flatMap((s) => [`${s.heading}:`, ...s.paragraphs]),
+  // Sections with one-line `items` only repeat the jobs and client projects below.
+  ...c.aboutPage.sections.filter((s) => s.paragraphs).flatMap((s) => [`${s.heading}:`, ...s.paragraphs]),
   '',
   '## Education',
 )

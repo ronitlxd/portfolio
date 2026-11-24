@@ -85,7 +85,14 @@ function AboutPage() {
       {aboutPage.sections.map((s) => (
         <div key={s.heading}>
           <h3 className="about-subhead">{s.heading}</h3>
-          {s.paragraphs.map((para, i) => (
+          {s.items && (
+            <ul className="exp-bullets">
+              {s.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          )}
+          {s.paragraphs?.map((para, i) => (
             <Fragment key={i}>
               {/* Inline section figure - floated right at half width, so
                   this paragraph and the next wrap around it on the left. */}

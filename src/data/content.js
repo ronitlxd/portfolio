@@ -30,7 +30,7 @@ export const aboutPage = {
   // bring a heading back above the intro.
   heading: '',
   intro:
-    "I'm a cybersecurity enthusiast pursuing my Master of Applied Computing at the University of Windsor. I build and break things to learn how to defend them, mostly around SOC operations, detection, and log analysis. Now I'm looking to do it for real, in a live IT security environment.",
+    "I'm a Cybersecurity Analyst Intern at TELUS and a Master of Applied Computing student at the University of Windsor. Before that I worked as a SOC Analyst at TCS. I build and break things to learn how to defend them, mostly around SOC operations, detection, and log analysis.",
   // Henry-style inline photo: a real (if very old) photo dropped into the
   // text with a bold "Figure N:" caption underneath, plain rectangle, no
   // border/shadow/rotation. Placed right after the intro, before the "About"
@@ -50,7 +50,7 @@ export const aboutPage = {
       paragraphs: [
         "I started messing with computers because I wanted to know how a bunch of 1s and 0s turns into an actual game. I built calculators, small games, websites, whatever got me closer to understanding it. That's what got me into computer engineering, where I picked up Python, JavaScript, HTML, and CSS.",
         "Then AI showed up and changed the math. Anyone can build a website in an afternoon now, and break one just as fast. That's the part I got interested in: if building and breaking are both easy, defending is the harder, more useful skill.",
-        "Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, with correlation rules catching attacks, a local model helping on what the rules miss, and agents handling triage, investigation and response. Basically I taught myself the job before anyone gave it to me.",
+        "Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, with correlation rules catching attacks, a local model helping on what the rules miss, and agents handling triage, investigation and response.",
       ],
       // Figure 2 lives here (not the closing paragraph anymore) - floated
       // right at half the section's width, dropped in right before
@@ -62,6 +62,21 @@ export const aboutPage = {
         caption: 'Figure 2: Me, 2026.',
         beforeParagraph: 1,
       },
+    },
+    {
+      heading: 'Work',
+      items: [
+        'TELUS, Cybersecurity Analyst Intern. I investigate alerts and review AWS security.',
+        'TCS, SOC Analyst L1. I triaged enterprise SIEM alerts and escalated real threats to L2.',
+        'CAD Consultant, IT Support Analyst. I handled IT support for about 25 users.',
+      ],
+    },
+    {
+      heading: 'Client projects',
+      items: [
+        'PrivaRoute, with JLR North America. An in-car AI prototype that keeps data private.',
+        'Human Kinetics, UWindsor. An injury tracker for 420+ athletes across 12 sports.',
+      ],
     },
     {
       heading: 'Side quests',
@@ -314,14 +329,14 @@ export const devProjects = [
   {
     title: 'Athlete Injury Dashboard',
     description:
-      "Built for a real client, University of Windsor Human Kinetics, as part of my Master's program. A dashboard that tracks athlete injury data so coaches and staff can actually see patterns instead of digging through spreadsheets. First project where I had to answer to someone outside a classroom for what I shipped.",
+      "Built for a real client, University of Windsor Human Kinetics, as part of my Master's program. A dashboard that tracks athlete injury data so coaches and staff can actually see patterns instead of digging through spreadsheets.",
     tech: ['Django', 'Bootstrap', 'Chart.js'],
     code: 'https://github.com/ronitlxd',
     // Detail page ("More"), same treatment as Home Lab: short paragraphs
     // instead of bullets, dashboard highlighted, real screenshots dropped
     // in. `detail` (bullet list) removed in favor of `detailParagraphs`.
     detailParagraphs: [
-      'Built for a real client, University of Windsor Human Kinetics, as the Lancer Athlete Injury Tracking System, the first project where I had to answer to someone outside a classroom for what I shipped, and hand it off cleanly to the next development team.',
+      'Built for a real client, University of Windsor Human Kinetics, as the Lancer Athlete Injury Tracking System, then handed off cleanly to the next development team.',
       "Django-based with role-based access for admins, coaches, doctors, and players, each one only sees what's relevant to their job.",
       "The core of it is a full analytics dashboard: injury type, body part, and severity distribution, monthly trends, and academic-year filtering, giving coaches and staff a way to actually see patterns instead of digging through spreadsheets.",
       'It is live and used by Human Kinetics for 420+ athletes across 12 sports. I built the year-over-year and missed-games reports, the body-part heat map and the Excel and PDF exports.',
@@ -390,7 +405,7 @@ export const educationPage = [
       'Core coursework in software engineering, advanced algorithms, and advanced databases, the kind that pushes past syntax into how systems are actually designed to scale and hold up under load.',
       'Advanced Systems Programming meant living inside Linux day to day instead of just using it, which lines up well with the home lab I already run.',
       'Networking and Data Security was my highest grade, with hands-on labs on attacks like ARP poisoning, man-in-the-middle and SYN floods.',
-      "A hands-on project for a real client, Human Kinetics, building an athlete injury dashboard, the first time I've had to answer to someone outside a classroom for what I build.",
+      "A hands-on project for a real client, Human Kinetics, building an athlete injury dashboard.",
       'Outside the classroom I\'ve been to Sterling cybersecurity workshops and jumped into Capture The Flag competitions, chasing the same hands-on itch that got me building a home SOC lab in the first place.',
     ],
   },
