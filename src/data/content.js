@@ -52,15 +52,13 @@ export const aboutPage = {
         "Then AI showed up and changed the math. Anyone can build a website in an afternoon now, and break one just as fast. That's the part I got interested in: if building and breaking are both easy, defending is the harder, more useful skill.",
         "Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, with correlation rules catching attacks, a local model helping on what the rules miss, and agents handling triage, investigation and response.",
       ],
-      // Figure 2 lives here (not the closing paragraph anymore) - floated
-      // right at half the section's width, dropped in right before
-      // paragraph index 1 ("Then AI changed everything...") so that
-      // paragraph and the one after it wrap around it on the left, matching
-      // the screenshot Ronit sent of exactly those two paragraphs.
+      // Figure 2 is floated right before the first paragraph, so all three
+      // paragraphs wrap beside the tall portrait and no empty space is left
+      // under the text before the Work list.
       figure: {
         src: `${import.meta.env.BASE_URL}media/fig2.jpeg`,
         caption: 'Figure 2: Me, 2026.',
-        beforeParagraph: 1,
+        beforeParagraph: 0,
       },
     },
     {
