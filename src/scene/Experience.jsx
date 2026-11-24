@@ -9,6 +9,7 @@ import OfficePack from './OfficePack'
 import SceneSwitches from './GlowSwitch'
 import CameraRig, { WIDE, FrozenCamera } from './CameraRig'
 import AssetLoader from './AssetLoader'
+import BeginPrompt from './BeginPrompt'
 import SceneReady from './SceneReady'
 import Editable from './Editable'
 import EditModeOverlay from './EditModeOverlay'
@@ -92,6 +93,7 @@ export default function Experience() {
           `sceneReady` flips true (SceneReady.jsx, inside the Suspense
           boundary), not just once loading progress hits 100%. */}
       <AssetLoader ready={sceneReady} />
+      <BeginPrompt ready={sceneReady} />
 
       {/* Flat BG fallback behind the canvas (e.g. the instant before WebGL
           paints) - matches scene.background/fog exactly now, so there's no

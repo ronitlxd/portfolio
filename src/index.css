@@ -94,6 +94,39 @@ canvas {
   user-select: none;
 }
 
+/* Small BIOS-style readout, top left of the boot screen. */
+.boot-bios {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 1;
+  margin: 0;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  color: #c9c9c9;
+  white-space: pre;
+  user-select: none;
+  pointer-events: none;
+}
+
+.boot-bios strong {
+  color: #fff;
+}
+
+/* Short screens (landscape phones): keep the summary clear of the logo. */
+@media (max-height: 520px) {
+  .boot-bios {
+    font-size: 9px;
+  }
+
+  .boot-bios-rows {
+    display: none;
+  }
+}
+
 .boot-logo {
   display: flex;
   flex-direction: column;
@@ -213,6 +246,59 @@ canvas {
   font-size: 14px;
   font-style: italic;
   font-weight: bold;
+}
+
+/* "Click anywhere to begin" over the 3D office (BeginPrompt.jsx). Sits under
+   the boot overlay and appears as that overlay finishes fading. */
+.begin-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 19000;
+  cursor: pointer;
+}
+
+.begin-prompt {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 7px 18px;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  color: #fff;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 15px;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+  animation: boot-fade-in 0.2s ease-out 0.25s both;
+}
+
+.begin-prompt:focus {
+  outline: none;
+}
+
+.begin-prompt:focus-visible {
+  outline: 1px solid #000;
+  outline-offset: 2px;
+}
+
+.begin-cursor {
+  font-weight: bold;
+  animation: begin-blink 1s steps(1) infinite;
+}
+
+@keyframes begin-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .begin-prompt,
+  .begin-cursor {
+    animation: none;
+  }
 }
 
 .boot-foot sup {

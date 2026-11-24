@@ -1,4 +1,4 @@
-import { useModelProgress } from './modelLoader'
+import { FALLBACK_BYTES, useModelProgress } from './modelLoader'
 
 // -----------------------------------------------------------------------------
 // XP-style boot screen shown while the office pack's .glb downloads.
@@ -50,14 +50,46 @@ function Flag() {
   )
 }
 
+// BIOS-style readout in the top left. Every number comes from the real
+// download: the one .glb is shown as 12 equal parts, matching the bar's blocks.
+const PARTS = 12
+const VISIBLE_ROWS = 7
+const TOTAL_MB = FALLBACK_BYTES / 1e6
+const partName = (n) => `office_pack.part${String(n).padStart(2, '0')}`
+const row = (verb, n, pct) => `   ${verb} ${partName(n)}  ... ${pct}%`
+
+function BiosReadout({ progress }) {
+  const pct = Math.floor(progress * 100)
+  const done = Math.floor(progress * PARTS)
+  const rows = Array.from({ length: done }, (_, i) =>
+    row('Loaded ', i + 1, Math.round(((i + 1) / PARTS) * 100)),
+  )
+  if (done < PARTS) rows.push(row('Loading', done + 1, pct))
+
+  return (
+    <pre className="boot-bios" aria-hidden="true">
+      <strong>Ronit Inc.</strong>
+      {'  RLBIOS (C)2026 Ronit Lad\n\n'}
+      {`Checking model : ${(progress * TOTAL_MB).toFixed(1)} / ${TOTAL_MB.toFixed(1)} MB${
+        done === PARTS ? ' OK' : ''
+      }\n`}
+      {`Total loaded   : ${pct}%\n\n`}
+      {done === PARTS ? 'FINISHED LOADING RESOURCES\n' : 'LOADING RESOURCES\n'}
+      <span className="boot-bios-rows">{rows.slice(-VISIBLE_ROWS).join('\n')}</span>
+      {done === PARTS ? "\n\nAll Content Loaded, launching 'Ronit Lad Portfolio' V1.0" : ''}
+    </pre>
+  )
+}
+
 export default function AssetLoader({ ready }) {
   const progress = useModelProgress()
 
-  const downloading = progress < 1
+  const showBlocks = progress < 1
   const lit = Math.round(progress * BLOCKS)
 
   return (
     <div className={`asset-loader${ready ? ' asset-loader-hidden' : ''}`}>
+      <BiosReadout progress={progress} />
       <div className="boot-xp">
         <div className="boot-logo">
           <Flag />
@@ -79,7 +111,7 @@ export default function AssetLoader({ ready }) {
           aria-valuemax={100}
           aria-valuenow={Math.round(progress * 100)}
         >
-          {downloading ? (
+          {showBlocks ? (
             <div className="boot-blocks">
               {Array.from({ length: BLOCKS }, (_, i) => (
                 <span key={i} className={`boot-block${i < lit ? ' on' : ''}`} />

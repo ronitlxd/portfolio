@@ -16,7 +16,7 @@ const URL_PATH = `${import.meta.env.BASE_URL}models/90s_retro_office_pack.glb`
 
 // Used only when the server sends no Content-Length (e.g. compressed
 // transfer). Keep in sync with public/models/90s_retro_office_pack.glb.
-const FALLBACK_BYTES = 56545468
+export const FALLBACK_BYTES = 56545468
 
 let progress = 0 // 0..1
 const listeners = new Set()
