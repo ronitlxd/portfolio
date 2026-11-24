@@ -27,6 +27,7 @@ add(
   `Name: ${p.name}`,
   `Role: ${p.role}`,
   `Location: ${p.location}. ${p.openTo}`,
+  `Where I work right now: ${c.experience[0].role} at ${c.experience[0].company} (${c.experience[0].when}).`,
   `Looking for: a paid co-op role in Canada.`,
   `Email: ${p.email}`,
   `GitHub: ${p.github}`,
@@ -56,7 +57,7 @@ for (const e of c.clientProjects) {
 
 add('## Skills')
 for (const g of c.skills) add(`${g.group}: ${g.items.join(', ')}`)
-add('', '## Certifications', ...c.certifications.map((x) => `- ${x}`), '')
+add('', '## Certifications', ...c.certifications.map((x) => `- ${x}`), '', '## Activities', ...c.activities.map((x) => `- ${x}`), '')
 
 const project = (pr) => {
   add(
@@ -68,7 +69,9 @@ const project = (pr) => {
   // The short description mostly repeats the detail paragraphs, and the
   // whole prompt has to fit the model's 6144-token context with room for
   // chat history, so include it only when there are no details.
-  if (pr.detailParagraphs) add(...pr.detailParagraphs)
+  // Long write-ups keep their opening, how it works, and the closing status.
+  const d = pr.detailParagraphs
+  if (d) add(...(d.length > 3 ? [d[0], d[1], d.at(-1)] : d))
   else add(pr.description)
   if (pr.detailAgents) add(...pr.detailAgents.map((a) => `- ${a.name}: ${a.description}`))
   add('')

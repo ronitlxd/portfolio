@@ -4,6 +4,8 @@ import {
   profile,
   aboutPage,
   educationPage,
+  certifications,
+  activities,
   experience,
   clientProjects,
   projectCategories,
@@ -310,7 +312,7 @@ function EducationPage() {
       {educationPage.map((ed) => (
         <div className="edu-item" key={ed.degree}>
           <h1 className="edu-degree">{ed.degree}</h1>
-          <h2 className="edu-cgpa">{ed.cgpa}</h2>
+          <h2 className="edu-cgpa">{ed.cgpa} · {ed.when}</h2>
           <ul className="exp-bullets">
             {ed.bullets.map((b, i) => (
               <li key={i}>{b}</li>
@@ -318,6 +320,22 @@ function EducationPage() {
           </ul>
         </div>
       ))}
+      <div className="edu-item">
+        <h1 className="edu-degree">Certifications &amp; Training</h1>
+        <ul className="exp-bullets">
+          {certifications.map((c) => (
+            <li key={c}>{c}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="edu-item">
+        <h1 className="edu-degree">Activities</h1>
+        <ul className="exp-bullets">
+          {activities.map((a) => (
+            <li key={a}>{a}</li>
+          ))}
+        </ul>
+      </div>
     </>
   )
 }

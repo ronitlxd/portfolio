@@ -50,7 +50,7 @@ export const aboutPage = {
       paragraphs: [
         "I started messing with computers because I wanted to know how a bunch of 1s and 0s turns into an actual game. I built calculators, small games, websites, whatever got me closer to understanding it. That's what got me into computer engineering, where I picked up Python, JavaScript, HTML, and CSS.",
         "Then AI showed up and changed the math. Anyone can build a website in an afternoon now, and break one just as fast. That's the part I got interested in: if building and breaking are both easy, defending is the harder, more useful skill.",
-        "Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, Splunk pulling logs, an ML layer flagging anomalies, agents doing detection and triage. Basically I taught myself the job before anyone gave it to me.",
+        "Instead of trusting random cloud tools with my data, I built a Linux home lab: my own private cloud, my own VPN, a Tor proxy. Once I had a real server to protect, I went further and built a multi-agent SOC on top of it, with correlation rules catching attacks, a local model helping on what the rules miss, and agents handling triage, investigation and response. Basically I taught myself the job before anyone gave it to me.",
       ],
       // Figure 2 lives here (not the closing paragraph anymore) - floated
       // right at half the section's width, dropped in right before
@@ -186,6 +186,7 @@ export const securityProjects = [
       "Splunk Free and Suricata IDS (65,000+ Emerging Threats rules) watch real traffic, including live Tor evasion routed through Proxychains, not staged data.",
       "The centerpiece: a dashboard built from scratch with Flask, psutil, and Chart.js, one real-time view of service health, system resources, and live Suricata/Splunk activity.",
       "Around that core: self-hosted Nextcloud, a WireGuard VPN, and Tailscale for zero-trust access. Every layer configured by hand.",
+      "I split the network into six firewall-enforced zones, then ran simulated attacks from Kali and Windows that raised 50+ alerts. When Tor attacks went undetected I added a Tor exit-node check, and when I found an exposed admin service I traced it through /proc and locked it behind Tailscale.",
     ],
     detailImages: [
       { src: `${import.meta.env.BASE_URL}media/homelab1.png`, caption: "The dashboard's live view of service health and system resources." },
@@ -195,8 +196,8 @@ export const securityProjects = [
   {
     title: 'Agentic SOC',
     description:
-      'Built specifically to defend the home lab above. Splunk SIEM pulls logs from every device, a custom ML layer (Logistic Regression / SVM) flags anomalies, and Suricata IDS plus a Flask dashboard tie it together with live service controls. The goal was replacing manual log-watching with agents that handle detection and triage the way a real SOC team would.',
-    tech: ['Splunk', 'Suricata', 'Python', 'Flask', 'ML', 'Linux'],
+      'Built specifically to defend the home lab above. Six agents run continuously under systemd, reading host and Suricata logs, correlating them with 21 rules, enriching attackers with AbuseIPDB and Shodan, and mapping them to MITRE ATT&CK. A brute force, then a login, then a protected-file change becomes one chained alert, and nothing gets contained until I approve it.',
+    tech: ['Suricata', 'Python', 'Flask', 'Local LLM', 'MITRE ATT&CK', 'systemd'],
     code: 'https://github.com/ronitlxd/agentic-soc',
     // Detail page ("More") is entirely agent-focused, per Ronit's request:
     // the full architecture diagram, then each of the six agents in 1-2
@@ -205,33 +206,15 @@ export const securityProjects = [
     // and `detailAgents` is a new agent-name + short-description list
     // (see ProjectDetailPage in ShowcaseWindow.jsx).
     detailImages: [
-      { src: `${import.meta.env.BASE_URL}media/agenticsoc1.png`, caption: 'The six-agent pipeline, watcher through shift lead.' },
+      { src: `${import.meta.env.BASE_URL}media/agenticsoc1.png`, caption: 'The six-agent pipeline, from triage to the final case file.' },
     ],
     detailAgents: [
-      {
-        name: 'Watcher',
-        description: 'Continuously ingests incoming Splunk and Suricata events, the first agent to see raw activity and flag anything worth escalating.',
-      },
-      {
-        name: 'Analyst',
-        description: 'Runs the two-stage detection logic, 21 deterministic correlation rules first, then an optional local LLM only on what the rules missed, to triage and score each alert.',
-      },
-      {
-        name: 'Researcher',
-        description: 'Enriches flagged events with context and maps them against MITRE ATT&CK, so every alert arrives with a chain, not just a raw log line.',
-      },
-      {
-        name: 'Operator',
-        description: 'Handles containment. Defaults to dry-run, refuses to touch protected ranges or users, and only acts after explicit human approval from the web console.',
-      },
-      {
-        name: 'Scribe',
-        description: 'Documents everything as it happens, building the timeline and evidence trail that becomes the final incident report.',
-      },
-      {
-        name: 'Shift Lead',
-        description: 'Oversees the other five agents end to end, coordinating handoffs across all seven pipeline stages and making the final call on escalation.',
-      },
+      { name: 'Triage', description: 'Tails every host log at once, including Suricata, auth, syslog, Apache and UFW, and normalizes events into per-IP stats.' },
+      { name: 'Investigator', description: 'Runs 21 correlation rules over those stats, with an optional local LLM only on what the rules missed.' },
+      { name: 'Intel', description: 'Enriches suspicious IPs with AbuseIPDB and Shodan and maps activity to MITRE ATT&CK groups.' },
+      { name: 'Orchestrator', description: 'Runs the other agents, routes cases by severity and sends a read-only Telegram alert linking to the console.' },
+      { name: 'Responder', description: 'Handles containment. Defaults to dry-run, passes a pre-flight safety check, and only acts after I approve it in the web console.' },
+      { name: 'Auditor', description: 'Turns each closed case into a forensic record with a timeline, indicators and the full ATT&CK chain.' },
     ],
   },
   {
@@ -277,7 +260,7 @@ export const securityProjects = [
     description:
       "An offensive counterpart to my SOC work, an agent that attacks an authorized target on its own but only counts a bug as real once it builds a working proof for it, so it doesn't flood you with the false positives most scanners do. Still early, the reasoning and sandboxing skeleton is built, the actual attack engine and adapters are next.",
     tech: ['Python', 'Docker', 'Local LLM', 'Multi-Agent'],
-    code: 'https://github.com/ronitlxd/Multi-Agent-Pentesting-AI',
+    code: 'https://github.com/ronitlxd',
     // Explicitly a work in progress (Phase 0 per Ronit) - written in present
     // tense throughout, no fabricated results. The benchmark figure this
     // design is based on is attributed to the source paper, not claimed as
@@ -315,13 +298,14 @@ export const securityProjects = [
     detailParagraphs: [
       "Most cloud security tools tell you what's wrong after someone else already found it. I built mine backwards: I deliberately misconfigured a real AWS account first, public S3 buckets, open security groups, unrotated keys, then wrote a scanner from scratch to catch every mistake I'd made.",
       "It runs 15 checks across S3, IAM, EC2 security groups, and EBS, and every finding maps to a specific CIS AWS Foundations Benchmark v1.5 control, so the output never just says something is wrong, it says exactly which standard it violates and why. It's entirely read-only, runs against a locked-down IAM policy, and outputs a CI-friendly exit code plus JSON and Markdown reports, built to slot directly into a real pipeline, not just sit as a personal script.",
+      'Findings are ranked by severity, the checks are unit tested with moto, and a critical or high finding returns a failing exit code that stops a CI/CD pipeline.',
     ],
   },
   {
     title: 'Attacks',
     description:
-      "A collection of classic attacks I performed myself specifically to learn how they work: buffer overflow exploitation, TLS interception, man-in-the-middle attacks, ARP poisoning, and social-engineering techniques in the style of Kevin Mitnick. Breaking things on purpose, in a lab I control, is how I actually understand what I'm defending against.",
-    tech: ['Buffer Overflow', 'TLS', 'MITM', 'ARP Poisoning', 'Social Engineering'],
+      "Classic attacks I performed in my COMP 8677 Networking and Data Security labs, including buffer overflow exploitation, TLS interception, man-in-the-middle attacks, ARP poisoning, SYN floods, and social-engineering techniques in the style of Kevin Mitnick. Breaking things on purpose, in a lab I control, is how I actually understand what I'm defending against.",
+    tech: ['Buffer Overflow', 'TLS', 'MITM', 'ARP Poisoning', 'SYN Flood', 'Social Engineering'],
     code: 'https://github.com/ronitlxd',
   },
 ]
@@ -331,8 +315,8 @@ export const devProjects = [
     title: 'Athlete Injury Dashboard',
     description:
       "Built for a real client, University of Windsor Human Kinetics, as part of my Master's program. A dashboard that tracks athlete injury data so coaches and staff can actually see patterns instead of digging through spreadsheets. First project where I had to answer to someone outside a classroom for what I shipped.",
-    tech: ['Django', 'Bootstrap', 'Chart.js', 'PostgreSQL'],
-    code: 'https://github.com/Uwindsor-Human-Kinetics/HK-S26-COMP8967-Team12',
+    tech: ['Django', 'Bootstrap', 'Chart.js'],
+    code: 'https://github.com/ronitlxd',
     // Detail page ("More"), same treatment as Home Lab: short paragraphs
     // instead of bullets, dashboard highlighted, real screenshots dropped
     // in. `detail` (bullet list) removed in favor of `detailParagraphs`.
@@ -340,6 +324,7 @@ export const devProjects = [
       'Built for a real client, University of Windsor Human Kinetics, as the Lancer Athlete Injury Tracking System, the first project where I had to answer to someone outside a classroom for what I shipped, and hand it off cleanly to the next development team.',
       "Django-based with role-based access for admins, coaches, doctors, and players, each one only sees what's relevant to their job.",
       "The core of it is a full analytics dashboard: injury type, body part, and severity distribution, monthly trends, and academic-year filtering, giving coaches and staff a way to actually see patterns instead of digging through spreadsheets.",
+      'It is live and used by Human Kinetics for 420+ athletes across 12 sports. I built the year-over-year and missed-games reports, the body-part heat map and the Excel and PDF exports.',
       'Deliberately preserves every injury record, including recovered ones, since the whole point is accurate end-of-year trend analysis, not just a live status board.',
     ],
     detailImages: [
@@ -365,14 +350,14 @@ export const devProjects = [
   {
     title: 'Adaptive RAG Pipeline',
     description:
-      'Next.js / TypeScript frontend for a RAG system applying five vector-pruning strategies (cosine, k-means, MMR) to shrink index size while preserving answer quality. FastAPI backend with sentence-transformers and pgvector. This is where I actually got my hands on training and configuring LLM models instead of just calling an API.',
+      'Next.js / TypeScript frontend for a RAG system applying one of five vector-pruning strategies (none, cosine, cosine-whitened, k-means, MMR) to shrink the index. FastAPI backend with sentence-transformers and pgvector.',
     tech: ['Next.js', 'TypeScript', 'FastAPI', 'pgvector'],
     code: 'https://github.com/ronitlxd/Adaptive_Rag_With_Frontend',
     // Bullets replaced with short paragraphs (Ronit's request), same
     // convention as Home Lab/Athlete Injury Dashboard above.
     detailParagraphs: [
-      'Most people building with LLMs just call an API and move on. This project is where I went past that, a full Next.js/TypeScript frontend over a FastAPI backend, and actually got my hands on training and configuring the models underneath instead of treating them as a black box.',
-      'It applies one of five vector-pruning strategies, cosine, cosine-whitened, k-means, MMR, or none, before storage, shrinking the index size while keeping answer quality intact. A Dev Mode inspector exposes the entire pipeline live: ingestion, chunking, embedding, pruning, and retrieval, complete with per-chunk scores and an embedding heatmap most RAG demos never show. Every answer comes back with page-level source citations, so nothing is ever a black-box response.',
+      'Most RAG demos store every chunk and hide what happens next. I built a full Next.js/TypeScript frontend over a FastAPI backend that makes the whole pipeline visible.',
+      'It applies one of five vector-pruning strategies, cosine, cosine-whitened, k-means, MMR, or none, before storage, to shrink the index. A Dev Mode inspector exposes the entire pipeline live: ingestion, chunking, embedding, pruning, and retrieval, complete with per-chunk scores and an embedding heatmap most RAG demos never show. Every answer comes back with page-level source citations, so nothing is ever a black-box response.',
     ],
   },
 ]
@@ -381,13 +366,13 @@ export const education = [
   {
     degree: 'Master of Applied Computing',
     school: 'University of Windsor',
-    when: '2025 to 2027 (expected)',
-    detail: 'GPA 3.3 / 4.0, cybersecurity specialization.',
+    when: 'Sept 2025 to Dec 2026',
+    detail: 'GPA 3.1 / 4.0, cybersecurity specialization.',
   },
   {
     degree: 'B.Tech Computer Science & Engineering',
     school: 'Uka Tarsadia University, India',
-    when: '2021 to 2025',
+    when: 'Jul 2021 to May 2025',
     detail: 'GPA 3.48 / 4.0.',
   },
 ]
@@ -399,17 +384,20 @@ export const education = [
 export const educationPage = [
   {
     degree: 'Master of Applied Computing, University of Windsor',
-    cgpa: 'CGPA 3.3 / 4.0',
+    cgpa: 'CGPA 3.1 / 4.0',
+    when: 'Sept 2025 to Dec 2026',
     bullets: [
       'Core coursework in software engineering, advanced algorithms, and advanced databases, the kind that pushes past syntax into how systems are actually designed to scale and hold up under load.',
-      'Advanced computer programming meant living inside Linux day to day instead of just using it, which lines up well with the home lab I already run.',
+      'Advanced Systems Programming meant living inside Linux day to day instead of just using it, which lines up well with the home lab I already run.',
+      'Networking and Data Security was my highest grade, with hands-on labs on attacks like ARP poisoning, man-in-the-middle and SYN floods.',
       "A hands-on project for a real client, Human Kinetics, building an athlete injury dashboard, the first time I've had to answer to someone outside a classroom for what I build.",
-      'Outside the classroom I\'ve been to Sterling cybersecurity workshops and jumped into Capture The Flag competitions and bug bounty hunting, chasing the same hands-on itch that got me building a home SOC lab in the first place.',
+      'Outside the classroom I\'ve been to Sterling cybersecurity workshops and jumped into Capture The Flag competitions, chasing the same hands-on itch that got me building a home SOC lab in the first place.',
     ],
   },
   {
     degree: 'B.Tech Computer Science & Engineering, Uka Tarsadia University',
     cgpa: 'CGPA 3.48 / 4.0',
+    when: 'Jul 2021 to May 2025',
     bullets: [
       'Databases, object-oriented programming, networking, and algorithms, the fundamentals everything else stands on.',
       "Picked up Python here and went deep enough into compiler-level programming to understand what's actually happening beneath the code I write, not just trust that it works.",
@@ -451,8 +439,8 @@ export const clientProjects = [
     role: 'Full-Stack Developer, Athlete Injury Dashboard',
     when: 'Jun to Sep 2026, Windsor, ON',
     bullets: [
-      'Built a Django injury-tracking system for a real client, with role-based access for admins, coaches, doctors and players.',
-      'Built the analytics dashboard with injury type, body part and severity breakdowns, monthly and year-over-year trends, and academic-year filters.',
+      'Built a Django injury-tracking system used by Human Kinetics for 420+ athletes across 12 sports, with role-based access for admins, coaches, doctors and players.',
+      'Built the analytics dashboard with injury breakdowns, year-over-year and missed-games reports, a body-part heat map and academic-year filters.',
       'Added appointment requests, follow-ups, notifications, and CSV, PDF and Excel exports for staff reporting.',
       'Protected logins with lockout after repeated failures and kept every record, including recovered injuries, for accurate end-of-year analysis.',
       'Handed the system off cleanly to the next development team.',
@@ -487,21 +475,28 @@ export const experience = [
   },
   {
     company: 'CAD Consultant',
-    role: 'Assistant Web Engineer',
-    when: 'Feb to Jun 2024, India',
+    role: 'IT Support Analyst and Assistant Web Engineer',
+    when: 'Feb to Aug 2024, India',
     bullets: [
-      'Contributed to full-stack development across 3+ client projects, applying secure coding practices (input validation, sanitized queries, least-privilege API access) to reduce common web vulnerabilities.',
-      'Translated business requirements into technical specs and documentation, flagging authentication, data-handling, and access-control needs early in the design phase.',
-      'Maintained repository hygiene in Git/GitHub within an Agile team - enforced branch protections, reviewed commits for exposed secrets/credentials, and kept dependencies patched.',
-      'Worked cross-functionally to catch and fix configuration risks (default credentials, overly permissive CORS, verbose error output) before client handoff.',
+      'Supported about 25 users with day-to-day IT issues.',
+      'Managed accounts and access with Active Directory and Group Policy.',
+      'Resolved Microsoft 365 problems and Wi-Fi and IP connectivity issues.',
+      'Traced recurring account lockouts to cached passwords and fixed them.',
+      'Handled bug fixes on client web applications.',
     ],
   },
 ]
 
 export const certifications = [
   'CompTIA Security+ (SY0-701), in progress',
-  'TryHackMe SOC Level 1 path, in progress',
-  'Sterling Cybersecurity Workshop',
+  'TryHackMe Top 10%',
+  'TryHackMe SOC Level 1, SOC Simulations and AI Security',
+  'Sterling Cybersecurity Workshop and CTF',
+]
+
+export const activities = [
+  'UWindsor Cybersecurity Club',
+  'Demo Day presentation on burnout prediction',
 ]
 
 // BIOS boot sequence lines. Rendered one block at a time with a slight delay.
