@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { requestBegin } from './sceneControlsStore'
 
 const TEXT = 'Click anywhere to begin'
 const START_DELAY_MS = 300 // lets the boot screen finish fading first
@@ -40,9 +41,13 @@ export default function BeginPrompt({ ready }) {
   if (!ready || entered) return null
 
   const typing = count < TEXT.length
+  const begin = () => {
+    setEntered(true)
+    requestBegin()
+  }
 
   return (
-    <div className="begin-layer" onClick={() => setEntered(true)}>
+    <div className="begin-layer" onClick={begin}>
       <button ref={buttonRef} type="button" className="begin-prompt" aria-label={TEXT}>
         <span aria-hidden="true">
           {TEXT.slice(0, count)}

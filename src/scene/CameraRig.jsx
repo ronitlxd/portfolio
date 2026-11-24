@@ -98,8 +98,8 @@ const SCREEN_RIGHT = new THREE.Vector3(0, 0, -1)
 const WIDE_POS = new THREE.Vector3(...WIDE.position)
 const WIDE_VIEW_DIR = new THREE.Vector3(...CAMERA_TARGET).sub(WIDE_POS).normalize()
 const WIDE_RIGHT = new THREE.Vector3().crossVectors(WORLD_UP, WIDE_VIEW_DIR).normalize()
-const SWEEP_AMPLITUDE = 1.8 // world units each side of center
-const SWEEP_PERIOD = 14 // seconds for one full left-right-left cycle - "slowly"
+const SWEEP_AMPLITUDE = 0.5 // world units each side of center
+const SWEEP_PERIOD = 22 // seconds for one full left-right-left cycle
 
 // Parallax strength while settled on TABLE/SCREEN_SHOT (unrelated to the
 // IDLE sweep above) - only applied once a tween has finished, never mid-tween.
@@ -147,6 +147,7 @@ export default function CameraRig({ onStart }) {
   const sweepStartTimeRef = useRef(performance.now() / 1000)
   const controls = useSceneControlsState()
   const lastZoomOutSignalRef = useRef(controls.zoomOutSignal)
+  const lastBeginSignalRef = useRef(controls.beginSignal)
 
   // A fixed reference camera matching the TABLE shot exactly, used ONLY to
   // decide table<->screen hover - never rendered, never moved by
@@ -282,6 +283,19 @@ export default function CameraRig({ onStart }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controls.zoomOutSignal])
+
+  // "Click anywhere to begin" (BeginPrompt.jsx) sits above the canvas, so its
+  // click arrives here instead of through onDown.
+  useEffect(() => {
+    if (controls.beginSignal === lastBeginSignalRef.current) return
+    lastBeginSignalRef.current = controls.beginSignal
+    if (stageRef.current === 'idle' && !tweenRef.current.active) {
+      stageRef.current = 'table'
+      onStart?.()
+      beginTween(TABLE)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controls.beginSignal])
 
   useFrame((_state, delta) => {
     const tw = tweenRef.current

@@ -35,6 +35,7 @@ let state = {
   lightsOn: true,
   zoomedToScreen: false,
   zoomOutSignal: 0,
+  beginSignal: 0,
   crtDarkness: 0.08,
   crtGrain: 0.35,
 }
@@ -85,6 +86,13 @@ export function setZoomedToScreen(value) {
 // diff against, same idea as a Redux action rather than a flag.
 export function requestZoomOut() {
   state = { ...state, zoomOutSignal: state.zoomOutSignal + 1 }
+  emit()
+}
+
+// Sent by "Click anywhere to begin" so the same click moves the camera to the
+// desk. A counter for the same reason as zoomOutSignal above.
+export function requestBegin() {
+  state = { ...state, beginSignal: state.beginSignal + 1 }
   emit()
 }
 
