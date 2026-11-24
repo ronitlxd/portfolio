@@ -49,6 +49,12 @@ function preloadModel() {
     name: 'preload-model',
     apply: 'build',
     transformIndexHtml: () => [
+      // The small still shown behind the loading screen (see index.css).
+      {
+        tag: 'link',
+        attrs: { rel: 'preload', href: `${base}media/poster.webp`, as: 'image', fetchpriority: 'high' },
+        injectTo: 'head',
+      },
       {
         tag: 'link',
         attrs: {
