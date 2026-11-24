@@ -35,7 +35,11 @@ jobs:
           cache: npm
 
       - run: npm ci
+      # Clippy's chat API on the home server, published by Tailscale Funnel
+      # (only /api is exposed). Also added to the page's CSP connect-src.
       - run: npm run build
+        env:
+          VITE_CHAT_URL: https://server.taild0449c.ts.net/api/chat
 
       - uses: actions/upload-pages-artifact@v3
         with:
